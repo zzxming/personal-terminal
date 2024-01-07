@@ -1,4 +1,4 @@
-import { getNeteaseMusic, getNeteaseMusicList, AxiosResult, MusicResult } from '@/assets/js/api';
+import { getNeteaseMusic, getNeteaseMusicList, AxiosResult, MusicResult } from '@/assets/api/api';
 import { Command, CommandOutputStatus } from '@/interface/interface';
 import { AxiosError } from 'axios';
 

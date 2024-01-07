@@ -1,5 +1,5 @@
 import { createRef, Fragment, useCallback, useEffect, useState } from 'react';
-import { getBiliPic, getBiliSearchTypeResult } from '@/assets/js/api';
+import { getBiliPic, getBiliSearchTypeResult } from '@/assets/api/api';
 import { Pagination, PaginationProps } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import { BiliVideoIframe } from './biliVideoOutput';
