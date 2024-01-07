@@ -1,113 +1,211 @@
-import Image from 'next/image'
+'use client';
+import { useRef, useLayoutEffect, useState, useEffect } from 'react';
+import { throttle } from 'lodash-es';
+import useBackgroundImage from '@/hooks/backgroundImage';
+import useCommand from '@/hooks/command';
+import { MarkNav } from '@/commands/markCommand/markCommandOutput';
+import { TimeCount } from '@/commands/timeCommand/timeCommandOutput';
+import { LOCALSTORAGECONFIG, LOCALSTORAGEEVENTMAP } from '@/assets/js/const';
+import { localStorageGetItem } from '@/utils/localStorage';
+import { CommandOutputStatus, ConfigData } from '@/interface/interface';
+import css from './index.module.css';
 
-export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+const Terminal: React.FC = () => {
+    const { imgurl } = useBackgroundImage();
+    const commandHandle = useCommand();
+    const { commands, historyCommands, historyCommandsIndex, setCommandHint, setHistoryCommandsIndex, excuteCommand } =
+        commandHandle;
+    const [hintTxt, setHintTxt] = useState('');
+    const view = useRef<HTMLDivElement>(null);
+    const inp = useRef<HTMLInputElement>(null);
+    const [outputStyle, setOuptputStyle] = useState<React.CSSProperties>({});
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+    // localstorage更新
+    useEffect(() => {
+        configChange();
 
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+        window.addEventListener(LOCALSTORAGEEVENTMAP[LOCALSTORAGECONFIG], configChange);
+        return () => {
+            window.removeEventListener(LOCALSTORAGEEVENTMAP[LOCALSTORAGECONFIG], configChange);
+        };
+    }, []);
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
+    // localstorage中config初始化及更新处理函数
+    const configChange = () => {
+        let { style } = localStorageGetItem(LOCALSTORAGECONFIG) as ConfigData;
+        setOuptputStyle(style ? style : {});
+    };
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
-          </p>
-        </a>
+    // 保持输入会在屏幕内,最下方
+    useLayoutEffect(() => {
+        scrollScream();
+    });
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
-}
+    // 更新一定要在父组件, 不如不能引起app的render, 导致不能从hook中获取最新的commands
+    function commit() {
+        excuteCommand(inp.current?.value.trim() || '', commandHandle, view.current as HTMLElement);
+        inp.current && (inp.current.value = '');
+        setHintTxt('');
+        scrollScream();
+    }
+    // 输入框聚焦
+    function focusInput(e: React.MouseEvent<HTMLDivElement>) {
+        e.stopPropagation();
+        inp.current?.focus();
+    }
+    /** 保持输入框在视口内 */
+    function scrollScream() {
+        view.current && (view.current.scrollTop = view.current?.scrollHeight);
+    }
+
+    /**
+     * 历史命令
+     * @param {*} isBack 是否向上浏览历史命令
+     */
+    function rollBackCommand(isBack: boolean) {
+        // console.log(historyCommands)
+        let updatedIndex;
+        if (isBack) {
+            updatedIndex = historyCommandsIndex - 1;
+        } else {
+            updatedIndex = historyCommandsIndex + 1;
+        }
+        // 防止越界
+        if (updatedIndex < 0) {
+            updatedIndex = 0;
+        }
+        if (updatedIndex > historyCommands.length - 1) {
+            // 到最后一次输入, 超出则变成输入状态
+            updatedIndex = historyCommands.length;
+            inp.current && (inp.current.value = '');
+            return;
+        }
+
+        setHistoryCommandsIndex(updatedIndex);
+        let txt = historyCommands[updatedIndex]?.txt;
+        // console.log(historyCommands, updatedIndex, isBack)
+        if (!txt) return;
+
+        inp.current && (inp.current.value = txt);
+        inp.current && inp.current.setSelectionRange(inp.current.value.length, inp.current.value.length);
+    }
+
+    function keydownEvent(e: React.KeyboardEvent<HTMLInputElement>) {
+        // console.log(e);
+        const keyCode = e.key;
+        // 当输入法存在时按回车key值为'Process, keyCode值为229, 普通回车key值为'Enter', keyCode为13'
+        switch (keyCode) {
+            case 'Enter': {
+                commit();
+                break;
+            }
+            case 'ArrowUp': {
+                // 取消默认效果,不进行此操作会导致光标在input最前面
+                e.preventDefault();
+                rollBackCommand(true);
+                break;
+            }
+            case 'ArrowDown': {
+                rollBackCommand(false);
+                break;
+            }
+            case 'Backspace': {
+                throttleKeyPressEvnet();
+                break;
+            }
+            case 'Tab': {
+                e.preventDefault();
+                completeCommandInput();
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+    }
+    /** 根据输入字显示提示文字 */
+    function keyPressEvent() {
+        // console.log(inp.current)
+        if (inp.current) {
+            let commandStr = inp.current.value;
+            // console.log(commandStr)
+            let getCommand = setCommandHint(commandStr);
+            // console.log(getCommand)
+            setHintTxt(getCommand as any);
+        }
+    }
+    const throttleKeyPressEvnet = throttle(keyPressEvent, 1000);
+    /** 命令输入补全 */
+    function completeCommandInput() {
+        if (inp.current) {
+            let inpStr = inp.current.value;
+            let completeCommandName = setCommandHint(inpStr, true);
+            // 如果返回补全命令比输入命令短, 代表输入有参数, 不需要补全
+            if (completeCommandName.length > inpStr.length) {
+                inp.current.value = completeCommandName;
+            }
+        }
+    }
+
+    return (
+        <>
+            <div
+                className={css.terminal}
+                onClick={focusInput}
+                style={{ backgroundImage: `url(${imgurl})` }}
+            >
+                <div
+                    className={css.terminal_mask}
+                    onClick={focusInput}
+                    style={outputStyle}
+                >
+                    <MarkNav />
+                    <TimeCount />
+                    <div
+                        ref={view}
+                        className={css.terminal_command}
+                    >
+                        {commands &&
+                            commands.map((item) => (
+                                <div
+                                    key={'local' + item.key}
+                                    className={css.command_result}
+                                >
+                                    {item.isResult ? '' : <span className={css.terminal_user}>[local]:</span>}
+                                    {item.isResult ? (
+                                        item.status === CommandOutputStatus.success ? (
+                                            ''
+                                        ) : (
+                                            <span
+                                                className={`${css.command_result_status} ${
+                                                    item.status === CommandOutputStatus.error ? css.error : css.warn
+                                                }`}
+                                            >
+                                                {item.status}
+                                            </span>
+                                        )
+                                    ) : (
+                                        ''
+                                    )}{' '}
+                                    {item.construct}
+                                </div>
+                            ))}
+                        <div className={css.terminal_input}>
+                            <span className={css.terminal_user}>[local]:</span>
+                            {/* 多行输入 */}
+                            <input
+                                ref={inp}
+                                className={css.input_command}
+                                onKeyDown={keydownEvent}
+                                onChange={throttleKeyPressEvnet}
+                            />
+                        </div>
+                        {hintTxt ? <div className={css.terminal_hint}>hint: {hintTxt}</div> : ''}
+                    </div>
+                </div>
+            </div>
+        </>
+    );
+};
+
+export default Terminal;

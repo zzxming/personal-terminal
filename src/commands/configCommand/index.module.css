@@ -1,0 +1,15 @@
+
+.config_list_item {
+    display: flex;
+}
+.config_list_item_value {
+    display: inline-block;
+    word-break: break-word;
+}
+.config_list_item_value.key {
+    min-width: 60px;
+    margin-right: 8px;
+}
+.config_list_item_value.value {
+    margin-left: 8px;
+}
