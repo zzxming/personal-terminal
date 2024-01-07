@@ -10,7 +10,7 @@ import {
     CommandParamArgs,
     HistoryCommand,
 } from '@/interface/interface';
-import css from '@/app/index.module.css';
+import css from '@/app/index.module.scss';
 import { randomID } from '@/utils/tools';
 
 // setCommandHint 和 completionCommand 两个函数中的 commands 类型使用 Command[] 有问题, 导致 commandMap 没法传入, 使用 typeof 获取类型

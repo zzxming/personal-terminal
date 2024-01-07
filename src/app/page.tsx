@@ -8,7 +8,7 @@ import { TimeCount } from '@/commands/timeCommand/timeCommandOutput';
 import { LOCALSTORAGECONFIG, LOCALSTORAGEEVENTMAP } from '@/assets/js/const';
 import { localStorageGetItem } from '@/utils/localStorage';
 import { CommandOutputStatus, ConfigData } from '@/interface/interface';
-import css from './index.module.css';
+import css from './index.module.scss';
 
 const Terminal: React.FC = () => {
     const { imgurl } = useBackgroundImage();
@@ -195,7 +195,7 @@ const Terminal: React.FC = () => {
                             {/* 多行输入 */}
                             <input
                                 ref={inp}
-                                className={css.input_command}
+                                className={css.command_input}
                                 onKeyDown={keydownEvent}
                                 onChange={throttleKeyPressEvnet}
                             />

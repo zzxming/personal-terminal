@@ -1,0 +1,43 @@
+.terminal {
+    @apply fixed inset-0 bg-black bg-center bg-cover;
+    &_mask {
+        @apply fixed inset-0  flex flex-col  bg-black/60  text-zinc-300 overflow-y-auto;
+    }
+    &_user {
+        @apply pr-2;
+    }
+    &_input {
+        @apply flex items-center justify-center;
+    }
+    &_hint {
+        @apply text-neutral-400;
+    }
+    &_command {
+        @apply flex-1 p-5 overflow-y-auto text-xl;
+    }
+}
+.command {
+    &_result {
+        @apply flex;
+        &_status {
+            @apply px-2 my-1 mr-1 text-white text-sm;
+            &.success {
+                @apply bg-success;
+            }
+            &.warn {
+                @apply bg-warn;
+            }
+            &.error {
+                @apply bg-danger;
+            }
+        }
+    }
+    &_input {
+        @apply w-full bg-transparent outline-none;
+    }
+    &_txt {
+    }
+    &_iframe {
+        @apply w-full text-xl;
+    }
+}

@@ -1,6 +1,6 @@
-import { fanyiApi, FanyiRejResult, FanyiResResult } from '@/assets/js/api';
+import { fanyiApi, FanyiRejResult, FanyiResResult } from '@/assets/api/api';
 import { Command, CommandOutputStatus } from '@/interface/interface';
-import css from '@/app/index.module.css';
+import css from '@/app/index.module.scss';
 import { randomID } from '@/utils/tools';
 
 const lang: {

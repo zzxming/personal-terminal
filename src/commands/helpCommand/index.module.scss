@@ -1,0 +1,28 @@
+.command_help {
+}
+.command {
+    &_help {
+    }
+    &_list {
+        &_desc {
+            @apply h-8 leading-8;
+        }
+    }
+    &_detail {
+        @apply pl-10;
+    }
+    &_sub {
+        @apply my-3 pb-3 border-b border-white;
+        &_list {
+        }
+    }
+    &_option {
+    }
+    &_item {
+        @apply grid grid-cols-command_list leading-8 ml-5;
+    }
+    &_command {
+    }
+    &_desc {
+    }
+}
