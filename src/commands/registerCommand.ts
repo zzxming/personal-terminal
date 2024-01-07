@@ -15,11 +15,11 @@ import { timeCommand } from '@/commands/timeCommand';
 
 const commandMap: Command[] = [
     baiduCommand,
+    helpCommand,
+    backgroundCommand,
 
     // musicCommand,
     // fanyiCommand,
-    // backgroundCommand,
-    // helpCommand,
     // clearCommand,
     // biliCommand,
     // historyCommand,

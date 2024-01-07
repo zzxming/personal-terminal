@@ -1,4 +1,4 @@
-import css from './index.module.css';
+import css from './index.module.scss';
 import { commandMap } from '../registerCommand';
 import { commandUseFunc } from '..';
 import { Table, TableColumnsType } from 'antd';
@@ -7,10 +7,7 @@ import { randomID } from '@/utils/tools';
 
 interface LegalValueTable {
     key: string;
-    key1: string;
-    value1: string;
-    key2: string;
-    value2: string;
+    value: string;
 }
 
 const commandList = () => (
@@ -48,40 +45,17 @@ const commandDetail = (command: Command) => {
     const legalTable = (legalValue: objectValueType<CommandOption, 'legalValue'>) => {
         if (!legalValue) return '';
         const columns: TableColumnsType<LegalValueTable> = [
-            { title: '参数', dataIndex: 'key1' },
-            { title: '描述', dataIndex: 'value1' },
-            { title: '参数', dataIndex: 'key2' },
-            { title: '描述', dataIndex: 'value2' },
+            { title: '参数', dataIndex: 'key' },
+            { title: '描述', dataIndex: 'value' },
         ];
         const dataSource: LegalValueTable[] = [];
 
-        // 让选项一行显示两条数据
-        let keys = Object.keys(legalValue);
-        for (let i = 0; i < keys.length; i += 2) {
-            let key1 = keys[i];
-            let value1 = legalValue[key1];
-            let key2 = '';
-            let value2 = '';
-            if (i + 1 < keys.length) {
-                key2 = keys[i + 1];
-                value2 = legalValue[key2];
-            }
+        for (const key in legalValue) {
             dataSource.push({
-                key: key1 + key2,
-                key1,
-                value1,
-                key2,
-                value2,
+                key,
+                value: legalValue[key],
             });
         }
-        // for (let item in legalValue) {
-        //     dataSource.push({
-        //         key: item,
-        //         value: legalValue[item]
-        //     });
-        // }
-        // console.log(dataSource)
-        // console.log(columns)
         return (
             <Table
                 pagination={false}

@@ -3,7 +3,6 @@ import { initValLocalStorageConfig } from '@/commands/configCommand';
 import { initValLocalStorageMark } from '@/commands/markCommand';
 
 // 重写 setItem , 使同页面能够监听到 localstorage 的变化
-const originLocalStorageSetItem = localStorage.setItem;
 const localStorageSetItem = (key: string, value: any) => {
     if (typeof value !== 'string') {
         value = JSON.stringify(value);
@@ -12,11 +11,11 @@ const localStorageSetItem = (key: string, value: any) => {
     let eventName = LOCALSTORAGEEVENTMAP[key];
     if (eventName) {
         let setItem = new Event(eventName);
-        originLocalStorageSetItem.call(localStorage, key, value);
+        localStorage.setItem(key, value);
         window.dispatchEvent(setItem);
         return;
     }
-    originLocalStorageSetItem.call(localStorage, key, value);
+    localStorage.setItem(key, value);
 };
 
 const localStorageGetItem = (key: string) => {
