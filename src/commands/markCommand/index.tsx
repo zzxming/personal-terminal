@@ -1,11 +1,10 @@
-import { LOCALSTORAGECONFIG } from '@/assets/js/const';
+import { LOCALSTORAGECONFIG, LOCALSTORAGEMARK } from '@/assets/js/const';
 import { Command, CommandOutputStatus, MarkData } from '@/interface/interface';
 import { localStorageSetItem, localStorageGetItem } from '@/utils/localStorage';
 import { addMark } from './subCommand/addCommand';
 import { delMark } from './subCommand/delCommand';
 import { modifyMark } from './subCommand/modifyCommand';
-import { MarkList } from './markCommandOutput';
-import { randomID } from '@/utils/tools';
+import { MarkList } from './components/markList';
 
 const markCommand: Command = {
     name: 'mark',
@@ -51,8 +50,9 @@ const markCommand: Command = {
             };
         }
         if (list) {
+            const { data } = localStorageGetItem(LOCALSTORAGEMARK) as MarkData;
             return {
-                constructor: <MarkList key={`mark result ${randomID()}`} />,
+                constructor: <MarkList data={data} />,
                 status: CommandOutputStatus.success,
             };
         }

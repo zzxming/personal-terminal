@@ -2,8 +2,7 @@ import { Command, CommandOutputStatus, ConfigData, openType } from '@/interface/
 import { clearCommand } from './subComand/clearCommand';
 import { openCommand } from './subComand/openCommand';
 import { styleCommand } from './subComand/styleCommand';
-import { ConfigListOutput } from './components/configCommandOutput';
-import { randomID } from '@/utils/tools';
+import { ConfigList } from './components/configList';
 
 const configCommand: Command = {
     name: 'config',
@@ -30,7 +29,7 @@ const configCommand: Command = {
 
         if (list) {
             return {
-                constructor: <ConfigListOutput />,
+                constructor: <ConfigList />,
                 status: CommandOutputStatus.success,
             };
         }

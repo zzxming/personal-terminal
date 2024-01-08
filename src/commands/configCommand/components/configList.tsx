@@ -4,7 +4,7 @@ import { ConfigData } from '@/interface/interface';
 import { localStorageGetItem } from '@/utils/localStorage';
 import css from '../index.module.css';
 
-const ConfigListOutput = () => {
+const ConfigList = () => {
     let config = localStorageGetItem(LOCALSTORAGECONFIG) as ConfigData;
     let configList = (Object.keys(config) as (keyof ConfigData)[]).map((key) => {
         return {
@@ -50,4 +50,4 @@ const ConfigListOutput = () => {
     );
 };
 
-export { ConfigListOutput };
+export { ConfigList };

@@ -1,5 +1,5 @@
 import { Command, CommandOutputStatus } from '@/interface/interface';
-import { HistoryCommandListOutput } from './components/historyCommandOutput';
+import { HistoryList } from './components/historyList';
 
 const historyCommand: Command = {
     name: 'history',
@@ -29,7 +29,7 @@ const historyCommand: Command = {
         const showHistoryCommands = num === 0 ? sortHistoryCommands : sortHistoryCommands.slice(0, num);
         showHistoryCommands.reverse();
         return {
-            constructor: <HistoryCommandListOutput data={showHistoryCommands} />,
+            constructor: <HistoryList data={showHistoryCommands} />,
             status: CommandOutputStatus.success,
         };
     },

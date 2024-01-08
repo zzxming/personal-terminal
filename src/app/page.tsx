@@ -3,13 +3,12 @@ import { useRef, useLayoutEffect, useState, useEffect } from 'react';
 import { throttle } from 'lodash-es';
 import useBackground from '@/hooks/background';
 import useCommand from '@/hooks/command';
-import { MarkNav } from '@/commands/markCommand/markCommandOutput';
-import { TimeCount } from '@/commands/timeCommand/components/timeCommandOutput';
+import { MarkNav } from '@/commands/markCommand/components/markNav';
+import { TimeCount } from '@/commands/timeCommand/components/timeCount';
 import { LOCALSTORAGECONFIG, LOCALSTORAGEEVENTMAP } from '@/assets/js/const';
 import { localStorageGetItem } from '@/utils/localStorage';
 import { CommandOutputStatus, ConfigData } from '@/interface/interface';
 import css from './index.module.scss';
-import { randomID } from '@/utils/tools';
 
 const Terminal: React.FC = () => {
     const { imgurl } = useBackground();

@@ -1,10 +1,10 @@
 import { CommandResultListOutput } from '@/components/commandListOutput';
 import { HistoryCommand } from '@/interface/interface';
 
-interface HistoryCommandListOutputProps {
+interface HistoryListProps {
     data: HistoryCommand[];
 }
-export const HistoryCommandListOutput = (props: HistoryCommandListOutputProps) => {
+export const HistoryList = (props: HistoryListProps) => {
     const { data } = props;
     return (
         <CommandResultListOutput<HistoryCommand>
