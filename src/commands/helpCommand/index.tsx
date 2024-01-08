@@ -1,10 +1,11 @@
 import { commandMap, helpIgnoreCommand } from '../registerCommand';
 import { searchCommand } from '..';
 import { Command, CommandOutputStatus } from '@/interface/interface';
-import { commandDetail, commandList } from './helpCommandOutput';
+import { CommandHelp } from './components/commandHelp';
+import { CommandList } from './components/commandList';
+import { randomID } from '@/utils/tools';
 
 const helpCommand: Command = {
-    // const originHelpCommand: Command = {
     name: 'help',
     desc: '查看命令帮助',
     params: [
@@ -23,7 +24,7 @@ const helpCommand: Command = {
         if (_.length < 1) {
             // 没有param参数, 直接输出command list
             return {
-                constructor: commandList(),
+                constructor: <CommandList key={randomID()} />,
                 status: CommandOutputStatus.success,
             };
         } else {
@@ -43,22 +44,16 @@ const helpCommand: Command = {
                 };
             }
             return {
-                constructor: commandDetail(getCommand),
+                constructor: (
+                    <CommandHelp
+                        command={getCommand}
+                        key={`${randomID()}`}
+                    />
+                ),
                 status: CommandOutputStatus.success,
             };
         }
     },
 };
-
-// const helpCommand = new Proxy(originHelpCommand, {
-//     get(origin, key: keyof Command) {
-//         if (key === 'subCommands' && origin[key].length === 0) {
-//             let subs = commandMap.filter(command => !helpIgnoreCommand.includes(command));
-//             origin[key] = subs;
-//             return origin[key]
-//         }
-//         return origin[key];
-//     }
-// });
 
 export { helpCommand };

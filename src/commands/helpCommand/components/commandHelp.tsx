@@ -1,6 +1,5 @@
-import css from './index.module.scss';
-import { commandMap } from '../registerCommand';
-import { commandUseFunc } from '..';
+import css from '../index.module.scss';
+import { commandUseFunc } from '@/commands';
 import { Table, TableColumnsType } from 'antd';
 import { Command, CommandOption, objectValueType } from '@/interface/interface';
 import { randomID } from '@/utils/tools';
@@ -9,33 +8,11 @@ interface LegalValueTable {
     key: string;
     value: string;
 }
-
-const commandList = () => (
-    <div
-        className={css.command_list}
-        key={randomID() + 'help'}
-    >
-        <p className={css.command_list_desc}>命令列表:</p>
-        {
-            // 排序
-            commandMap
-                .sort((a, b) => (a.name > b.name ? 1 : -1))
-                .map((item) => {
-                    return (
-                        <div
-                            className={css.command_item}
-                            key={item.name}
-                        >
-                            <div className={css.command_command}>{item.name}</div>
-                            <div className={css.command_desc}>{item.desc}</div>
-                        </div>
-                    );
-                })
-        }
-    </div>
-);
-
-const commandDetail = (command: Command) => {
+interface CommandHelpProps {
+    command: Command;
+}
+const CommandHelp = (props: CommandHelpProps) => {
+    const { command } = props;
     if (!command) {
         return '命令不存在';
     }
@@ -97,7 +74,9 @@ const commandDetail = (command: Command) => {
                         <ul className={css.command_detail}>
                             {subCommands.map((subCommand) => (
                                 <li key={`${name} ${subCommand.name}`}>
-                                    <div className={css.command_sub}>{commandDetail(subCommand)}</div>
+                                    <div className={css.command_sub}>
+                                        <CommandHelp command={subCommand} />
+                                    </div>
                                 </li>
                             ))}
                         </ul>
@@ -137,10 +116,7 @@ const commandDetail = (command: Command) => {
     };
 
     return (
-        <div
-            key={`command help ${name} result ${randomID()}`}
-            className={css.command_help}
-        >
+        <div className={css.command_help}>
             <p className={css.command_list_desc}>命令: {desc}</p>
             <p className={css.command_list_desc}>用法: {commandUseFunc(command)}</p>
             {paramsCreator()}
@@ -150,4 +126,4 @@ const commandDetail = (command: Command) => {
     );
 };
 
-export { commandList, commandDetail };
+export { CommandHelp };
