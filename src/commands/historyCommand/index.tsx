@@ -15,9 +15,10 @@ const historyCommand: Command = {
     options: [],
     subCommands: [],
     async action(args, commandHandle) {
-        // console.log(args)
+        // console.log(args);
         const { _ } = args;
-        const num = Number(_.join(' '));
+
+        const num = Number(_[0] || 0);
         if (isNaN(num) || num < 0) {
             return {
                 constructor: '请输入合法数字参数',
@@ -25,12 +26,9 @@ const historyCommand: Command = {
             };
         }
         const { historyCommands } = commandHandle;
-        const sortHistoryCommands = [...historyCommands].reverse();
+        const sortHistoryCommands = [...historyCommands.current].reverse();
         const showHistoryCommands = num === 0 ? sortHistoryCommands : sortHistoryCommands.slice(0, num);
         showHistoryCommands.reverse();
-
-        // console.log(sortHistoryCommands)
-
         return {
             constructor: (
                 <CommandResultListOutput<HistoryCommand>

@@ -13,8 +13,7 @@ import css from './index.module.scss';
 const Terminal: React.FC = () => {
     const { imgurl } = useBackground();
     const commandHandle = useCommand();
-    const { commands, historyCommands, historyCommandsIndex, setCommandHint, setHistoryCommandsIndex, excuteCommand } =
-        commandHandle;
+    const { commands, historyCommands, historyCommandsIndex, setCommandHint, excuteCommand } = commandHandle;
     const [hintTxt, setHintTxt] = useState('');
     const view = useRef<HTMLDivElement>(null);
     const inp = useRef<HTMLInputElement>(null);
@@ -63,27 +62,21 @@ const Terminal: React.FC = () => {
      * @param {*} isBack 是否向上浏览历史命令
      */
     function rollBackCommand(isBack: boolean) {
-        // console.log(historyCommands)
-        let updatedIndex;
-        if (isBack) {
-            updatedIndex = historyCommandsIndex - 1;
-        } else {
-            updatedIndex = historyCommandsIndex + 1;
-        }
+        let updatedIndex = historyCommandsIndex.current + (isBack ? -1 : 1);
+
         // 防止越界
         if (updatedIndex < 0) {
             updatedIndex = 0;
         }
-        if (updatedIndex > historyCommands.length - 1) {
+        if (updatedIndex > historyCommands.current.length - 1) {
             // 到最后一次输入, 超出则变成输入状态
-            updatedIndex = historyCommands.length;
+            updatedIndex = historyCommands.current.length;
             inp.current && (inp.current.value = '');
             return;
         }
 
-        setHistoryCommandsIndex(updatedIndex);
-        let txt = historyCommands[updatedIndex]?.txt;
-        // console.log(historyCommands, updatedIndex, isBack)
+        historyCommandsIndex.current = updatedIndex;
+        const txt = historyCommands.current[updatedIndex]?.txt;
         if (!txt) return;
 
         inp.current && (inp.current.value = txt);
@@ -165,8 +158,8 @@ const Terminal: React.FC = () => {
                         ref={view}
                         className={css.terminal_command}
                     >
-                        {commands &&
-                            commands.map((item) => (
+                        {commands.current &&
+                            commands.current.map((item) => (
                                 <div
                                     key={'local' + item.key}
                                     className={css.command_result}

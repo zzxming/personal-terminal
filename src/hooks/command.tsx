@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { commandUseFunc, searchCommand } from '@/commands/index';
 import { commandMap } from '@/commands/registerCommand';
 import {
@@ -13,13 +13,12 @@ import {
 import css from '@/app/index.module.scss';
 import { randomID } from '@/utils/tools';
 
-// setCommandHint 和 completionCommand 两个函数中的 commands 类型使用 Command[] 有问题, 导致 commandMap 没法传入, 使用 typeof 获取类型
+// setCommandHint 函数中的 commands 类型使用 Command[] 有问题, 导致 commandMap 没法传入, 使用 typeof 获取类型
 export interface UseCommandHook {
-    commands: CommandOutput[];
-    historyCommands: HistoryCommand[];
-    historyCommandsIndex: number;
+    commands: React.MutableRefObject<CommandOutput[]>;
+    historyCommands: React.MutableRefObject<HistoryCommand[]>;
+    historyCommandsIndex: React.MutableRefObject<number>;
     clearCommand: () => void;
-    setHistoryCommandsIndex: React.Dispatch<React.SetStateAction<number>>;
     excuteCommand: (command: string, commandHandle: UseCommandHook, view: HTMLElement) => void;
     setCommandHint: (str: string, isCompletion?: boolean, commands?: typeof commandMap) => string;
     pushCommands: (command: CommandActionOutput, isResult: boolean) => void;
@@ -27,32 +26,19 @@ export interface UseCommandHook {
 
 const useCommand = (): UseCommandHook => {
     // commands内存jsx或者文本命令,history内存string(命令原文本)
-    const [commands, setCommands] = useState<CommandOutput[]>([]);
-    // 历史命令
-    const [historyCommands, setHistoryCommands] = useState<HistoryCommand[]>([]);
-    // 当前显示历史命令下标
-    const [historyCommandsIndex, setHistoryCommandsIndex] = useState(historyCommands.length);
-
-    // 更新 historyCommand 的下标
-    useEffect(() => {
-        setHistoryCommandsIndex(historyCommands.length);
-    }, [historyCommands]);
+    const commands = useRef<CommandOutput[]>([]);
+    const historyCommands = useRef<HistoryCommand[]>([]);
+    const historyCommandsIndex = useRef(historyCommands.current.length);
 
     const pushCommands = (command: CommandActionOutput, isResult: boolean) => {
         // 空命令直接输出
         let { constructor, status } = command;
         if (constructor === '') {
-            setCommands((commands) => {
-                // console.log(commands)
-                return [
-                    ...commands,
-                    {
-                        construct: <div className={css.command_txt}></div>,
-                        key: `empty ${randomID()}`,
-                        isResult,
-                        status: CommandOutputStatus.success,
-                    },
-                ];
+            commands.current.push({
+                construct: <div className={css.command_txt}></div>,
+                key: `empty ${randomID()}`,
+                isResult,
+                status: CommandOutputStatus.success,
             });
             return;
         }
@@ -73,17 +59,11 @@ const useCommand = (): UseCommandHook => {
         if (typeof constructor === 'string') {
             className = css.command_txt;
         }
-        // console.log(typeof command)
-        setCommands((commands) => {
-            return [
-                ...commands,
-                {
-                    construct: <div className={className}>{constructor}</div>,
-                    key,
-                    isResult,
-                    status: status || CommandOutputStatus.success,
-                },
-            ];
+        commands.current.push({
+            construct: <div className={className}>{constructor}</div>,
+            key,
+            isResult,
+            status: status || CommandOutputStatus.success,
         });
     };
     /**
@@ -91,15 +71,14 @@ const useCommand = (): UseCommandHook => {
      * @param {*} command 命令字符串
      */
     const pushHistoryCommands = (command: string) => {
-        setHistoryCommands((commands) => {
-            return [...commands, { txt: command }];
-        });
+        historyCommands.current.push({ txt: command });
+        historyCommandsIndex.current = historyCommands.current.length;
     };
     /**
      * 清屏
      */
     const clearCommand = () => {
-        setCommands([]);
+        commands.current = [];
     };
 
     /**
@@ -265,7 +244,7 @@ const useCommand = (): UseCommandHook => {
                 }
             }
             // 执行
-            let commandReturn = await actionCommand.action(paramsObj, commandHandle, view);
+            const commandReturn = await actionCommand.action(paramsObj, commandHandle, view);
             // 无返回值不记录
             if (!commandReturn) {
                 return;
@@ -320,7 +299,6 @@ const useCommand = (): UseCommandHook => {
         historyCommands,
         historyCommandsIndex,
         clearCommand,
-        setHistoryCommandsIndex,
         excuteCommand,
         setCommandHint,
         pushCommands,

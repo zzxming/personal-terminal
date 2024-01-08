@@ -21,11 +21,11 @@ const commandMap: Command[] = [
     configCommand,
     timeCommand,
     gotoCommand,
+    historyCommand,
 
     // fanyiCommand,
     // musicCommand,
     // biliCommand,
-    // historyCommand,
     // logCommand,
     // markCommand,
 ];
