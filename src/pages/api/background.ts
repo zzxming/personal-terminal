@@ -9,10 +9,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         if (type instanceof Array) {
             type = type[0];
         }
-        let typeIndex = 0;
         if (!type || !types.includes(type)) {
             console.info(`/background type参数错误: ${type}, 使用默认type值`);
-            type = types[typeIndex];
+            type = types[0];
         }
         const imageApiUrl = `https://api.btstu.cn/sjbz/api.php?lx=${type}&format=json`;
 
