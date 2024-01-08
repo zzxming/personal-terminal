@@ -1,6 +1,7 @@
 import to from 'await-to-js';
 import { AxiosError } from 'axios';
 import { axios, AxiosResult } from '.';
+import { lang } from '@/assets/js/translateLanguage';
 
 /**
  *
@@ -14,21 +15,21 @@ interface FanyiConfig {
     to: string;
 }
 export interface FanyiResResult {
-    from: string;
-    to: string;
+    from: keyof typeof lang;
+    to: keyof typeof lang;
     trans_result: [
         {
             /** 原语言 */
-            src: string;
+            src: keyof typeof lang;
             /** 翻译至语言 */
-            dst: string;
+            dst: keyof typeof lang;
         }
     ];
 }
 export interface FanyiRejResult {
     error_code: number;
-    error_message: string;
+    error_msg: string;
 }
 
-export const fanyiApi = async (config: FanyiConfig) =>
-    await to<AxiosResult<FanyiResResult | FanyiRejResult>, AxiosError>(axios.post('/fanyi/translate', { config }));
+export const fanyiApi = async (params: FanyiConfig) =>
+    await to<AxiosResult<FanyiResResult | FanyiRejResult>, AxiosError>(axios.get('/translate', { params }));
