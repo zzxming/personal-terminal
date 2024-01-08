@@ -17,16 +17,16 @@ const commandMap: Command[] = [
     baiduCommand,
     helpCommand,
     backgroundCommand,
+    clearCommand,
+    configCommand,
 
-    // musicCommand,
     // fanyiCommand,
-    // clearCommand,
+    // musicCommand,
     // biliCommand,
     // historyCommand,
     // logCommand,
     // markCommand,
     // gotoCommand,
-    // configCommand,
     // timeCommand,
 ];
 const helpIgnoreCommand: Command[] = [helpCommand];

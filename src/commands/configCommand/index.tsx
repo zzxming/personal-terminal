@@ -1,9 +1,9 @@
 import { Command, CommandOutputStatus, ConfigData, openType } from '@/interface/interface';
 import { clearCommand } from './subComand/clearCommand';
-import { colorCommand } from './subComand/colorCommand';
 import { openCommand } from './subComand/openCommand';
 import { ConfigListOutput } from './configCommandOutput';
 import { randomID } from '@/utils/tools';
+import { styleCommand } from './subComand/styleCommand';
 
 const configCommand: Command = {
     name: 'config',
@@ -23,7 +23,7 @@ const configCommand: Command = {
             valueNeeded: false,
         },
     ],
-    subCommands: [openCommand, colorCommand, clearCommand],
+    subCommands: [openCommand, clearCommand, styleCommand],
     action(args, commandHandle) {
         // console.log(args)
         const { list } = args;

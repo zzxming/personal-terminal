@@ -1,7 +1,7 @@
 'use client';
 import { useRef, useLayoutEffect, useState, useEffect } from 'react';
 import { throttle } from 'lodash-es';
-import useBackgroundImage from '@/hooks/backgroundImage';
+import useBackground from '@/hooks/background';
 import useCommand from '@/hooks/command';
 import { MarkNav } from '@/commands/markCommand/markCommandOutput';
 import { TimeCount } from '@/commands/timeCommand/timeCommandOutput';
@@ -11,14 +11,20 @@ import { CommandOutputStatus, ConfigData } from '@/interface/interface';
 import css from './index.module.scss';
 
 const Terminal: React.FC = () => {
-    const { imgurl } = useBackgroundImage();
+    const { imgurl } = useBackground();
     const commandHandle = useCommand();
     const { commands, historyCommands, historyCommandsIndex, setCommandHint, setHistoryCommandsIndex, excuteCommand } =
         commandHandle;
     const [hintTxt, setHintTxt] = useState('');
     const view = useRef<HTMLDivElement>(null);
     const inp = useRef<HTMLInputElement>(null);
-    const [outputStyle, setOuptputStyle] = useState<React.CSSProperties>({});
+    const [configStyle, setConfigStyle] = useState<React.CSSProperties>({});
+
+    // localstorage中config初始化及更新处理函数
+    const configChange = () => {
+        const { style } = localStorageGetItem(LOCALSTORAGECONFIG) as ConfigData;
+        setConfigStyle(style ? style : {});
+    };
 
     // localstorage更新
     useEffect(() => {
@@ -29,12 +35,6 @@ const Terminal: React.FC = () => {
             window.removeEventListener(LOCALSTORAGEEVENTMAP[LOCALSTORAGECONFIG], configChange);
         };
     }, []);
-
-    // localstorage中config初始化及更新处理函数
-    const configChange = () => {
-        let { style } = localStorageGetItem(LOCALSTORAGECONFIG) as ConfigData;
-        setOuptputStyle(style ? style : {});
-    };
 
     // 保持输入会在屏幕内,最下方
     useLayoutEffect(() => {
@@ -157,7 +157,7 @@ const Terminal: React.FC = () => {
                 <div
                     className={css.terminal_mask}
                     onClick={focusInput}
-                    style={outputStyle}
+                    style={configStyle}
                 >
                     <MarkNav />
                     <TimeCount />
