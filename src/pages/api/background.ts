@@ -11,7 +11,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         }
         let typeIndex = 0;
         if (!type || !types.includes(type)) {
-            console.info('/background type参数错误, 传递默认type值');
+            console.info(`/background type参数错误: ${type}, 使用默认type值`);
             type = types[typeIndex];
         }
         const imageApiUrl = `https://api.btstu.cn/sjbz/api.php?lx=${type}&format=json`;
