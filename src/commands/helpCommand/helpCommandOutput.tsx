@@ -62,7 +62,6 @@ const commandDetail = (command: Command) => {
                 dataSource={dataSource}
                 columns={columns}
                 scroll={{ y: 240 }}
-                style={{ overflowY: 'auto' }}
             />
         );
     };

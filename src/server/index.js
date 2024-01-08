@@ -18,7 +18,7 @@ app.prepare()
 
         server.use(log.netLog());
         global.console = log;
-        // morgan 是通过 stream 直接输出到控制台的
+
         server.use(morgan('short'));
 
         server.all('*', (req, res) => {
