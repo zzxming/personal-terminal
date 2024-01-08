@@ -53,11 +53,6 @@ export const MarkNav = () => {
                             <span className={css.mark_link}>{mark.title}</span>
                         </a>
                     ))}
-                    {/* <List
-                        dataSource={marks}
-                        split={false}
-                        renderItem={(item) => <List.Item title={`${item.title}${'\n'}${item.url}`}></List.Item>}
-                    /> */}
                 </div>
             ) : (
                 ''
