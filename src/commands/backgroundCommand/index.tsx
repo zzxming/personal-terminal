@@ -2,6 +2,7 @@ import { getBackgroundImageUrl, ImageType } from '@/assets/api';
 import { LOCALSTORAGECONFIG } from '@/assets/js/const';
 import { Command, CommandOutputStatus } from '@/interface/interface';
 import { localStorageGetItem, localStorageSetItem } from '@/utils/localStorage';
+import { clearCommand } from './subcommand/clearCommand';
 
 const backgroundCommand: Command = {
     name: 'bg',
@@ -28,7 +29,7 @@ const backgroundCommand: Command = {
             },
         },
     ],
-    subCommands: [],
+    subCommands: [clearCommand],
     async action(args, commandHandle) {
         const { _, type } = args;
 
