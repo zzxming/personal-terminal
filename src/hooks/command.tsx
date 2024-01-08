@@ -38,31 +38,22 @@ const useCommand = (): UseCommandHook => {
                 ...cur,
                 {
                     construct: <div className={css.command_txt}></div>,
-                    key: `${randomID()}`,
                     isResult,
+                    key: randomID(),
                     status: CommandOutputStatus.success,
                 },
             ]);
             return;
         }
-        // // 当命令不是字符串时,元素需要key值不正确
-        // if (typeof constructor !== 'string' && !constructor.key) {
-        //     throw new Error('参数错误, 元素key值不存在');
-        // }
 
-        // const key =
-        //     typeof constructor === 'string'
-        //         ? `input ${constructor} ${randomID()}`
-        //         : constructor.key?.toString() ?? randomID();
-        const key = randomID();
         const className = typeof constructor === 'string' ? css.command_txt : css.command_iframe;
         setCommands((cur) => [
             ...cur,
             {
                 construct: <div className={className}>{constructor}</div>,
-                key,
                 isResult,
-                status: status || CommandOutputStatus.success,
+                    key: randomID(),
+                    status: status || CommandOutputStatus.success,
             },
         ]);
     };

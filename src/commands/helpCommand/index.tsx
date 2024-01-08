@@ -24,7 +24,7 @@ const helpCommand: Command = {
         if (_.length < 1) {
             // 没有param参数, 直接输出command list
             return {
-                constructor: <CommandList key={randomID()} />,
+                constructor: <CommandList />,
                 status: CommandOutputStatus.success,
             };
         } else {
@@ -44,12 +44,7 @@ const helpCommand: Command = {
                 };
             }
             return {
-                constructor: (
-                    <CommandHelp
-                        command={getCommand}
-                        key={`${randomID()}`}
-                    />
-                ),
+                constructor: <CommandHelp command={getCommand} />,
                 status: CommandOutputStatus.success,
             };
         }

@@ -1,6 +1,5 @@
-import { CommandResultListOutput } from '@/components/commandListOutput';
-import { Command, CommandOutputStatus, HistoryCommand } from '@/interface/interface';
-import { randomID } from '@/utils/tools';
+import { Command, CommandOutputStatus } from '@/interface/interface';
+import { HistoryCommandListOutput } from './components/historyCommandOutput';
 
 const historyCommand: Command = {
     name: 'history',
@@ -30,17 +29,7 @@ const historyCommand: Command = {
         const showHistoryCommands = num === 0 ? sortHistoryCommands : sortHistoryCommands.slice(0, num);
         showHistoryCommands.reverse();
         return {
-            constructor: (
-                <CommandResultListOutput<HistoryCommand>
-                    key={`history result ${randomID()}`}
-                    data={showHistoryCommands}
-                    render={(item, index) => (
-                        <li>
-                            {index + 1} {item.txt}
-                        </li>
-                    )}
-                />
-            ),
+            constructor: <HistoryCommandListOutput data={showHistoryCommands} />,
             status: CommandOutputStatus.success,
         };
     },

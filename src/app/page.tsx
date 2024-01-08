@@ -4,7 +4,7 @@ import { throttle } from 'lodash-es';
 import useBackground from '@/hooks/background';
 import useCommand from '@/hooks/command';
 import { MarkNav } from '@/commands/markCommand/markCommandOutput';
-import { TimeCount } from '@/commands/timeCommand/timeCommandOutput';
+import { TimeCount } from '@/commands/timeCommand/components/timeCommandOutput';
 import { LOCALSTORAGECONFIG, LOCALSTORAGEEVENTMAP } from '@/assets/js/const';
 import { localStorageGetItem } from '@/utils/localStorage';
 import { CommandOutputStatus, ConfigData } from '@/interface/interface';
@@ -159,31 +159,30 @@ const Terminal: React.FC = () => {
                         ref={view}
                         className={css.terminal_command}
                     >
-                        {commands &&
-                            commands.map((item) => (
-                                <div
-                                    key={randomID()}
-                                    className={css.command_result}
-                                >
-                                    {item.isResult ? '' : <span className={css.terminal_user}>[local]:</span>}
-                                    {item.isResult ? (
-                                        item.status === CommandOutputStatus.success ? (
-                                            ''
-                                        ) : (
-                                            <span
-                                                className={`${css.command_result_status} ${
-                                                    item.status === CommandOutputStatus.error ? css.error : css.warn
-                                                }`}
-                                            >
-                                                {item.status}
-                                            </span>
-                                        )
-                                    ) : (
+                        {commands.map((item) => (
+                            <div
+                                key={item.key}
+                                className={css.command_result}
+                            >
+                                {item.isResult ? '' : <span className={css.terminal_user}>[local]:</span>}
+                                {item.isResult ? (
+                                    item.status === CommandOutputStatus.success ? (
                                         ''
-                                    )}{' '}
-                                    {item.construct}
-                                </div>
-                            ))}
+                                    ) : (
+                                        <span
+                                            className={`${css.command_result_status} ${
+                                                item.status === CommandOutputStatus.error ? css.error : css.warn
+                                            }`}
+                                        >
+                                            {item.status}
+                                        </span>
+                                    )
+                                ) : (
+                                    ''
+                                )}{' '}
+                                {item.construct}
+                            </div>
+                        ))}
                         <div className={css.terminal_input}>
                             <span className={css.terminal_user}>[local]:</span>
                             {/* 多行输入 */}

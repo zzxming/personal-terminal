@@ -30,7 +30,7 @@ const configCommand: Command = {
 
         if (list) {
             return {
-                constructor: <ConfigListOutput key={`config list result ${randomID()}`} />,
+                constructor: <ConfigListOutput />,
                 status: CommandOutputStatus.success,
             };
         }

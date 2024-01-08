@@ -12,7 +12,6 @@ const ConfigListOutput = () => {
             value: config[key],
         };
     });
-    // console.log(configList)
     return (
         <CommandResultListOutput<(typeof configList)[0]>
             data={configList}

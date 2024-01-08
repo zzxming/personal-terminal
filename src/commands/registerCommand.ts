@@ -22,8 +22,8 @@ const commandMap: Command[] = [
     timeCommand,
     gotoCommand,
     historyCommand,
+    fanyiCommand,
 
-    // fanyiCommand,
     // musicCommand,
     // biliCommand,
     // logCommand,

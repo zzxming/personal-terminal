@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { LOCALSTORAGECONFIG, LOCALSTORAGEEVENTMAP } from '@/assets/js/const';
 import { ConfigData } from '@/interface/interface';
 import { localStorageGetItem } from '@/utils/localStorage';
-import css from './index.module.scss';
+import css from '../index.module.scss';
 
 const TimeCount: React.FC = () => {
     const [date, setDate] = useState(new Date());
