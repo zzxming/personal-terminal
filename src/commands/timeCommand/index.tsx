@@ -9,33 +9,28 @@ const timeCommand: Command = {
     options: [
         {
             key: 'show',
-            desc: '始终显示当前时间',
             alias: 's',
+            desc: '切换显示当前时间',
             valueNeeded: false,
-            legalValue: {
-                on: '开启',
-                off: '关闭',
-            },
         },
     ],
     subCommands: [],
     action(args, commandHandle) {
-        // console.log(args)
+        // console.log(args);
+        const { _ } = args;
 
-        const { _, show } = args;
-
-        if (show) {
+        if (args.hasOwnProperty('show')) {
+            const config = localStorageGetItem(LOCALSTORAGECONFIG);
             localStorageSetItem(LOCALSTORAGECONFIG, {
-                ...localStorageGetItem(LOCALSTORAGECONFIG),
-                time: show === 'on' ? true : false,
+                ...config,
+                time: !config.time,
             });
             return {
                 constructor: '配置成功',
                 status: CommandOutputStatus.success,
             };
-        }
-        if (_.length < 1) {
-            let nowDate = new Date();
+        } else {
+            const nowDate = new Date();
             return {
                 constructor: `${nowDate.toLocaleDateString()} ${nowDate.toLocaleTimeString()}`,
                 status: CommandOutputStatus.success,

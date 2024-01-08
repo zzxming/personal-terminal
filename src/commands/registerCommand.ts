@@ -19,15 +19,15 @@ const commandMap: Command[] = [
     backgroundCommand,
     clearCommand,
     configCommand,
+    timeCommand,
 
+    // gotoCommand,
     // fanyiCommand,
     // musicCommand,
     // biliCommand,
     // historyCommand,
     // logCommand,
     // markCommand,
-    // gotoCommand,
-    // timeCommand,
 ];
 const helpIgnoreCommand: Command[] = [helpCommand];
 

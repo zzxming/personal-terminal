@@ -2,15 +2,15 @@ import { useEffect, useState } from 'react';
 import { LOCALSTORAGECONFIG, LOCALSTORAGEEVENTMAP } from '@/assets/js/const';
 import { ConfigData } from '@/interface/interface';
 import { localStorageGetItem } from '@/utils/localStorage';
-import css from './index.module.css';
+import css from './index.module.scss';
 
 const TimeCount: React.FC = () => {
-    let [date, setDate] = useState(new Date());
-    let [show, setShow] = useState(false);
+    const [date, setDate] = useState(new Date());
+    const [show, setShow] = useState(false);
 
     useEffect(() => {
         timeVisible();
-        let timer = setInterval(() => setDate(new Date()), 200);
+        const timer = setInterval(() => setDate(new Date()), 200);
         window.addEventListener(LOCALSTORAGEEVENTMAP[LOCALSTORAGECONFIG], timeVisible);
         return () => {
             clearInterval(timer);
@@ -19,7 +19,7 @@ const TimeCount: React.FC = () => {
     }, []);
 
     const timeVisible = () => {
-        let { time } = localStorageGetItem(LOCALSTORAGECONFIG) as ConfigData;
+        const { time } = localStorageGetItem(LOCALSTORAGECONFIG) as ConfigData;
         setShow(time);
     };
 
