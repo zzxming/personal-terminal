@@ -15,7 +15,7 @@ import { randomID } from '@/utils/tools';
 
 // setCommandHint 函数中的 commands 类型使用 Command[] 有问题, 导致 commandMap 没法传入, 使用 typeof 获取类型
 export interface UseCommandHook {
-    commands: React.MutableRefObject<CommandOutput[]>;
+    commands: CommandOutput[];
     historyCommands: React.MutableRefObject<HistoryCommand[]>;
     historyCommandsIndex: React.MutableRefObject<number>;
     clearCommand: () => void;
@@ -26,7 +26,7 @@ export interface UseCommandHook {
 
 const useCommand = (): UseCommandHook => {
     // commands内存jsx或者文本命令,history内存string(命令原文本)
-    const commands = useRef<CommandOutput[]>([]);
+    const [commands, setCommands] = useState<CommandOutput[]>([]);
     const historyCommands = useRef<HistoryCommand[]>([]);
     const historyCommandsIndex = useRef(historyCommands.current.length);
 
@@ -34,37 +34,37 @@ const useCommand = (): UseCommandHook => {
         // 空命令直接输出
         let { constructor, status } = command;
         if (constructor === '') {
-            commands.current.push({
-                construct: <div className={css.command_txt}></div>,
-                key: `empty ${randomID()}`,
-                isResult,
-                status: CommandOutputStatus.success,
-            });
+            setCommands((cur) => [
+                ...cur,
+                {
+                    construct: <div className={css.command_txt}></div>,
+                    key: `${randomID()}`,
+                    isResult,
+                    status: CommandOutputStatus.success,
+                },
+            ]);
             return;
         }
-        // 当命令不是字符串时,元素需要key值不正确
-        if (typeof constructor !== 'string' && !constructor.key) {
-            // console.log(command)
-            throw new Error('参数错误, 元素key值不存在');
-        }
+        // // 当命令不是字符串时,元素需要key值不正确
+        // if (typeof constructor !== 'string' && !constructor.key) {
+        //     throw new Error('参数错误, 元素key值不存在');
+        // }
 
-        let key: string;
-        if (typeof constructor === 'string') {
-            key = `input ${constructor} ${randomID()}`;
-        } else {
-            key = constructor.key?.toString() ?? randomID();
-        }
-
-        let className = css.command_iframe;
-        if (typeof constructor === 'string') {
-            className = css.command_txt;
-        }
-        commands.current.push({
-            construct: <div className={className}>{constructor}</div>,
-            key,
-            isResult,
-            status: status || CommandOutputStatus.success,
-        });
+        // const key =
+        //     typeof constructor === 'string'
+        //         ? `input ${constructor} ${randomID()}`
+        //         : constructor.key?.toString() ?? randomID();
+        const key = randomID();
+        const className = typeof constructor === 'string' ? css.command_txt : css.command_iframe;
+        setCommands((cur) => [
+            ...cur,
+            {
+                construct: <div className={className}>{constructor}</div>,
+                key,
+                isResult,
+                status: status || CommandOutputStatus.success,
+            },
+        ]);
     };
     /**
      * 新增历史命令
@@ -78,7 +78,7 @@ const useCommand = (): UseCommandHook => {
      * 清屏
      */
     const clearCommand = () => {
-        commands.current = [];
+        setCommands([]);
     };
 
     /**

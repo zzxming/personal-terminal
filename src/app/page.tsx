@@ -9,6 +9,7 @@ import { LOCALSTORAGECONFIG, LOCALSTORAGEEVENTMAP } from '@/assets/js/const';
 import { localStorageGetItem } from '@/utils/localStorage';
 import { CommandOutputStatus, ConfigData } from '@/interface/interface';
 import css from './index.module.scss';
+import { randomID } from '@/utils/tools';
 
 const Terminal: React.FC = () => {
     const { imgurl } = useBackground();
@@ -158,10 +159,10 @@ const Terminal: React.FC = () => {
                         ref={view}
                         className={css.terminal_command}
                     >
-                        {commands.current &&
-                            commands.current.map((item) => (
+                        {commands &&
+                            commands.map((item) => (
                                 <div
-                                    key={'local' + item.key}
+                                    key={randomID()}
                                     className={css.command_result}
                                 >
                                     {item.isResult ? '' : <span className={css.terminal_user}>[local]:</span>}
