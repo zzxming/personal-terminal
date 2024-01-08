@@ -1,5 +1,5 @@
-import { LOCALSTORAGEMARK } from '@/assets/js/const';
-import { Command, CommandOutputStatus, MarkData, openType } from '@/interface/interface';
+import { LOCALSTORAGECONFIG, LOCALSTORAGEMARK } from '@/assets/js/const';
+import { Command, CommandOutputStatus, ConfigData, MarkData, openType } from '@/interface/interface';
 import { localStorageGetItem } from '@/utils/localStorage';
 import { toNewPage } from '@/utils/toNewPage';
 
@@ -24,22 +24,14 @@ const gotoCommand: Command = {
     subCommands: [],
     action(args, commandHandle) {
         // console.log(args);
-
         const { _, self } = args;
-        const keyword = _.join(' ');
+
+        const keyword = _[0];
+        const { open } = localStorageGetItem(LOCALSTORAGECONFIG) as ConfigData;
         const { data: marks } = localStorageGetItem(LOCALSTORAGEMARK) as MarkData;
-        // console.log(marks)
-        let findMark = marks.find((mark) => mark.title === keyword);
-
-        if (findMark) {
-            toNewPage(findMark.url, self ? openType.self : undefined);
-            return {
-                constructor: '打开成功',
-                status: CommandOutputStatus.success,
-            };
-        }
-
-        toNewPage(`https://${keyword}`, self ? openType.self : undefined);
+        const findMark = marks.find((mark) => mark.title === keyword);
+        const openUrl = findMark ? findMark.url : `https://${keyword}`;
+        toNewPage(openUrl, self ? openType.self : open);
         return {
             constructor: '打开成功',
             status: CommandOutputStatus.success,
