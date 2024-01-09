@@ -2,7 +2,7 @@ module.exports = {
     plugins: {
         tailwindcss: {},
         autoprefixer: {
-            overrideBrowserslist: ['last 2 version', '>1%'],
+            overrideBrowserslist: ['>0.2%', 'not dead'],
         },
     },
 };
