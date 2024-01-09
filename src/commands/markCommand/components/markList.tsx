@@ -20,7 +20,7 @@ export const MarkList = ({ data }: MarkData) => {
                                     icon={<GlobalOutlined />}
                                     src={item.icon}
                                 />
-                                {item.title}
+                                <span className={css['mark_list_item-title']}>{item.title}</span>
                             </>
                         }
                     >
