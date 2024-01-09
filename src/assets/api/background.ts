@@ -1,6 +1,5 @@
 import to from 'await-to-js';
-import { AxiosError } from 'axios';
-import { axios, AxiosResult } from '.';
+import { axios, AxiosResolve, AxiosReject } from '.';
 
 /**
  *
@@ -9,4 +8,4 @@ import { axios, AxiosResult } from '.';
  */
 export type ImageType = ['meizi', 'dongman', 'fengjing', 'suiji'];
 export const getBackgroundImageUrl = async (type: ImageType) =>
-    await to<AxiosResult<string>, AxiosError>(axios.get('/background', { params: { type } }));
+    await to<AxiosResolve<string>, AxiosReject>(axios.get('/background', { params: { type } }));

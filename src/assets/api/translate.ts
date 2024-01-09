@@ -1,6 +1,5 @@
 import to from 'await-to-js';
-import { AxiosError } from 'axios';
-import { axios, AxiosResult } from '.';
+import { axios, AxiosResolve, AxiosReject } from '.';
 import { lang } from '@/assets/js/translateLanguage';
 
 /**
@@ -32,4 +31,4 @@ export interface FanyiRejResult {
 }
 
 export const fanyiApi = async (params: FanyiConfig) =>
-    await to<AxiosResult<FanyiResResult | FanyiRejResult>, AxiosError>(axios.get('/translate', { params }));
+    await to<AxiosResolve<FanyiResResult | FanyiRejResult>, AxiosReject>(axios.get('/translate', { params }));

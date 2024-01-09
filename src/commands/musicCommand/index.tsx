@@ -1,6 +1,5 @@
-import { getNeteaseMusic, getNeteaseMusicList, AxiosResult, MusicResult } from '@/assets/api';
+import { getNeteaseMusic, getNeteaseMusicList, AxiosResolve, MusicResult, AxiosReject } from '@/assets/api';
 import { Command, CommandOutputStatus } from '@/interface/interface';
-import { AxiosError } from 'axios';
 
 const musicCommand: Command = {
     name: 'music',
@@ -42,7 +41,7 @@ const musicCommand: Command = {
         const musicRequestOption: {
             [key: string]: {
                 type: number;
-                func: (keywords: any) => Promise<[AxiosError | null, AxiosResult<MusicResult[]> | undefined]>;
+                func: (keywords: any) => Promise<[AxiosReject | null, AxiosResolve<MusicResult[]> | undefined]>;
                 height: number;
             };
         } = {
