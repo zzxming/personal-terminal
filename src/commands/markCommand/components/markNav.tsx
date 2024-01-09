@@ -42,6 +42,7 @@ export const MarkNav = () => {
                 <div className={css.mark_nav}>
                     {marks.map((mark) => (
                         <a
+                            key={mark.key}
                             className={css.mark_nav_item}
                             href={mark.url}
                         >
