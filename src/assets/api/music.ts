@@ -6,8 +6,8 @@ export interface MusicResult {
     id: number;
 }
 /** 关键词搜索单曲 */
-export const getNeteaseMusic = async (keywords: string) =>
-    await to<AxiosResolve<MusicResult[]>, AxiosReject>(axios.post('/music/get', { keywords }));
+export const getNeteaseMusic = async (kw: string) =>
+    await to<AxiosResolve<MusicResult[]>, AxiosReject>(axios.get('/music/search', { params: { kw, t: 1 } }));
 /** 关键词搜索歌单 */
-export const getNeteaseMusicList = async (keywords: string) =>
-    await to<AxiosResolve<MusicResult[]>, AxiosReject>(axios.post('/music/list', { keywords }));
+export const getNeteaseMusicList = async (kw: string) =>
+    await to<AxiosResolve<MusicResult[]>, AxiosReject>(axios.get('/music/search', { params: { kw, t: 1000 } }));
