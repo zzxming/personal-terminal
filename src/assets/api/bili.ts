@@ -1,7 +1,6 @@
 import { BiliPageInfo, BiliTypeVideo, BiliVideo, BiliVideoSearchInfo } from '@/interface/interface';
 import to from 'await-to-js';
-import { AxiosError } from 'axios';
-import { axios, AxiosResult } from '.';
+import { axios, AxiosResolve, AxiosReject } from '.';
 
 /**
  * bilibili搜索
@@ -25,10 +24,10 @@ export interface BiliSearchResult {
 }
 /** bilibili搜索 */
 export const getBiliSearchResult = async (params: BiliSearchParam) =>
-    await to<AxiosResult<BiliSearchResult>, AxiosError>(axios.get('/bili/search', { params }));
+    await to<AxiosResolve<BiliSearchResult>, AxiosReject>(axios.get('/bili/search', { params }));
 /** 获取bilibili图片 */
 export const getBiliPic = async (pic: string) =>
-    await to<AxiosResult<string>, AxiosError>(axios.get('/bili/pic', { params: { pic } }));
+    await to<AxiosResolve<string>, AxiosReject>(axios.get('/bili/pic', { params: { pic } }));
 
 /**
  *
@@ -44,4 +43,4 @@ export interface BiliTypeSearchResult extends BiliVideoSearchInfo {
 }
 /** 根据类型搜索结果 */
 export const getBiliSearchTypeResult = async (params: BiliTypeSearchParam) =>
-    await to<AxiosResult<BiliTypeSearchResult>, AxiosError>(axios.get('/bili/searchtype', { params }));
+    await to<AxiosResolve<BiliTypeSearchResult>, AxiosReject>(axios.get('/bili/searchtype', { params }));

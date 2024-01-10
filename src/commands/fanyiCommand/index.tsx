@@ -1,6 +1,5 @@
-import { fanyiApi, FanyiRejResult, FanyiResResult } from '@/assets/api/api';
+import { fanyiApi, FanyiRejResult, FanyiResResult } from '@/assets/api';
 import { Command, CommandOutputStatus } from '@/interface/interface';
-import { randomID } from '@/utils/tools';
 import { TranslateError } from './components/translateError';
 import { lang } from '@/assets/js/translateLanguage';
 import { TranslateSuccess } from './components/translatSuccess';
@@ -50,7 +49,7 @@ const fanyiCommand: Command = {
         const [err, result] = await fanyiApi({ keywords, to: toArg, from: fromArg });
         if (err) {
             return {
-                constructor: err.response?.statusText || err.message,
+                constructor: err.response?.data?.message || err.response?.statusText || err.message,
                 status: CommandOutputStatus.error,
             };
         }

@@ -24,8 +24,8 @@ const commandMap: Command[] = [
     historyCommand,
     fanyiCommand,
     markCommand,
+    musicCommand,
 
-    // musicCommand,
     // biliCommand,
     // logCommand,
 ];

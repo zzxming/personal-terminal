@@ -1,9 +1,9 @@
 .mark {
     &_list {
         &_item {
-            @apply inline-flex w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-1;
+            @apply inline-flex w-full h-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-1;
             &-title {
-                @apply w-full line-clamp-1;
+                @apply w-full break-all;
             }
             &-card {
                 @apply w-full;
@@ -17,10 +17,10 @@
             transition: backgrounColor 1s 1s linear;
         }
     }
-    &_icon {
+    &_nav &_icon {
         @apply inline-flex items-center justify-center mr-2;
     }
     &_link {
-        @apply text-black text-nowrap;
+        @apply ml-1 text-black text-nowrap;
     }
 }

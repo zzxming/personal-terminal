@@ -1,13 +1,14 @@
-import originAxios from 'axios';
+import originAxios, { AxiosError } from 'axios';
 
 export const axios = originAxios.create({
     baseURL: '/api',
 });
 
-export interface AxiosResult<T> {
+export interface AxiosResolve<T> {
     data: {
         code: number;
         data: T;
         message?: string;
     };
 }
+export interface AxiosReject extends AxiosError<{ message: string }> {}
