@@ -25,9 +25,9 @@ const commandMap: Command[] = [
     fanyiCommand,
     markCommand,
     musicCommand,
+    logCommand,
 
     // biliCommand,
-    // logCommand,
 ];
 const helpIgnoreCommand: Command[] = [helpCommand];
 

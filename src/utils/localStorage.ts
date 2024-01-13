@@ -1,5 +1,6 @@
-import { LOCALSTORAGECONFIG, LOCALSTORAGEEVENTMAP, LOCALSTORAGEMARK } from '@/assets/js/const';
+import { LOCALSTORAGECONFIG, LOCALSTORAGEEVENTMAP, LOCALSTORAGELOG, LOCALSTORAGEMARK } from '@/assets/js/const';
 import { initValLocalStorageConfig } from '@/commands/configCommand';
+import { initValLocalStorageLog } from '@/commands/logCommand';
 import { initValLocalStorageMark } from '@/commands/markCommand';
 
 // 重写 setItem , 使同页面能够监听到 localstorage 的变化
@@ -37,6 +38,7 @@ const localStorageInitValueMap: {
 } = {
     [LOCALSTORAGEMARK]: initValLocalStorageMark,
     [LOCALSTORAGECONFIG]: initValLocalStorageConfig,
+    [LOCALSTORAGELOG]: initValLocalStorageLog,
 };
 /**
  * 判断 key 是否存在初始值, 赋值并返回对应初始值

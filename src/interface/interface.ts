@@ -107,7 +107,7 @@ export type EditInputType = 'number' | 'text' | 'textarea' | 'date' | 'time' | '
  * 日志的内结果属性
  */
 export interface LogDataDetail {
-    key: React.Key;
+    key: string;
     date: string;
     content: string;
     status: boolean;

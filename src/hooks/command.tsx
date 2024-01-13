@@ -52,8 +52,8 @@ const useCommand = (): UseCommandHook => {
             {
                 construct: <div className={className}>{constructor}</div>,
                 isResult,
-                    key: randomID(),
-                    status: status || CommandOutputStatus.success,
+                key: randomID(),
+                status: status || CommandOutputStatus.success,
             },
         ]);
     };
@@ -219,9 +219,8 @@ const useCommand = (): UseCommandHook => {
                     paramsObj[item.alias] = item.defaultValue;
                     paramsObj[item.key] = item.defaultValue;
                 }
-                // console.log(item, paramsObj[item.alias])
                 // 当存在输入值约束时, 进行判断参数是否合理
-                if (item.legalValue && paramsObj[item.alias]) {
+                if (item.valueNeeded && item.legalValue && paramsObj[item.alias]) {
                     if (!Object.keys(item.legalValue).includes(paramsObj[item.alias].toString())) {
                         pushCommands(
                             {
