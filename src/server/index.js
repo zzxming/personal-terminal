@@ -16,10 +16,10 @@ app.prepare()
     .then(() => {
         const server = express();
 
-        server.use(log.netLog());
-        global.console = log;
+        // server.use(log.netLog());
+        // global.console = log;
 
-        server.use(morgan('short'));
+        // server.use(morgan('short'));
 
         server.all('*', (req, res) => {
             handle(req, res);

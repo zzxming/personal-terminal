@@ -1,6 +1,5 @@
-import { Command, CommandOutputStatus } from '@/interface/interface';
-import { randomID } from '@/utils/tools';
-import { GetLogTable } from './logCommandOutput';
+import { Command, CommandOutputStatus, LogData } from '@/interface/interface';
+import { LogTable } from './components/logTable';
 
 // 日期,内容.根据日期分类.
 const logCommand: Command = {
@@ -13,10 +12,14 @@ const logCommand: Command = {
         // console.log(args);
 
         return {
-            constructor: <GetLogTable key={`log result ${randomID()}`} />,
+            constructor: <LogTable />,
             status: CommandOutputStatus.success,
         };
     },
 };
 
-export { logCommand };
+const initValLocalStorageLog = (): LogData => {
+    return {};
+};
+
+export { logCommand, initValLocalStorageLog };
