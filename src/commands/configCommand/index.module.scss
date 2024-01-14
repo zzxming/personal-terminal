@@ -1,0 +1,16 @@
+.config {
+    &_list {
+        &_item {
+            @apply flex;
+            &_value {
+                @apply inline-block break-words;
+                &.key {
+                    @apply min-w-16 mr-2;
+                }
+                &.value {
+                    @apply ml-2;
+                }
+            }
+        }
+    }
+}

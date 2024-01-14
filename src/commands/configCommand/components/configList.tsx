@@ -2,7 +2,7 @@ import { LOCALSTORAGECONFIG } from '@/assets/js/const';
 import { CommandResultListOutput } from '@/components/commandListOutput';
 import { ConfigData } from '@/interface/interface';
 import { localStorageGetItem } from '@/utils/localStorage';
-import css from '../index.module.css';
+import css from '../index.module.scss';
 
 const ConfigList = () => {
     let config = localStorageGetItem(LOCALSTORAGECONFIG) as ConfigData;
