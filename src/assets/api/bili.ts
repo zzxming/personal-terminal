@@ -1,4 +1,4 @@
-import { BiliPageInfo, BiliTypeVideo, BiliVideo, BiliVideoSearchInfo } from '@/interface/interface';
+import { BiliPageInfo, BiliTypeVideo, BiliVideoInfo, BiliVideoSearchInfo } from '@/interface/interface';
 import to from 'await-to-js';
 import { axios, AxiosResolve, AxiosReject } from '.';
 
@@ -19,7 +19,7 @@ export interface BiliSearchResult {
     };
     result: {
         result_type: string;
-        data: BiliVideo[];
+        data: BiliVideoInfo[];
     }[];
 }
 /** bilibili搜索 */

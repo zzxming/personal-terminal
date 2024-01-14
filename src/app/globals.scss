@@ -26,3 +26,7 @@ body {
 ::-webkit-scrollbar-thumb {
     @apply rounded-lg bg-stone-300 hover:bg-stone-400;
 }
+
+.keyword {
+    @apply not-italic text-pink-400;
+}

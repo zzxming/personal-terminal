@@ -19,7 +19,7 @@ export interface UseCommandHook {
     historyCommands: React.MutableRefObject<HistoryCommand[]>;
     historyCommandsIndex: React.MutableRefObject<number>;
     clearCommand: () => void;
-    excuteCommand: (command: string, commandHandle: UseCommandHook, view: HTMLElement) => void;
+    excuteCommand: (command: string, commandHandle: UseCommandHook) => void;
     setCommandHint: (str: string, isCompletion?: boolean, commands?: typeof commandMap) => string;
     pushCommands: (command: CommandActionOutput, isResult: boolean) => void;
 }
@@ -143,7 +143,7 @@ const useCommand = (): UseCommandHook => {
      * @param command 命令字符串
      * @param commandHandle command hook
      */
-    const excuteCommand = async (command: string, commandHandle: UseCommandHook, view: HTMLElement) => {
+    const excuteCommand = async (command: string, commandHandle: UseCommandHook) => {
         if (command.trim() === '') {
             pushCommands({ constructor: command }, false);
             return;
@@ -234,7 +234,7 @@ const useCommand = (): UseCommandHook => {
                 }
             }
             // 执行
-            const commandReturn = await actionCommand.action(paramsObj, commandHandle, view);
+            const commandReturn = await actionCommand.action(paramsObj, commandHandle);
             // 无返回值不记录
             if (!commandReturn) {
                 return;
