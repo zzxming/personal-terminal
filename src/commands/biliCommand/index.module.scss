@@ -1,0 +1,53 @@
+.video {
+    &_iframe {
+        @apply relative;
+    }
+    &_cover {
+        @apply relative flex pt-[56.25%] bg-slate-100 rounded-lg overflow-hidden;
+        &-loading {
+            @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0;
+        }
+        &-img {
+            @apply absolute top-0 left-0 z-0 w-full h-full object-cover;
+        }
+        &_mask {
+            @apply absolute inset-0 z-10 cursor-pointer;
+        }
+        &_info {
+            @apply absolute bottom-0 flex items-center w-full h-8 px-2 bg-gradient-to-b from-transparent to-black/80 text-white text-sm leading-[18px];
+            &-stats {
+                @apply flex items-center;
+                & + & {
+                    @apply ml-3;
+                }
+            }
+            &-duration {
+                @apply ml-auto;
+            }
+        }
+    }
+    &_info {
+        @apply mt-2;
+        &-title {
+            @apply h-12 pr-4 line-clamp-2 text-base break-words cursor-pointer transition hover:text-cyan-500;
+        }
+        &_bottom {
+            @apply flex mt-1 text-stone-500 text-xs;
+        }
+        &_owner {
+            @apply inline-flex items-center cursor-pointer transition hover:text-cyan-500;
+        }
+        &-author {
+            @apply flex-1 line-clamp-1;
+        }
+        &-date {
+            @apply ml-1;
+        }
+    }
+}
+.icon {
+    @apply mr-1 text-lg;
+}
+.list {
+    @apply p-2 bg-white;
+}
