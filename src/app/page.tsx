@@ -9,6 +9,7 @@ import { LOCALSTORAGECONFIG, LOCALSTORAGEEVENTMAP } from '@/assets/js/const';
 import { localStorageGetItem } from '@/utils/localStorage';
 import { CommandOutputStatus, ConfigData } from '@/interface/interface';
 import css from './index.module.scss';
+import { ErrorBoundary } from 'react-error-boundary';
 
 const Terminal: React.FC = () => {
     const { imgurl } = useBackground();
@@ -42,7 +43,7 @@ const Terminal: React.FC = () => {
 
     // 更新一定要在父组件, 不如不能引起app的render, 导致不能从hook中获取最新的commands
     function commit() {
-        excuteCommand(inp.current?.value.trim() || '', commandHandle, view.current as HTMLElement);
+        excuteCommand(inp.current?.value.trim() || '', commandHandle);
         inp.current && (inp.current.value = '');
         setHintTxt('');
         scrollScream();
@@ -159,28 +160,30 @@ const Terminal: React.FC = () => {
                         className={css.terminal_command}
                     >
                         {commands.map((item) => (
-                            <div
+                            <ErrorBoundary
                                 key={item.key}
-                                className={css.command_result}
+                                fallbackRender={({ error }) => (
+                                    <div className={css.command_result}>
+                                        <span className={`${css.command_result_status} ${css.error}`}>error</span>
+                                        <div>{error.message}</div>
+                                    </div>
+                                )}
                             >
-                                {item.isResult ? '' : <span className={css.terminal_user}>[local]:</span>}
-                                {item.isResult ? (
-                                    item.status === CommandOutputStatus.success ? (
-                                        ''
+                                <div className={css.command_result}>
+                                    {item.isResult ? (
+                                        item.status !== CommandOutputStatus.success ? (
+                                            <span className={`${css.command_result_status} ${css[item.status]}`}>
+                                                {item.status}
+                                            </span>
+                                        ) : (
+                                            ''
+                                        )
                                     ) : (
-                                        <span
-                                            className={`${css.command_result_status} ${
-                                                item.status === CommandOutputStatus.error ? css.error : css.warn
-                                            }`}
-                                        >
-                                            {item.status}
-                                        </span>
-                                    )
-                                ) : (
-                                    ''
-                                )}{' '}
-                                {item.construct}
-                            </div>
+                                        <span className={css.terminal_user}>[local]:</span>
+                                    )}
+                                    {item.construct}
+                                </div>
+                            </ErrorBoundary>
                         ))}
                         <div className={css.terminal_input}>
                             <span className={css.terminal_user}>[local]:</span>

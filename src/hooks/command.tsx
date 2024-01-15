@@ -19,7 +19,7 @@ export interface UseCommandHook {
     historyCommands: React.MutableRefObject<HistoryCommand[]>;
     historyCommandsIndex: React.MutableRefObject<number>;
     clearCommand: () => void;
-    excuteCommand: (command: string, commandHandle: UseCommandHook, view: HTMLElement) => void;
+    excuteCommand: (command: string, commandHandle: UseCommandHook) => void;
     setCommandHint: (str: string, isCompletion?: boolean, commands?: typeof commandMap) => string;
     pushCommands: (command: CommandActionOutput, isResult: boolean) => void;
 }
@@ -52,8 +52,8 @@ const useCommand = (): UseCommandHook => {
             {
                 construct: <div className={className}>{constructor}</div>,
                 isResult,
-                    key: randomID(),
-                    status: status || CommandOutputStatus.success,
+                key: randomID(),
+                status: status || CommandOutputStatus.success,
             },
         ]);
     };
@@ -143,7 +143,7 @@ const useCommand = (): UseCommandHook => {
      * @param command 命令字符串
      * @param commandHandle command hook
      */
-    const excuteCommand = async (command: string, commandHandle: UseCommandHook, view: HTMLElement) => {
+    const excuteCommand = async (command: string, commandHandle: UseCommandHook) => {
         if (command.trim() === '') {
             pushCommands({ constructor: command }, false);
             return;
@@ -219,9 +219,8 @@ const useCommand = (): UseCommandHook => {
                     paramsObj[item.alias] = item.defaultValue;
                     paramsObj[item.key] = item.defaultValue;
                 }
-                // console.log(item, paramsObj[item.alias])
                 // 当存在输入值约束时, 进行判断参数是否合理
-                if (item.legalValue && paramsObj[item.alias]) {
+                if (item.valueNeeded && item.legalValue && paramsObj[item.alias]) {
                     if (!Object.keys(item.legalValue).includes(paramsObj[item.alias].toString())) {
                         pushCommands(
                             {
@@ -235,7 +234,7 @@ const useCommand = (): UseCommandHook => {
                 }
             }
             // 执行
-            const commandReturn = await actionCommand.action(paramsObj, commandHandle, view);
+            const commandReturn = await actionCommand.action(paramsObj, commandHandle);
             // 无返回值不记录
             if (!commandReturn) {
                 return;

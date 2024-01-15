@@ -7,7 +7,7 @@
         @apply pr-2;
     }
     &_input {
-        @apply flex items-center justify-center;
+        @apply flex items-center justify-center cursor-default;
     }
     &_hint {
         @apply text-neutral-400;
@@ -20,7 +20,7 @@
     &_result {
         @apply flex;
         &_status {
-            @apply px-2 my-1 mr-1 text-white text-sm;
+            @apply h-5 px-2 my-1 mr-1 text-white text-sm;
             &.success {
                 @apply bg-success;
             }

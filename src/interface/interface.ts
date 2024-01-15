@@ -10,8 +10,7 @@ export interface Command {
     subCommands: Command[];
     action: (
         args: CommandParamArgs,
-        commandHandle: UseCommandHook,
-        view: HTMLElement
+        commandHandle: UseCommandHook
     ) => CommandActionOutput | Promise<CommandActionOutput> | void;
 }
 export interface CommandParam {
@@ -65,7 +64,7 @@ export interface CommandParamArgs {
 
 // bili api 接口 start
 // 视频信息
-export type BiliVideo = {
+export type BiliVideoInfo = {
     pic: string;
     bvid: string;
     play: number;
@@ -85,7 +84,7 @@ export interface BiliPageInfo {
     pages: number;
 }
 // 根据类型返回的视频信息
-export interface BiliTypeVideo extends BiliVideo {
+export interface BiliTypeVideo extends BiliVideoInfo {
     type: string;
 }
 // 搜索页信息
@@ -107,7 +106,7 @@ export type EditInputType = 'number' | 'text' | 'textarea' | 'date' | 'time' | '
  * 日志的内结果属性
  */
 export interface LogDataDetail {
-    key: React.Key;
+    key: string;
     date: string;
     content: string;
     status: boolean;

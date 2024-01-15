@@ -1,5 +1,5 @@
 import { LOCALSTORAGECONFIG, LOCALSTORAGEMARK } from '@/assets/js/const';
-import { Command, CommandOutputStatus, MarkData } from '@/interface/interface';
+import { Command, CommandOutputStatus, ConfigData, MarkData } from '@/interface/interface';
 import { localStorageSetItem, localStorageGetItem } from '@/utils/localStorage';
 import { addMark } from './subCommand/addCommand';
 import { delMark } from './subCommand/delCommand';
@@ -21,11 +21,7 @@ const markCommand: Command = {
             key: 'show',
             alias: 's',
             desc: '始终显示书签',
-            valueNeeded: true,
-            legalValue: {
-                on: '开启',
-                off: '关闭',
-            },
+            valueNeeded: false,
         },
         {
             key: 'list',
@@ -40,9 +36,10 @@ const markCommand: Command = {
 
         const { _, show, list } = args;
         if (show) {
+            const config = localStorageGetItem(LOCALSTORAGECONFIG) as ConfigData;
             localStorageSetItem(LOCALSTORAGECONFIG, {
-                ...localStorageGetItem(LOCALSTORAGECONFIG),
-                mark: show === 'on' ? true : false,
+                ...config,
+                mark: show ? !config.mark : config.mark,
             });
             return {
                 constructor: '配置成功',

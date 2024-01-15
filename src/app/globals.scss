@@ -19,3 +19,14 @@
 body {
     font-family: courier-new, courier, monospace;
 }
+
+::-webkit-scrollbar {
+    @apply w-1 h-1;
+}
+::-webkit-scrollbar-thumb {
+    @apply rounded-lg bg-stone-300 hover:bg-stone-400;
+}
+
+.keyword {
+    @apply not-italic text-pink-400;
+}
