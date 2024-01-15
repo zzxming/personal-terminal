@@ -5,7 +5,14 @@
 # 项目启动
 
 ```
-- git clone https://gitee.com/zzxming77/personal-terminal.git
+- git clone https://github.com/zzxming/personal-terminal-index.git
+
+- 后端启动
+
+    1. cd personal-terminal
+    2. cd server
+    3. npm install
+    4. npm run start
 
 - 前端启动
 
@@ -19,4 +26,4 @@
 
 启动后输入 `help` 可查看可用命令, `help [命令名称]` 可查看命令使用方式.
 
-如想要使用 `fanyi` 命令需要后端配置百度翻译的 `appid` 与 `key` , 申请方式见[百度翻译开发平台](https://api.fanyi.baidu.com/product/11).
+如想要使用 `fanyi` 命令需要在 `server/config.ts` 文件中配置百度翻译的 `appid` 与 `key` , 申请方式见[百度翻译开发平台](https://api.fanyi.baidu.com/product/11).
