@@ -13,7 +13,7 @@ const translate = async (keywords: string, { to = 'auto', from = 'auto' }: Trans
     if (!appid || !key) {
         return {
             error_code: 50000,
-            error_message: '请配置百度翻译appid和key',
+            error_msg: '请配置百度翻译appid和key',
         };
     }
     const sign = md5(appid + keywords + salt + key);
@@ -45,7 +45,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     try {
         let { keywords, to, from } = req.query;
         if (!keywords) {
-            res.status(400).send({ message: '请输入翻译文字' });
+            res.status(400).send({ code: 400, data: null, message: '请输入翻译文字' });
             return;
         }
         keywords instanceof Array && (keywords = keywords.join('\n'));
