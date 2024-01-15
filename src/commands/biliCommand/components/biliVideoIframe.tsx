@@ -6,7 +6,6 @@ interface biliVideoIframeProps {
     bv: string;
 }
 const BiliVideoIframe = ({ bv }: biliVideoIframeProps) => {
-    console.log(bv);
     const iframe = createRef<HTMLIFrameElement>();
     const [loading, setLoading] = useState(true);
 
