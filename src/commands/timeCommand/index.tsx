@@ -36,11 +36,6 @@ const timeCommand: Command = {
                 status: CommandOutputStatus.success,
             };
         }
-
-        return {
-            constructor: '参数错误',
-            status: CommandOutputStatus.error,
-        };
     },
 };
 

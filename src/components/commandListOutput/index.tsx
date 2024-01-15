@@ -3,6 +3,7 @@ import { LOCALSTORAGECONFIG } from '@/assets/js/const';
 import { ConfigData } from '@/interface/interface';
 import { localStorageGetItem } from '@/utils/localStorage';
 import css from './index.module.css';
+
 interface IResultList<T> {
     data: T[];
     render: (item: T, index: number) => React.ReactNode;
@@ -10,7 +11,7 @@ interface IResultList<T> {
 
 const CommandResultListOutput = <T,>(props: IResultList<T>) => {
     const { data, render } = props;
-    let { style } = localStorageGetItem(LOCALSTORAGECONFIG) as ConfigData;
+    const { style } = localStorageGetItem(LOCALSTORAGECONFIG) as ConfigData;
 
     return (
         <>

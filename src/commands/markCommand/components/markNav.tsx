@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Avatar, List } from 'antd';
+import { Avatar } from 'antd';
 import { GlobalOutlined } from '@ant-design/icons';
 import { ConfigData, Mark, MarkData } from '@/interface/interface';
 import { localStorageGetItem, localStorageSetItem } from '@/utils/localStorage';

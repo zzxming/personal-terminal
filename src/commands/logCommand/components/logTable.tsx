@@ -1,4 +1,3 @@
-'use client';
 import React, { useState } from 'react';
 import { Button, DatePicker, Form, Popconfirm, Table, Typography } from 'antd';
 import { localStorageGetItem, localStorageSetItem } from '@/utils/localStorage';

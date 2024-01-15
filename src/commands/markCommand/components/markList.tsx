@@ -8,7 +8,7 @@ export const MarkList = ({ data }: MarkData) => {
     return (
         <CommandResultListOutput<Mark>
             data={data}
-            render={(item, index) => (
+            render={(item) => (
                 <li className={css.mark_list_item}>
                     <Card
                         className={css['mark_list_item-card']}

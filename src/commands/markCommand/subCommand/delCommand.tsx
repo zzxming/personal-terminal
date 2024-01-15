@@ -19,12 +19,10 @@ const delMark: Command = {
 
         const { _ } = args;
         const name = _.join(' ');
-        // console.log(paramVal)
-
-        let preMark = localStorageGetItem(LOCALSTORAGEMARK) as MarkData;
+        const preMark = localStorageGetItem(LOCALSTORAGEMARK) as MarkData;
         if (preMark && preMark.data) {
-            let data = [...preMark.data];
-            let i = data.findIndex((mark) => mark.key === name);
+            const data = [...preMark.data];
+            const i = data.findIndex((mark) => mark.key === name);
             if (i !== -1) {
                 data.splice(i, 1);
             }

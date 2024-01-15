@@ -15,12 +15,12 @@ const ConfigList = () => {
     return (
         <CommandResultListOutput<(typeof configList)[0]>
             data={configList}
-            render={(item, index) => {
-                let { key, value } = item;
+            render={(item) => {
+                const { key, value } = item;
                 let valueDom: typeof value | React.ReactElement;
                 // style是以对象存储的
                 if (typeof value === 'object') {
-                    let data = Object.keys(value).map((key) => ({
+                    const data = Object.keys(value).map((key) => ({
                         key,
                         value: (value as { [key: string]: string })[key],
                     }));

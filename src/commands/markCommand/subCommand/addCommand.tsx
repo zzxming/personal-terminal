@@ -30,7 +30,7 @@ const addMark: Command = {
         paramVal['name'] = _.slice(0, _.length - 1).join(' ');
         // console.log(paramVal)
 
-        let preMark = localStorageGetItem(LOCALSTORAGEMARK) as MarkData;
+        const preMark = localStorageGetItem(LOCALSTORAGEMARK) as MarkData;
         if (preMark.data.find((mark) => mark.key === paramVal.name)) {
             return {
                 constructor: `书签 ${paramVal.name} 已存在`,
@@ -38,14 +38,13 @@ const addMark: Command = {
             };
         }
         // 获取目标页面的图标
-        // console.log(paramVal)
         let url = paramVal.url;
         if (!url.startsWith('http://') && !url.startsWith('https://')) {
             url = `https://${url}`;
         }
-        let iconUrl = `https://${getURLDomain(url)}/favicon.ico`;
+        const iconUrl = `https://${getURLDomain(url)}/favicon.ico`;
         // console.log(iconUrl)
-        let data = [
+        const data = [
             ...preMark.data,
             {
                 key: paramVal.name,
