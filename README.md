@@ -5,16 +5,9 @@
 # 项目启动
 
 ```
-- git clone https://github.com/zzxming/personal-terminal-index.git
+- git clone https://github.com/zzxming/personal-terminal.git
 
-- 后端启动
-
-    1. cd personal-terminal
-    2. cd server
-    3. npm install
-    4. npm run start
-
-- 前端启动
+- 启动
 
     1. cd personal-terminal
     2. npm install
