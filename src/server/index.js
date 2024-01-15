@@ -1,4 +1,3 @@
-// server.js
 const express = require('express');
 const next = require('next');
 
@@ -10,21 +9,17 @@ const app = next({
 const handle = app.getRequestHandler();
 
 const log = require('./middleware/log');
-const morgan = require('morgan');
 
 app.prepare()
     .then(() => {
         const server = express();
 
-        // server.use(log.netLog());
-        // global.console = log;
-
-        // server.use(morgan('short'));
+        server.use(log.netLog());
+        global.console = log;
 
         server.all('*', (req, res) => {
             handle(req, res);
         });
-
         server.listen(port, (err) => {
             if (err) {
                 throw err;

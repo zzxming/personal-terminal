@@ -26,7 +26,7 @@ const appenderFull = (filename) => ({
     maxLogSize: '1M',
 });
 
-const appenders = { default: appenderFull('./log/default') };
+const appenders = { default: appenderFull('./log/default/default') };
 const categories = { default: { appenders: ['default'], level: log4js.levels.ALL } };
 
 for (const kind of Kinds) {
