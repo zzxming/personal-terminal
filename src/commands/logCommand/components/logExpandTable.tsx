@@ -1,4 +1,3 @@
-'use client';
 import React, { useState } from 'react';
 import { Badge, Button, TimePicker, Form, Input, Popconfirm, Switch, Table, Typography, message } from 'antd';
 import { localStorageGetItem, localStorageSetItem } from '@/utils/localStorage';
@@ -152,7 +151,7 @@ const LogExpandTable = ({ datakey, index }: LogExpandTableProps) => {
     };
 
     const addRow = () => {
-        const newDate = data[data.length - 1].date.add(1, 'second');
+        const newDate = (data[data.length - 1]?.date || dayjs(datakey).subtract(1, 'second')).add(1, 'second');
         updateLocalstorage({
             key: newDate.format(dayjsFormatStr),
             date: newDate,
