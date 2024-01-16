@@ -12,6 +12,7 @@ import { gotoCommand } from '@/commands/gotoCommand';
 import { baiduCommand } from '@/commands/baiduCommand';
 import { configCommand } from '@/commands/configCommand';
 import { timeCommand } from '@/commands/timeCommand';
+import { calculatorCommand } from './calculateCommand';
 
 const commandMap: Command[] = [
     baiduCommand,
@@ -27,6 +28,7 @@ const commandMap: Command[] = [
     musicCommand,
     logCommand,
     biliCommand,
+    calculatorCommand,
 ];
 const helpIgnoreCommand: Command[] = [helpCommand];
 
