@@ -5,6 +5,7 @@ import { UseCommandHook } from '@/hooks/command';
 export interface Command {
     name: string;
     desc: string;
+    detail?: string;
     params: CommandParam[];
     options: CommandOption[];
     subCommands: Command[];
@@ -17,10 +18,13 @@ export interface CommandParam {
     key: string; // key值
     desc: string; // param描述
     required: boolean; // 是否必须传入
-    legalValue?: {
-        // 合法值对象值, key为值, value为描述
-        [key: string | number]: string;
-    };
+    legalValueDesc?: string;
+    legalValue?:
+        | {
+              // 合法值对象值, key为值, value为描述
+              [key: string | number]: string;
+          }
+        | ((val: string, i: number) => boolean);
 }
 export interface CommandOption {
     key: string; // 参数key
@@ -28,10 +32,13 @@ export interface CommandOption {
     desc: string; // 参数描述
     valueNeeded: boolean; // 此参数是否需要值
     defaultValue?: string | number | boolean; // 参数默认值
-    legalValue?: {
-        // 合法值对象值, key为值, value为描述
-        [key: string | number]: string;
-    };
+    legalValueDesc?: string;
+    legalValue?:
+        | {
+              // 合法值对象值, key为值, value为描述
+              [key: string | number]: string;
+          }
+        | ((val: string) => boolean);
 }
 // 获取对象中某属性的数据类型
 export type objectValueType<T extends object, K extends keyof T> = T[K];

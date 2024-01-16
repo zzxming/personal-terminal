@@ -194,10 +194,16 @@ const useCommand = (): UseCommandHook => {
             // params合法值判断
             for (let i = 0; i < actionCommand.params.length; i++) {
                 const item = paramsObj._[i];
-                let legalValue = actionCommand.params[i].legalValue;
+                const legalValue = actionCommand.params[i].legalValue;
                 if (legalValue) {
-                    let legalValues = Object.keys(legalValue);
-                    if (!legalValues.includes(item)) {
+                    let valid = true;
+                    if (legalValue instanceof Function) {
+                        if (!legalValue(item, i)) valid = false;
+                    } else {
+                        if (!Object.keys(legalValue).includes(item)) valid = false;
+                    }
+
+                    if (!valid) {
                         pushCommands(
                             {
                                 constructor: `param ${actionCommand.params[i].key} 参数错误`,
@@ -213,7 +219,6 @@ const useCommand = (): UseCommandHook => {
             for (let i = 0; i < options.length; i++) {
                 const item = options[i];
                 const getValue = paramsObj[item.alias];
-                // console.log(item, item.defaultValue, getValue)
                 // option存在默认值, 输入option值为true或没有输入option值, 赋默认值
                 if (item.defaultValue !== undefined && !getValue) {
                     paramsObj[item.alias] = item.defaultValue;
@@ -221,10 +226,16 @@ const useCommand = (): UseCommandHook => {
                 }
                 // 当存在输入值约束时, 进行判断参数是否合理
                 if (item.valueNeeded && item.legalValue && paramsObj[item.alias]) {
-                    if (!Object.keys(item.legalValue).includes(paramsObj[item.alias].toString())) {
+                    let valid = true;
+                    if (item.legalValue instanceof Function) {
+                        if (!item.legalValue(paramsObj[item.alias] as string)) valid = false;
+                    } else {
+                        if (!Object.keys(item.legalValue).includes(paramsObj[item.alias].toString())) valid = false;
+                    }
+                    if (!valid) {
                         pushCommands(
                             {
-                                constructor: 'option参数错误',
+                                constructor: `option ${item.key} 参数错误`,
                                 status: CommandOutputStatus.error,
                             },
                             true
