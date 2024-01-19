@@ -14,6 +14,19 @@ import { configCommand } from '@/commands/configCommand';
 import { timeCommand } from '@/commands/timeCommand';
 import { calculatorCommand } from './calculateCommand';
 
+import { initValLocalStorageConfig } from '@/commands/configCommand';
+import { initValLocalStorageLog } from '@/commands/logCommand';
+import { initValLocalStorageMark } from '@/commands/markCommand';
+import { initValLocalStorageWeather } from '@/commands/weatherCommand/subCommand/setCommand';
+import { localStorageInitValueMap } from '@/utils/localStorage';
+import { LOCALSTORAGECONFIG, LOCALSTORAGELOG, LOCALSTORAGEMARK, LOCALSTORAGWEATHER } from '@/assets/js/const';
+import { weatherCommand } from './weatherCommand';
+
+localStorageInitValueMap[LOCALSTORAGEMARK] = initValLocalStorageMark;
+localStorageInitValueMap[LOCALSTORAGECONFIG] = initValLocalStorageConfig;
+localStorageInitValueMap[LOCALSTORAGELOG] = initValLocalStorageLog;
+localStorageInitValueMap[LOCALSTORAGWEATHER] = initValLocalStorageWeather;
+
 const commandMap: Command[] = [
     baiduCommand,
     helpCommand,
@@ -29,6 +42,8 @@ const commandMap: Command[] = [
     logCommand,
     biliCommand,
     calculatorCommand,
+
+    weatherCommand,
 ];
 const helpIgnoreCommand: Command[] = [helpCommand];
 

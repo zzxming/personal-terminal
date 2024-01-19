@@ -35,11 +35,7 @@ const localStorageGetItem = (key: string) => {
 /** localstorage 中需要初始值的 key 和对应初始值生成函数 */
 const localStorageInitValueMap: {
     [key: string]: () => any;
-} = {
-    [LOCALSTORAGEMARK]: initValLocalStorageMark,
-    [LOCALSTORAGECONFIG]: initValLocalStorageConfig,
-    [LOCALSTORAGELOG]: initValLocalStorageLog,
-};
+} = {};
 /**
  * 判断 key 是否存在初始值, 赋值并返回对应初始值
  * @param key 在 localstorage 的 key
@@ -54,4 +50,4 @@ const localStorageInitValue = (key: string) => {
     return null;
 };
 
-export { localStorageSetItem, localStorageGetItem };
+export { localStorageSetItem, localStorageGetItem, localStorageInitValue, localStorageInitValueMap };
