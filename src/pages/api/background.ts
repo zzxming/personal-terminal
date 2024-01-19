@@ -23,14 +23,17 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             .get(imageApiUrl)
             .then((res) => res.data.imgurl)
             .catch((e) => {
-                throw e;
+                throw {
+                    status: e.status,
+                    message: e.message,
+                };
             });
         res.status(200).send({
             code: 0,
             data: result,
         });
     } catch (e: any) {
-        res.status(500).send({
+        res.status(e.status || 500).send({
             code: 500,
             data: null,
             message: e.message,
