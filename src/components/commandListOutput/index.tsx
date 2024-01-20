@@ -2,7 +2,7 @@ import { List } from 'antd';
 import { LOCALSTORAGECONFIG } from '@/assets/js/const';
 import { ConfigData } from '@/interface/interface';
 import { localStorageGetItem } from '@/utils/localStorage';
-import css from './index.module.css';
+import css from './index.module.scss';
 
 interface IResultList<T> {
     data: T[];
