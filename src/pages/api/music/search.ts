@@ -26,7 +26,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             type: t,
             limit,
         }).catch((e) => {
-            throw e.body.msg;
+            throw {
+                message: e.body.msg,
+                status: e.status,
+            };
         });
         const key: {
             [key: number]: string;
@@ -41,7 +44,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             data: data?.[key[t]] ?? [],
         });
     } catch (e: any) {
-        res.status(500).send({
+        res.status(e.status || 500).send({
             code: 500,
             data: null,
             message: e.message,

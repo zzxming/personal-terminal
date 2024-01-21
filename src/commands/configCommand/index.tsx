@@ -47,6 +47,7 @@ const initValLocalStorageConfig = (): ConfigData => {
         mark: true,
         bgurl: '',
         time: false,
+        weather: false,
     };
 };
 

@@ -11,4 +11,4 @@ export interface AxiosResolve<T> {
         message?: string;
     };
 }
-export interface AxiosReject extends AxiosError<{ message: string }> {}
+export interface AxiosReject<T = { message: string }> extends AxiosError<T> {}

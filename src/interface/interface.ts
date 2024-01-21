@@ -150,6 +150,8 @@ export interface ConfigData {
     bgurl: string;
     /** time是否持续展示 */
     time: boolean;
+    /** weather是否持续显示 */
+    weather: boolean;
 }
 /** 页面打开方式 */
 export enum openType {
@@ -157,3 +159,65 @@ export enum openType {
     blank = 'blank',
 }
 // config end
+
+// weather start
+export interface WeatherConfig {
+    city: string;
+    adcode: string;
+}
+export interface WeatherLiveInfo {
+    address: string;
+    /** 省份 */
+    province: string;
+    /** 城市 */
+    city: string;
+    /** 区域编码 */
+    adcode: string;
+    /** 天气现象 */
+    weather: string;
+    /** 实时温度 */
+    temperature: string;
+    temperature_float: string;
+    /** 风向描述 */
+    winddirection: string;
+    /** 风力级别 */
+    windpower: string;
+    /** 空气温度 */
+    humidity: string;
+    humidity_float: string;
+    /** 数据发布的时间 */
+    reporttime: string;
+}
+export interface WeatherForecast {
+    adcode: string;
+    casts: WeatherForecastInfo[];
+    city: string;
+    province: string;
+    repottime: string;
+}
+export interface WeatherForecastInfo {
+    address: string;
+    // 日期 YYYY-MM-DD
+    date: string;
+    // 星期几, 1-7
+    week: string;
+    // 白天天气现象
+    dayweather: string;
+    // 晚上天气现象
+    nightweather: string;
+    // 白天温度
+    daytemp: string;
+    daytemp_float: string;
+    // 晚上温度
+    nighttemp: string;
+    nighttemp_float: string;
+    // 白天风向
+    daywind: string;
+    // 晚上风向
+    nightwind: string;
+    // 白天风力
+    daypower: string;
+    // 晚上风力
+    nightpower: string;
+}
+// weather end
