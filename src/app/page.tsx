@@ -10,6 +10,7 @@ import { localStorageGetItem } from '@/utils/localStorage';
 import { CommandOutputStatus, ConfigData } from '@/interface/interface';
 import css from './index.module.scss';
 import { ErrorBoundary } from 'react-error-boundary';
+import { WeatherDetail } from '@/commands/weatherCommand/component/weatherDetail';
 
 const Terminal: React.FC = () => {
     const { imgurl } = useBackground();
@@ -155,6 +156,7 @@ const Terminal: React.FC = () => {
                 >
                     <MarkNav />
                     <TimeCount />
+                    <WeatherDetail />
                     <div
                         ref={view}
                         className={css.terminal_command}

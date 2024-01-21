@@ -1,0 +1,47 @@
+.weather {
+    @apply fixed top-0 right-0 z-10 m-4 p-4 text-black bg-white rounded-lg shadow-lg dark:bg-gray-800;
+    &_inner {
+        @apply flex flex-col gap-2;
+    }
+    &_item {
+        @apply flex items-center gap-2;
+    }
+    &-icon {
+        @apply text-2xl;
+    }
+    &-text {
+        @apply font-semibold;
+    }
+    &_forecast {
+        &_list {
+            @apply flex;
+        }
+        &_card {
+            @apply border bg-white rounded-lg shadow-md py-2 text-zinc-950;
+        }
+        &_header {
+            @apply pt-6 pb-2 px-4 flex flex-col items-center space-y-1;
+        }
+        &_detail {
+            @apply flex;
+        }
+        &_info {
+            @apply px-4 flex flex-col items-center space-y-1;
+            &_item {
+                @apply flex items-center space-x-2;
+                &.date {
+                    @apply p-6 flex justify-center;
+                }
+            }
+        }
+        &-text {
+            @apply text-sm text-center;
+            &.title {
+                @apply font-extrabold;
+            }
+        }
+    }
+}
+.title {
+    @apply font-bold;
+}

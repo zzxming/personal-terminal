@@ -15,4 +15,5 @@ export const LOCALSTORAGEEVENTMAP: { [key: string]: string } = {
     [LOCALSTORAGEMARK]: 'markEvent',
     [LOCALSTORAGECONFIG]: 'configEvent',
     [LOCALSTORAGELOG]: 'logEvent',
+    [LOCALSTORAGWEATHER]: 'weatherEvent',
 };

@@ -1,6 +1,7 @@
+import { getAdcode } from '@/assets/api/weather';
 import { LOCALSTORAGWEATHER } from '@/assets/js/const';
 import { Command, CommandOutputStatus } from '@/interface/interface';
-import { localStorageSetItem } from '@/utils/localStorage';
+import { localStorageGetItem, localStorageSetItem } from '@/utils/localStorage';
 
 const SetCommand: Command = {
     name: 'set',
@@ -14,13 +15,35 @@ const SetCommand: Command = {
     ],
     options: [],
     subCommands: [],
-    action(args, commandHandle) {
+    async action(args, commandHandle) {
         console.log(args);
         const { _ } = args;
-        localStorageSetItem(LOCALSTORAGWEATHER, _.join(' '));
+
+        commandHandle.pushCommands(
+            {
+                constructor: '等待加载...',
+                status: CommandOutputStatus.warn,
+            },
+            true
+        );
+        const [err, res] = await getAdcode(_.join(' '));
+        if (err) {
+            return {
+                status: CommandOutputStatus.error,
+                constructor: `城市设置失败, error ${
+                    err.response ? `${err.response.data.data.infocode} ${err.response.data.data.info}` : err.message
+                }`,
+            };
+        }
+
+        localStorageSetItem(LOCALSTORAGWEATHER, {
+            ...localStorageGetItem(LOCALSTORAGWEATHER),
+            city: res.data.data.address,
+            adcode: res.data.data.adcode,
+        });
         return {
             status: CommandOutputStatus.success,
-            constructor: '城市设置成功',
+            constructor: `城市设置成功：${res.data.data.address}`,
         };
     },
 };
@@ -28,7 +51,6 @@ const SetCommand: Command = {
 const initValLocalStorageWeather = () => {
     return {
         city: '',
-        forecast: true,
     };
 };
 export { SetCommand, initValLocalStorageWeather };

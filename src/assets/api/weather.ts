@@ -1,10 +1,15 @@
 import to from 'await-to-js';
 import { axios, AxiosResolve, AxiosReject } from '.';
+import { WeatherForecast, WeatherLiveInfo } from '@/interface/interface';
 
 interface WeatherErrorInfo {
-    status: '0';
-    info: string;
-    infocode: string;
+    code: number;
+    data: {
+        status: '0';
+        info?: string;
+        infocode?: string;
+    };
+    message: string;
 }
 
 interface WeatherBaseData {
@@ -14,69 +19,35 @@ interface WeatherBaseData {
     address: string;
     lives: WeatherLiveInfo[];
 }
-interface WeatherLiveInfo {
-    /** 省份 */
-    province: string;
-    /** 城市 */
-    city: string;
-    /** 区域编码 */
-    adcode: string;
-    /** 天气现象 */
-    weather: string;
-    /** 实时温度 */
-    temperature: string;
-    temperature_float: string;
-    /** 风向描述 */
-    winddirection: string;
-    /** 风力级别 */
-    windpower: string;
-    /** 空气温度 */
-    humidity: string;
-    humidity_float: string;
-    /** 数据发布的时间 */
-    reporttime: string;
-}
 
 interface WeatherAllData {
     status: '1';
     infocode: string;
     /** 查询的地址信息 */
     address: string;
-    forecasts: WeatherForecast;
-}
-interface WeatherForecast {
-    adcode: string;
-    casts: WeatherForecastInfo[];
-    city: string;
-    province: string;
-    repottime: string;
-}
-interface WeatherForecastInfo {
-    // 日期 YYYY-MM-DD
-    date: string;
-    // 星期几, 1-7
-    week: string;
-    // 白天天气现象
-    dayweather: string;
-    // 晚上天气现象
-    nightweather: string;
-    // 白天温度
-    daytemp: string;
-    daytemp_float: string;
-    // 晚上温度
-    nighttemp: string;
-    nighttemp_float: string;
-    // 白天风向
-    daywind: string;
-    // 晚上风向
-    nightwind: string;
-    // 白天风力
-    daypower: string;
-    // 晚上风力
-    nightpower: string;
+    forecasts: WeatherForecast[];
 }
 
-export const getWeather = (keywords: string, type: string) =>
-    to<AxiosResolve<WeatherBaseData | WeatherAllData>, AxiosReject<WeatherErrorInfo>>(
-        axios.get(`/weather/amap`, { params: { keywords, type } })
+export function getWeather(
+    adcode: string,
+    type: 'all'
+): Promise<[AxiosReject<WeatherErrorInfo>, undefined] | [null, AxiosResolve<WeatherAllData>]>;
+export function getWeather(
+    adcode: string,
+    type: 'base'
+): Promise<[AxiosReject<WeatherErrorInfo>, undefined] | [null, AxiosResolve<WeatherBaseData>]>;
+export function getWeather(adcode: string, type: 'base' | 'all') {
+    return to<AxiosResolve<WeatherBaseData | WeatherAllData>, AxiosReject<WeatherErrorInfo>>(
+        axios.get(`/weather/info`, { params: { adcode, type } })
+    );
+}
+
+interface AdcodeSuccessData {
+    status: '1';
+    address: string;
+    adcode: string;
+}
+export const getAdcode = (keyword: string) =>
+    to<AxiosResolve<AdcodeSuccessData>, AxiosReject<WeatherErrorInfo>>(
+        axios.get(`/weather/adcode`, { params: { keyword } })
     );
