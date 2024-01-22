@@ -1,5 +1,5 @@
 import Icon from '@ant-design/icons';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Locate from '@/assets/svg/locate.svg';
 import Cloud from '@/assets/svg/cloud.svg';
 import CloudRain from '@/assets/svg/cloudRain.svg';
@@ -14,6 +14,7 @@ import css from '../index.module.scss';
 import { localStorageGetItem } from '@/utils/localStorage';
 import { LOCALSTORAGECONFIG, LOCALSTORAGEEVENTMAP, LOCALSTORAGWEATHER } from '@/assets/js/const';
 import { withInitLoading } from '@/components/loading';
+import { useDraggable } from '@/hooks/draggable';
 
 interface DetailList {
     icon: (data: WeatherLiveInfo) => React.FC;
@@ -126,6 +127,7 @@ const WeatherDetail = () => {
     const [weatherError, setWeatherError] = useState('');
     const [city, setCity] = useState('');
     const [show, setShow] = useState(false);
+    const [config, setConfig] = useState(localStorageGetItem(LOCALSTORAGWEATHER) as WeatherConfig);
 
     const visible = () => {
         const config = localStorageGetItem(LOCALSTORAGECONFIG) as ConfigData;
@@ -159,10 +161,20 @@ const WeatherDetail = () => {
     }, []);
 
     const Detail = useMemo(() => withInitLoading(WeatherDetailInner, getWeatherInfo), [city]);
+
+    const weatherRef = useRef<HTMLDivElement | null>(null);
+    useDraggable(weatherRef, {
+        callback({ x, y }) {},
+    });
+
     return (
         <>
             {show ? (
-                <div className={css.weather}>
+                <div
+                    ref={weatherRef}
+                    className={css.weather}
+                    style={{ left: config.x, top: config.y }}
+                >
                     <Detail
                         address={city}
                         detail={weatherDetail}

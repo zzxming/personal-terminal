@@ -148,11 +148,13 @@ export interface ConfigData {
     mark: boolean;
     /** 背景图片路径 */
     bgurl: string;
-    /** time是否持续展示 */
+    /** 是否显示时间 */
     time: boolean;
-    /** weather是否持续显示 */
+    /** 是否显示天气 */
     weather: boolean;
 }
+export interface TimeConfig extends Position {}
+
 /** 页面打开方式 */
 export enum openType {
     self = 'self',
@@ -161,7 +163,7 @@ export enum openType {
 // config end
 
 // weather start
-export interface WeatherConfig {
+export interface WeatherConfig extends Position {
     city: string;
     adcode: string;
 }
@@ -221,3 +223,8 @@ export interface WeatherForecastInfo {
     nightpower: string;
 }
 // weather end
+
+export interface Position {
+    x: number;
+    y: number;
+}

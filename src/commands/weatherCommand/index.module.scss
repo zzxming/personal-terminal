@@ -1,5 +1,5 @@
 .weather {
-    @apply fixed top-0 right-0 z-10 m-4 p-4 text-black bg-white rounded-lg shadow-lg dark:bg-gray-800;
+    @apply fixed z-10 p-4 text-black bg-white rounded-lg shadow-lg dark:bg-gray-800;
     &_inner {
         @apply flex flex-col gap-2;
     }
@@ -10,7 +10,7 @@
         @apply text-2xl;
     }
     &-text {
-        @apply font-semibold;
+        @apply min-w-40 max-w-60 font-semibold;
     }
     &_forecast {
         &_list {

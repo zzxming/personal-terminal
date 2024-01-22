@@ -3,7 +3,6 @@ import { LOCALSTORAGECONFIG, LOCALSTORAGWEATHER } from '@/assets/js/const';
 import { Command, CommandOutputStatus, ConfigData, WeatherConfig } from '@/interface/interface';
 import { SetCommand } from './subCommand/setCommand';
 import { localStorageGetItem, localStorageSetItem } from '@/utils/localStorage';
-import { WeatherForecastCard } from './component/weatherForecastCard';
 import { WeatherForecastList } from './component/WeatherForecastList';
 
 // weather param // 搜索某地的实时天气
@@ -33,18 +32,18 @@ const weatherCommand: Command = {
     ],
     subCommands: [SetCommand],
     async action(args, commandHandle) {
-        console.log(args);
+        // console.log(args);
         const { _, show: isShow, forecast } = args;
 
         if (isShow) {
             const weatherConfig = localStorageGetItem(LOCALSTORAGWEATHER) as WeatherConfig;
-            const globalConfig = localStorageGetItem(LOCALSTORAGECONFIG) as ConfigData;
             if (!weatherConfig.city) {
                 return {
                     status: CommandOutputStatus.error,
                     constructor: '请先设置城市',
                 };
             }
+            const globalConfig = localStorageGetItem(LOCALSTORAGECONFIG) as ConfigData;
             localStorageSetItem(LOCALSTORAGECONFIG, {
                 ...globalConfig,
                 weather: !globalConfig.weather,
@@ -121,4 +120,12 @@ const weatherCommand: Command = {
         };
     },
 };
-export { weatherCommand };
+
+const initValLocalStorageWeather = () => {
+    return {
+        city: '',
+        x: window.innerWidth - 240,
+        y: 16,
+    };
+};
+export { weatherCommand, initValLocalStorageWeather };

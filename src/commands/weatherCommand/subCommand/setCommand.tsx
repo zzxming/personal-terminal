@@ -16,7 +16,7 @@ const SetCommand: Command = {
     options: [],
     subCommands: [],
     async action(args, commandHandle) {
-        console.log(args);
+        // console.log(args);
         const { _ } = args;
 
         commandHandle.pushCommands(
@@ -48,9 +48,4 @@ const SetCommand: Command = {
     },
 };
 
-const initValLocalStorageWeather = () => {
-    return {
-        city: '',
-    };
-};
-export { SetCommand, initValLocalStorageWeather };
+export { SetCommand };

@@ -44,8 +44,8 @@ const initValLocalStorageConfig = (): ConfigData => {
     return {
         open: openType.blank,
         style: {},
-        mark: true,
         bgurl: '',
+        mark: true,
         time: false,
         weather: false,
     };

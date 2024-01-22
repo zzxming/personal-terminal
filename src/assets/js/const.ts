@@ -1,19 +1,23 @@
-/** mark命令在localstorage中存储的key */
+/** mark 命令在 localstorage 中存储的 key */
 export const LOCALSTORAGEMARK = 'mark';
 
-/** config命令在localstorage中存储的key */
+/** config 命令在 localstorage 中存储的 key */
 export const LOCALSTORAGECONFIG = 'config';
 
-/** log命令在localstorage中存储的key */
+/** log 命令在 localstorage 中存储的 key */
 export const LOCALSTORAGELOG = 'log';
 
-/** weather命令在localstorage中存储的key */
+/** weather 命令在 localstorage 中存储的 key */
 export const LOCALSTORAGWEATHER = 'weather';
 
-/** 改变在localstorage中存储值时触发的事件 */
+/** time 命令在 localstorage 中存储的 key */
+export const LOCALSTORAGETIME = 'time';
+
+/** 改变在 localstorage 中存储值时触发的事件 */
 export const LOCALSTORAGEEVENTMAP: { [key: string]: string } = {
     [LOCALSTORAGEMARK]: 'markEvent',
     [LOCALSTORAGECONFIG]: 'configEvent',
     [LOCALSTORAGELOG]: 'logEvent',
     [LOCALSTORAGWEATHER]: 'weatherEvent',
+    [LOCALSTORAGETIME]: 'timeEvent',
 };

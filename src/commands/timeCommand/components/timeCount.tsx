@@ -1,20 +1,22 @@
-import { useEffect, useState } from 'react';
-import { LOCALSTORAGECONFIG, LOCALSTORAGEEVENTMAP } from '@/assets/js/const';
-import { ConfigData } from '@/interface/interface';
-import { localStorageGetItem } from '@/utils/localStorage';
+import { useEffect, useRef, useState } from 'react';
+import { LOCALSTORAGETIME, LOCALSTORAGEEVENTMAP, LOCALSTORAGECONFIG } from '@/assets/js/const';
+import { ConfigData, TimeConfig } from '@/interface/interface';
+import { localStorageGetItem, localStorageSetItem } from '@/utils/localStorage';
 import css from '../index.module.scss';
+import { useDraggable } from '@/hooks/draggable';
 
 const TimeCount: React.FC = () => {
     const [date, setDate] = useState(new Date());
     const [show, setShow] = useState(false);
+    const [config, setConfig] = useState(localStorageGetItem(LOCALSTORAGETIME) as TimeConfig);
 
     useEffect(() => {
         timeVisible();
         const timer = setInterval(() => setDate(new Date()), 200);
-        window.addEventListener(LOCALSTORAGEEVENTMAP[LOCALSTORAGECONFIG], timeVisible);
+        window.addEventListener(LOCALSTORAGEEVENTMAP[LOCALSTORAGETIME], timeVisible);
         return () => {
             clearInterval(timer);
-            window.removeEventListener(LOCALSTORAGEEVENTMAP[LOCALSTORAGECONFIG], timeVisible);
+            window.removeEventListener(LOCALSTORAGEEVENTMAP[LOCALSTORAGETIME], timeVisible);
         };
     }, []);
 
@@ -23,8 +25,31 @@ const TimeCount: React.FC = () => {
         setShow(time);
     };
 
+    const timeRef = useRef<HTMLDivElement | null>(null);
+    useDraggable(timeRef, {
+        callback({ x, y }) {
+            const config = localStorageGetItem(LOCALSTORAGETIME) as TimeConfig;
+            localStorageSetItem(LOCALSTORAGETIME, {
+                ...config,
+                x,
+                y,
+            });
+            setConfig({ x, y });
+        },
+    });
+
     return (
-        <>{show ? <div className={css.time}>{`${date.toLocaleDateString()} ${date.toLocaleTimeString()}`}</div> : ''}</>
+        <>
+            {show ? (
+                <div
+                    ref={timeRef}
+                    className={css.time}
+                    style={{ left: config.x, top: config.y }}
+                >{`${date.toLocaleDateString()} ${date.toLocaleTimeString()}`}</div>
+            ) : (
+                ''
+            )}
+        </>
     );
 };
 

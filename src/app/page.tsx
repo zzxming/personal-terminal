@@ -19,12 +19,11 @@ const Terminal: React.FC = () => {
     const [hintTxt, setHintTxt] = useState('');
     const view = useRef<HTMLDivElement>(null);
     const inp = useRef<HTMLInputElement>(null);
-    const [configStyle, setConfigStyle] = useState<React.CSSProperties>({});
-
+    const [globalConfig, setGlobalConfig] = useState<ConfigData>();
     // localstorage中config初始化及更新处理函数
     const configChange = () => {
-        const { style } = localStorageGetItem(LOCALSTORAGECONFIG) as ConfigData;
-        setConfigStyle(style ? style : {});
+        const config = localStorageGetItem(LOCALSTORAGECONFIG) as ConfigData;
+        setGlobalConfig(config);
     };
 
     // localstorage更新
@@ -152,11 +151,11 @@ const Terminal: React.FC = () => {
                 <div
                     className={css.terminal_mask}
                     onClick={focusInput}
-                    style={configStyle}
+                    style={globalConfig?.style}
                 >
-                    <MarkNav />
-                    <TimeCount />
-                    <WeatherDetail />
+                    {globalConfig?.mark ? <MarkNav /> : null}
+                    {globalConfig?.time ? <TimeCount /> : null}
+                    {globalConfig?.weather ? <WeatherDetail /> : null}
                     <div
                         ref={view}
                         className={css.terminal_command}

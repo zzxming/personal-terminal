@@ -1,5 +1,5 @@
-import { LOCALSTORAGECONFIG } from '@/assets/js/const';
-import { Command, CommandOutputStatus } from '@/interface/interface';
+import { LOCALSTORAGECONFIG, LOCALSTORAGETIME } from '@/assets/js/const';
+import { Command, CommandOutputStatus, ConfigData, TimeConfig } from '@/interface/interface';
 import { localStorageGetItem, localStorageSetItem } from '@/utils/localStorage';
 
 const timeCommand: Command = {
@@ -20,7 +20,7 @@ const timeCommand: Command = {
         const { _ } = args;
 
         if (args.hasOwnProperty('show')) {
-            const config = localStorageGetItem(LOCALSTORAGECONFIG);
+            const config = localStorageGetItem(LOCALSTORAGECONFIG) as ConfigData;
             localStorageSetItem(LOCALSTORAGECONFIG, {
                 ...config,
                 time: !config.time,
@@ -38,5 +38,11 @@ const timeCommand: Command = {
         }
     },
 };
+const initValLocalStorageTime = () => {
+    return {
+        x: window.innerWidth - 240,
+        y: window.innerHeight - 48,
+    };
+};
 
-export { timeCommand };
+export { timeCommand, initValLocalStorageTime };

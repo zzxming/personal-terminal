@@ -1,7 +1,4 @@
-import { LOCALSTORAGECONFIG, LOCALSTORAGEEVENTMAP, LOCALSTORAGELOG, LOCALSTORAGEMARK } from '@/assets/js/const';
-import { initValLocalStorageConfig } from '@/commands/configCommand';
-import { initValLocalStorageLog } from '@/commands/logCommand';
-import { initValLocalStorageMark } from '@/commands/markCommand';
+import { LOCALSTORAGEEVENTMAP } from '@/assets/js/const';
 
 // 重写 setItem , 使同页面能够监听到 localstorage 的变化
 const localStorageSetItem = (key: string, value: any) => {
