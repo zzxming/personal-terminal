@@ -1,5 +1,5 @@
 'use client';
-import { useRef, useLayoutEffect, useState, useEffect } from 'react';
+import { useRef, useLayoutEffect, useState, useEffect, ChangeEvent } from 'react';
 import { throttle } from 'lodash-es';
 import useBackground from '@/hooks/background';
 import useCommand from '@/hooks/command';
@@ -18,8 +18,9 @@ const Terminal: React.FC = () => {
     const { commands, historyCommands, historyCommandsIndex, setCommandHint, excuteCommand } = commandHandle;
     const [hintTxt, setHintTxt] = useState('');
     const view = useRef<HTMLDivElement>(null);
-    const inp = useRef<HTMLInputElement>(null);
+    const inputRef = useRef<HTMLTextAreaElement>(null);
     const [globalConfig, setGlobalConfig] = useState<ConfigData>();
+
     // localstorage中config初始化及更新处理函数
     const configChange = () => {
         const config = localStorageGetItem(LOCALSTORAGECONFIG) as ConfigData;
@@ -28,8 +29,8 @@ const Terminal: React.FC = () => {
 
     // localstorage更新
     useEffect(() => {
+        inputRef.current && Object.assign(inputRef.current.style, calcTextareaHeight(inputRef.current));
         configChange();
-
         window.addEventListener(LOCALSTORAGEEVENTMAP[LOCALSTORAGECONFIG], configChange);
         return () => {
             window.removeEventListener(LOCALSTORAGEEVENTMAP[LOCALSTORAGECONFIG], configChange);
@@ -43,15 +44,16 @@ const Terminal: React.FC = () => {
 
     // 更新一定要在父组件, 不如不能引起app的render, 导致不能从hook中获取最新的commands
     function commit() {
-        excuteCommand(inp.current?.value.trim() || '', commandHandle);
-        inp.current && (inp.current.value = '');
+        excuteCommand(inputRef.current?.value.trim() || '', commandHandle);
+        inputRef.current && (inputRef.current.value = '');
         setHintTxt('');
+        inputRef.current && Object.assign(inputRef.current.style, calcTextareaHeight(inputRef.current));
         scrollScream();
     }
     // 输入框聚焦
     function focusInput(e: React.MouseEvent<HTMLDivElement>) {
         e.stopPropagation();
-        inp.current?.focus();
+        inputRef.current?.focus();
     }
     /** 保持输入框在视口内 */
     function scrollScream() {
@@ -60,9 +62,10 @@ const Terminal: React.FC = () => {
 
     /**
      * 历史命令
-     * @param {*} isBack 是否向上浏览历史命令
+     * @param {boolean} isBack 是否向上浏览历史命令
      */
     function rollBackCommand(isBack: boolean) {
+        if (!inputRef.current) return;
         let updatedIndex = historyCommandsIndex.current + (isBack ? -1 : 1);
 
         // 防止越界
@@ -72,7 +75,7 @@ const Terminal: React.FC = () => {
         if (updatedIndex > historyCommands.current.length - 1) {
             // 到最后一次输入, 超出则变成输入状态
             updatedIndex = historyCommands.current.length;
-            inp.current && (inp.current.value = '');
+            inputRef.current.value = '';
             return;
         }
 
@@ -80,16 +83,17 @@ const Terminal: React.FC = () => {
         const txt = historyCommands.current[updatedIndex]?.txt;
         if (!txt) return;
 
-        inp.current && (inp.current.value = txt);
-        inp.current && inp.current.setSelectionRange(inp.current.value.length, inp.current.value.length);
+        inputRef.current.value = txt;
+        inputRef.current.setSelectionRange(inputRef.current.value.length, inputRef.current.value.length);
     }
 
-    function keydownEvent(e: React.KeyboardEvent<HTMLInputElement>) {
+    function keydownEvent(e: React.KeyboardEvent<HTMLTextAreaElement>) {
         // console.log(e);
         const keyCode = e.key;
         // 当输入法存在时按回车key值为'Process, keyCode值为229, 普通回车key值为'Enter', keyCode为13'
         switch (keyCode) {
             case 'Enter': {
+                e.preventDefault();
                 commit();
                 break;
             }
@@ -119,28 +123,94 @@ const Terminal: React.FC = () => {
     }
     /** 根据输入字显示提示文字 */
     function keyPressEvent() {
-        // console.log(inp.current)
-        if (inp.current) {
-            let commandStr = inp.current.value;
-            // console.log(commandStr)
-            let getCommand = setCommandHint(commandStr);
-            // console.log(getCommand)
-            setHintTxt(getCommand as any);
+        // console.log(inputRef.current)
+        if (inputRef.current) {
+            setHintTxt(setCommandHint(inputRef.current.value));
         }
     }
+    const inputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+        if (!inputRef.current) return;
+        inputRef.current && Object.assign(inputRef.current.style, calcTextareaHeight(inputRef.current));
+        throttleKeyPressEvnet();
+    };
     const throttleKeyPressEvnet = throttle(keyPressEvent, 1000);
     /** 命令输入补全 */
     function completeCommandInput() {
-        if (inp.current) {
-            let inpStr = inp.current.value;
-            let completeCommandName = setCommandHint(inpStr, true);
+        if (inputRef.current) {
+            const inpStr = inputRef.current.value;
+            const completeCommandName = setCommandHint(inpStr, true);
             // 如果返回补全命令比输入命令短, 代表输入有参数, 不需要补全
             if (completeCommandName.length > inpStr.length) {
-                inp.current.value = completeCommandName;
+                inputRef.current.value = completeCommandName;
             }
         }
     }
 
+    const CONTEXT_STYLE = [
+        'letter-spacing',
+        'line-height',
+        'padding-top',
+        'padding-bottom',
+        'font-family',
+        'font-weight',
+        'font-size',
+        'text-rendering',
+        'text-transform',
+        'width',
+        'text-indent',
+        'padding-left',
+        'padding-right',
+        'border-width',
+        'box-sizing',
+    ];
+    const HIDDEN_STYLE = `
+        height:0 !important;
+        visibility:hidden !important;
+        overflow:hidden !important;
+        position:absolute !important;
+        z-index:-1000 !important;
+        top:0 !important;
+        right:0 !important;
+    `;
+    // /** 计算 textarea 高度 */
+    const calcTextareaHeight = (targetElement: HTMLTextAreaElement) => {
+        // 获取要计算的 textarea 相关属性
+        const style = getComputedStyle(targetElement);
+        const boxSizing = style.getPropertyValue('box-sizing');
+        const paddingSize =
+            Number.parseFloat(style.getPropertyValue('padding-bottom')) +
+            Number.parseFloat(style.getPropertyValue('padding-top'));
+        const borderSize =
+            Number.parseFloat(style.getPropertyValue('border-bottom-width')) +
+            Number.parseFloat(style.getPropertyValue('border-top-width'));
+        const contextStyle = CONTEXT_STYLE.map((name) => `${name}:${style.getPropertyValue(name)}`).join(';');
+        // 创建一个不可见的 textarea
+
+        const hiddenTextarea = document.createElement('textarea');
+        document.body.appendChild(hiddenTextarea);
+        // 设置 textarea 的 value 一致
+        hiddenTextarea.setAttribute('style', `${contextStyle};${HIDDEN_STYLE}`);
+        hiddenTextarea.value = targetElement.value || targetElement.placeholder || '';
+        // 获取总高度并计算结果高度, 仅保存了最小一行高
+        let height = hiddenTextarea.scrollHeight;
+        if (boxSizing === 'border-box') {
+            height = height + borderSize;
+        } else if (boxSizing === 'content-box') {
+            height = height - paddingSize;
+        }
+        hiddenTextarea.value = '';
+        const singleRowHeight = hiddenTextarea.scrollHeight - paddingSize;
+        let minHeight = singleRowHeight * 1;
+        if (boxSizing === 'border-box') {
+            minHeight = minHeight + paddingSize + borderSize;
+        }
+        height = Math.max(minHeight, height);
+        hiddenTextarea.parentNode?.removeChild(hiddenTextarea);
+        return {
+            minHeight: `${minHeight}px`,
+            height: `${height}px`,
+        };
+    };
     return (
         <>
             <div
@@ -188,13 +258,12 @@ const Terminal: React.FC = () => {
                         ))}
                         <div className={css.terminal_input}>
                             <span className={css.terminal_user}>[local]:</span>
-                            {/* 多行输入 */}
-                            <input
-                                ref={inp}
+                            <textarea
+                                ref={inputRef}
                                 className={css.command_input}
                                 onKeyDown={keydownEvent}
-                                onChange={throttleKeyPressEvnet}
-                            />
+                                onChange={inputChange}
+                            ></textarea>
                         </div>
                         {hintTxt ? <div className={css.terminal_hint}>hint: {hintTxt}</div> : ''}
                     </div>
