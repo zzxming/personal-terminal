@@ -1,0 +1,58 @@
+.playlist {
+    @apply fixed bottom-3 right-3 z-10 p-4 text-xl rounded-lg shadow bg-neutral-50;
+    & &_icon {
+        @apply flex items-center cursor-pointer text-stone-500 hover:text-stone-700;
+    }
+    &_popover {
+        transition-property: opacity, transform;
+        transition-duration: 300ms;
+        transform-origin: 95% 100%;
+        @apply absolute -top-2 right-0 -translate-y-full w-80 p-4 rounded-lg bg-neutral-50 shadow text-stone-600 scale-0 opacity-0;
+        &.active {
+            @apply opacity-100 scale-100;
+        }
+    }
+    &_music {
+        @apply flex items-center gap-4;
+        &-cover {
+            @apply w-10 h-10 rounded-lg object-cover;
+        }
+        &_info {
+            @apply flex-1;
+        }
+        &-title {
+            @apply text-base font-semibold line-clamp-1;
+        }
+        &-detail {
+            @apply text-xs font-medium leading-none line-clamp-1;
+        }
+        &_control {
+            @apply flex items-center justify-around py-2 text-xl;
+        }
+    }
+    &_list {
+        @apply max-h-72 overflow-auto;
+        &::-webkit-scrollbar {
+            @apply hidden;
+        }
+        &_item {
+            @apply flex items-center py-3 px-1 text-black/80 border-b border-black/5 first:border-t rounded-lg;
+            &.active,
+            &:hover {
+                @apply bg-white shadow;
+            }
+            &-count {
+                @apply flex items-center justify-center w-12;
+            }
+            &_detail {
+                @apply flex-1;
+            }
+            &-title {
+                @apply text-base line-clamp-1;
+            }
+            &-author {
+                @apply text-xs line-clamp-1 text-stone-600;
+            }
+        }
+    }
+}

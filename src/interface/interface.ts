@@ -152,6 +152,8 @@ export interface ConfigData {
     time: boolean;
     /** 是否显示天气 */
     weather: boolean;
+    /** 是否显示音乐播放列表 */
+    musicPlaylist: boolean;
 }
 export interface TimeConfig extends Position {}
 

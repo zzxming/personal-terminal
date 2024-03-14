@@ -3,14 +3,27 @@ import { useRef, useLayoutEffect, useState, useEffect, ChangeEvent } from 'react
 import { throttle } from 'lodash-es';
 import useBackground from '@/hooks/background';
 import useCommand from '@/hooks/command';
-import { MarkNav } from '@/commands/markCommand/components/markNav';
-import { TimeCount } from '@/commands/timeCommand/components/timeCount';
 import { LOCALSTORAGECONFIG, LOCALSTORAGEEVENTMAP } from '@/assets/js/const';
 import { localStorageGetItem } from '@/utils/localStorage';
 import { CommandOutputStatus, ConfigData } from '@/interface/interface';
 import css from './index.module.scss';
 import { ErrorBoundary } from 'react-error-boundary';
-import { WeatherDetail } from '@/commands/weatherCommand/component/weatherDetail';
+
+import { MarkNav } from '@/commands/markCommand/components/markNav';
+import { TimeCount } from '@/commands/timeCommand/components/timeCount';
+import { WeatherDetail } from '@/commands/weatherCommand/components/weatherDetail';
+import { MusicPlaylist } from '@/commands/musicCommand/components/musicPlaylist';
+
+const GlobalConfigComponent = ({ config }: { config?: ConfigData }) => {
+    return (
+        <>
+            {config?.mark ? <MarkNav /> : null}
+            {config?.time ? <TimeCount /> : null}
+            {config?.weather ? <WeatherDetail /> : null}
+            {config?.musicPlaylist ? <MusicPlaylist /> : null}
+        </>
+    );
+};
 
 const Terminal: React.FC = () => {
     const { imgurl } = useBackground();
@@ -172,7 +185,7 @@ const Terminal: React.FC = () => {
         top:0 !important;
         right:0 !important;
     `;
-    // /** 计算 textarea 高度 */
+    /** 计算 textarea 高度 */
     const calcTextareaHeight = (targetElement: HTMLTextAreaElement) => {
         // 获取要计算的 textarea 相关属性
         const style = getComputedStyle(targetElement);
@@ -211,6 +224,7 @@ const Terminal: React.FC = () => {
             height: `${height}px`,
         };
     };
+
     return (
         <>
             <div
@@ -223,9 +237,7 @@ const Terminal: React.FC = () => {
                     onClick={focusInput}
                     style={globalConfig?.style}
                 >
-                    {globalConfig?.mark ? <MarkNav /> : null}
-                    {globalConfig?.time ? <TimeCount /> : null}
-                    {globalConfig?.weather ? <WeatherDetail /> : null}
+                    <GlobalConfigComponent config={globalConfig}></GlobalConfigComponent>
                     <div
                         ref={view}
                         className={css.terminal_command}

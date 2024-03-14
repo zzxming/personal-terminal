@@ -3,7 +3,7 @@ import { LOCALSTORAGECONFIG, LOCALSTORAGWEATHER } from '@/assets/js/const';
 import { Command, CommandOutputStatus, ConfigData, WeatherConfig } from '@/interface/interface';
 import { SetCommand } from './subCommand/setCommand';
 import { localStorageGetItem, localStorageSetItem } from '@/utils/localStorage';
-import { WeatherForecastList } from './component/WeatherForecastList';
+import { WeatherForecastList } from './components/weatherForecastList';
 
 // weather param // 搜索某地的实时天气
 // weather -fc parms  // 搜索某地的预报天气
