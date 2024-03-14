@@ -7,7 +7,7 @@
         @apply pr-2;
     }
     &_input {
-        @apply flex items-center justify-center cursor-default;
+        @apply flex justify-center cursor-default;
     }
     &_hint {
         @apply text-neutral-400;
@@ -33,9 +33,10 @@
         }
     }
     &_input {
-        @apply w-full bg-transparent outline-none;
+        @apply w-full bg-transparent outline-none resize-none text-xl;
     }
     &_txt {
+        word-break: break-word;
     }
     &_iframe {
         @apply w-full text-xl;
