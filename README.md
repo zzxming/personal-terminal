@@ -1,19 +1,6 @@
 # 网页终端
 
-自己编写的一些可能用得到的命令, 不用跳出终端页面可得到结果. 后续可能继续添加命令.
-
-# 项目启动
-
-```
-- git clone https://github.com/zzxming/personal-terminal.git
-
-- 启动
-
-    1. cd personal-terminal
-    2. npm install
-    3. npm run start
-
-```
+自己编写的一些可能用得到的命令. 后续可能继续添加命令.
 
 # 项目命令
 
