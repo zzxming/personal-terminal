@@ -128,6 +128,7 @@ const WeatherDetail = () => {
     const [city, setCity] = useState('');
     const [show, setShow] = useState(false);
     const [config, setConfig] = useState(localStorageGetItem(LOCALSTORAGWEATHER) as WeatherConfig);
+    const [isLoading, setIsLoading] = useState(true);
 
     const visible = () => {
         const config = localStorageGetItem(LOCALSTORAGECONFIG) as ConfigData;
@@ -137,9 +138,11 @@ const WeatherDetail = () => {
         visible();
         window.addEventListener(LOCALSTORAGEEVENTMAP[LOCALSTORAGECONFIG], visible);
         window.addEventListener(LOCALSTORAGEEVENTMAP[LOCALSTORAGWEATHER], getWeatherInfo);
+        const timer = setInterval(getWeatherInfo, 1000 * 3600 * 2);
         return () => {
             window.removeEventListener(LOCALSTORAGEEVENTMAP[LOCALSTORAGECONFIG], visible);
             window.removeEventListener(LOCALSTORAGEEVENTMAP[LOCALSTORAGWEATHER], getWeatherInfo);
+            clearInterval(timer);
         };
     }, []);
 
@@ -155,35 +158,26 @@ const WeatherDetail = () => {
             setWeatherDetail(res.data.data.lives[0]);
         });
     };
-    useEffect(() => {
-        const timer = setInterval(getWeatherInfo, 1000 * 3600 * 2);
-        return () => clearInterval(timer);
-    }, []);
-
-    const Detail = useMemo(() => withInitLoading(WeatherDetailInner, getWeatherInfo), [city]);
+    const Detail = useMemo(() => withInitLoading(WeatherDetailInner, getWeatherInfo), []);
 
     const weatherRef = useRef<HTMLDivElement | null>(null);
     useDraggable(weatherRef, {
         callback({ x, y }) {},
     });
 
-    return (
-        <>
-            {show ? (
-                <div
-                    ref={weatherRef}
-                    className={css.weather}
-                    style={{ left: config.x, top: config.y }}
-                >
-                    <Detail
-                        address={city}
-                        detail={weatherDetail}
-                        error={weatherError}
-                    />
-                </div>
-            ) : null}
-        </>
-    );
+    return show ? (
+        <div
+            ref={weatherRef}
+            className={css.weather}
+            style={{ left: config.x, top: config.y }}
+        >
+            <Detail
+                address={city}
+                detail={weatherDetail}
+                error={weatherError}
+            />
+        </div>
+    ) : null;
 };
 
 export { WeatherDetail };
