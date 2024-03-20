@@ -230,3 +230,12 @@ export interface Position {
     x: number;
     y: number;
 }
+
+// music start
+export interface MusicInfo {
+    id: number;
+    name: string;
+    path: string;
+    duration: number;
+}
+// music end

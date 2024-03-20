@@ -7,13 +7,16 @@ export const useAudio = () => {
     const [canPlay, setCanPlay] = useState(false);
 
     useEffect(() => {
+        audio.addEventListener('play', () => {
+            setIsPause(audio.paused);
+        });
         audio.addEventListener('pause', () => {
             setIsPause(audio.paused);
         });
         audio.addEventListener('emptied', () => {
             setCanPlay(false);
         });
-        audio.addEventListener('canPlay', () => {
+        audio.addEventListener('canplay', () => {
             setCanPlay(true);
         });
         audio.addEventListener('error', (event) => {
