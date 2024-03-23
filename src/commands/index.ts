@@ -1,4 +1,4 @@
-import { Command } from '@/interface/interface';
+import { Command } from '@/interface';
 import { commandMap } from './registerCommand';
 
 function searchCommand(command: string, searchMap: Command[] = commandMap) {

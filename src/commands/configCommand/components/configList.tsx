@@ -1,12 +1,12 @@
 import { LOCALSTORAGECONFIG } from '@/assets/js/const';
 import { CommandResultListOutput } from '@/components/commandListOutput';
-import { ConfigData } from '@/interface/interface';
+import { ConfigData } from '@/interface';
 import { localStorageGetItem } from '@/utils/localStorage';
 import css from '../index.module.scss';
 
 const ConfigList = () => {
-    let config = localStorageGetItem(LOCALSTORAGECONFIG) as ConfigData;
-    let configList = (Object.keys(config) as (keyof ConfigData)[]).map((key) => {
+    const config = localStorageGetItem<ConfigData>(LOCALSTORAGECONFIG);
+    const configList = (Object.keys(config) as (keyof ConfigData)[]).map((key) => {
         return {
             key,
             value: config[key],

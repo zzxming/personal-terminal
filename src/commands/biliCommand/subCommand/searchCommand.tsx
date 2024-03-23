@@ -1,4 +1,4 @@
-import { Command, CommandOutputStatus } from '@/interface/interface';
+import { Command, CommandOutputStatus } from '@/interface';
 import { BiliVideoList } from '../components/biliVideoList';
 
 const result_type = [

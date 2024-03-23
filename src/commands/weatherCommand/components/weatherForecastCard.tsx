@@ -1,4 +1,4 @@
-import { WeatherForecastInfo } from '@/interface/interface';
+import { WeatherForecastInfo } from '@/interface';
 import Cloud from '@/assets/svg/cloud.svg';
 import CloudRain from '@/assets/svg/cloudRain.svg';
 import Sun from '@/assets/svg/sun.svg';

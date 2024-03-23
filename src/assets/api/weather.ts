@@ -1,6 +1,6 @@
 import to from 'await-to-js';
 import { axios, AxiosResolve, AxiosReject } from '.';
-import { WeatherForecast, WeatherLiveInfo } from '@/interface/interface';
+import { WeatherForecast, WeatherLiveInfo } from '@/interface';
 
 interface WeatherErrorInfo {
     code: number;

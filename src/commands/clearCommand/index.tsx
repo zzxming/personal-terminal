@@ -1,4 +1,4 @@
-import { Command } from '@/interface/interface';
+import { Command } from '@/interface';
 
 const clearCommand: Command = {
     name: 'clear',

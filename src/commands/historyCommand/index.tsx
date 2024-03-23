@@ -1,4 +1,4 @@
-import { Command, CommandOutputStatus } from '@/interface/interface';
+import { Command, CommandOutputStatus } from '@/interface';
 import { HistoryList } from './components/historyList';
 
 const historyCommand: Command = {

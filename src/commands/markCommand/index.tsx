@@ -1,5 +1,5 @@
 import { LOCALSTORAGECONFIG, LOCALSTORAGEMARK } from '@/assets/js/const';
-import { Command, CommandOutputStatus, ConfigData, MarkData } from '@/interface/interface';
+import { Command, CommandOutputStatus, ConfigData, MarkData } from '@/interface';
 import { localStorageSetItem, localStorageGetItem } from '@/utils/localStorage';
 import { addMark } from './subCommand/addCommand';
 import { delMark } from './subCommand/delCommand';
@@ -36,7 +36,7 @@ const markCommand: Command = {
 
         const { _, show, list } = args;
         if (show) {
-            const config = localStorageGetItem(LOCALSTORAGECONFIG) as ConfigData;
+            const config = localStorageGetItem<ConfigData>(LOCALSTORAGECONFIG);
             localStorageSetItem(LOCALSTORAGECONFIG, {
                 ...config,
                 mark: show ? !config.mark : config.mark,
@@ -47,7 +47,7 @@ const markCommand: Command = {
             };
         }
         if (list) {
-            const { data } = localStorageGetItem(LOCALSTORAGEMARK) as MarkData;
+            const { data } = localStorageGetItem<MarkData>(LOCALSTORAGEMARK);
             return {
                 constructor: <MarkList data={data} />,
                 status: CommandOutputStatus.success,

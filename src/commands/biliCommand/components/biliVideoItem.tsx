@@ -1,4 +1,4 @@
-import { BiliVideoInfo } from '@/interface/interface';
+import { BiliVideoInfo } from '@/interface';
 import css from '../index.module.scss';
 import { BiliVideoCover } from './biliVideoCover';
 import Icon from '@ant-design/icons';

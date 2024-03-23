@@ -1,4 +1,4 @@
-import { BiliPageInfo, BiliTypeVideo, BiliVideoInfo, BiliVideoSearchInfo } from '@/interface/interface';
+import { BiliPageInfo, BiliTypeVideo, BiliVideoInfo, BiliVideoSearchInfo } from '@/interface';
 import to from 'await-to-js';
 import { axios, AxiosResolve, AxiosReject } from '.';
 

@@ -1,16 +1,33 @@
 import to from 'await-to-js';
 import { axios, AxiosResolve, AxiosReject } from '.';
-import { MusicInfo } from '@/interface/interface';
+import { MusicInfo, PageQuery } from '@/interface';
 
 export interface MusicResult {
     name: string;
     id: number;
 }
 /** 关键词搜索单曲 */
-export const getNeteaseMusic = async (kw: string) =>
-    await to<AxiosResolve<MusicResult[]>, AxiosReject>(axios.get('/music/search', { params: { kw, t: 1 } }));
+export const getNeteaseMusic = (kw: string) =>
+    to<AxiosResolve<MusicResult[]>, AxiosReject>(axios.get('/music/search', { params: { kw, t: 1 } }));
 /** 关键词搜索歌单 */
-export const getNeteaseMusicList = async (kw: string) =>
-    await to<AxiosResolve<MusicResult[]>, AxiosReject>(axios.get('/music/search', { params: { kw, t: 1000 } }));
-
-export const getMusicList = async () => await to<AxiosResolve<MusicInfo[]>, AxiosReject>(axios.get('/music/list'));
+export const getNeteaseMusicList = (kw: string) =>
+    to<AxiosResolve<MusicResult[]>, AxiosReject>(axios.get('/music/search', { params: { kw, t: 1000 } }));
+/** 获取所有上传歌曲 */
+export const getMusicList = (page?: PageQuery) =>
+    to<AxiosResolve<MusicInfo[]>, AxiosReject>(
+        axios.get('/music/list', {
+            params: {
+                ...page,
+            },
+        })
+    );
+/** 获取网易云歌单内歌曲 */
+export const getCloudMusicList = (id: string, page?: PageQuery) =>
+    to<AxiosResolve<MusicInfo[]>, AxiosReject>(
+        axios.get('/music/cloud/getlist', {
+            params: {
+                id,
+                ...page,
+            },
+        })
+    );

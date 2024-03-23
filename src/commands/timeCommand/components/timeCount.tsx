@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { LOCALSTORAGETIME, LOCALSTORAGEEVENTMAP, LOCALSTORAGECONFIG } from '@/assets/js/const';
-import { ConfigData, TimeConfig } from '@/interface/interface';
+import { ConfigData, TimeConfig } from '@/interface';
 import { localStorageGetItem, localStorageSetItem } from '@/utils/localStorage';
 import css from '../index.module.scss';
 import { useDraggable } from '@/hooks/draggable';
@@ -8,7 +8,7 @@ import { useDraggable } from '@/hooks/draggable';
 const TimeCount: React.FC = () => {
     const [date, setDate] = useState(new Date());
     const [show, setShow] = useState(false);
-    const [config, setConfig] = useState(localStorageGetItem(LOCALSTORAGETIME) as TimeConfig);
+    const [config, setConfig] = useState(localStorageGetItem<TimeConfig>(LOCALSTORAGETIME));
 
     useEffect(() => {
         timeVisible();
@@ -21,14 +21,14 @@ const TimeCount: React.FC = () => {
     }, []);
 
     const timeVisible = () => {
-        const { time } = localStorageGetItem(LOCALSTORAGECONFIG) as ConfigData;
+        const { time } = localStorageGetItem<ConfigData>(LOCALSTORAGECONFIG);
         setShow(time);
     };
 
     const timeRef = useRef<HTMLDivElement | null>(null);
     useDraggable(timeRef, {
         callback({ x, y }) {
-            const config = localStorageGetItem(LOCALSTORAGETIME) as TimeConfig;
+            const config = localStorageGetItem<TimeConfig>(LOCALSTORAGETIME);
             localStorageSetItem(LOCALSTORAGETIME, {
                 ...config,
                 x,

@@ -5,7 +5,7 @@ import useBackground from '@/hooks/background';
 import useCommand from '@/hooks/command';
 import { LOCALSTORAGECONFIG, LOCALSTORAGEEVENTMAP } from '@/assets/js/const';
 import { localStorageGetItem } from '@/utils/localStorage';
-import { CommandOutputStatus, ConfigData } from '@/interface/interface';
+import { CommandOutputStatus, ConfigData } from '@/interface';
 import css from './index.module.scss';
 import { ErrorBoundary } from 'react-error-boundary';
 
@@ -36,7 +36,7 @@ const Terminal: React.FC = () => {
 
     // localstorage中config初始化及更新处理函数
     const configChange = () => {
-        const config = localStorageGetItem(LOCALSTORAGECONFIG) as ConfigData;
+        const config = localStorageGetItem<ConfigData>(LOCALSTORAGECONFIG);
         setGlobalConfig(config);
     };
 

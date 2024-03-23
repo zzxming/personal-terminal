@@ -1,5 +1,5 @@
 import { LOCALSTORAGECONFIG } from '@/assets/js/const';
-import { Command, CommandOutputStatus, ConfigData } from '@/interface/interface';
+import { Command, CommandOutputStatus, ConfigData } from '@/interface';
 import { localStorageSetItem, localStorageGetItem } from '@/utils/localStorage';
 
 const styleCommand: Command = {
@@ -31,7 +31,7 @@ const styleCommand: Command = {
         // console.log(args);
         const { _ } = args;
 
-        const config = localStorageGetItem(LOCALSTORAGECONFIG) as ConfigData;
+        const config = localStorageGetItem<ConfigData>(LOCALSTORAGECONFIG);
         let style: ConfigData['style'] = {
             ...config.style,
         };

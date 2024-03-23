@@ -1,4 +1,4 @@
-import { WeatherForecast } from '@/interface/interface';
+import { WeatherForecast } from '@/interface';
 import { WeatherForecastCard } from './weatherForecastCard';
 import css from '../index.module.scss';
 import { Col, Row } from 'antd';

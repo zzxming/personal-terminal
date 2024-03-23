@@ -1,5 +1,5 @@
 import { LOCALSTORAGECONFIG } from '@/assets/js/const';
-import { Command, CommandOutputStatus } from '@/interface/interface';
+import { Command, CommandOutputStatus } from '@/interface';
 import { localStorageSetItem, localStorageGetItem } from '@/utils/localStorage';
 
 const clearCommand: Command = {

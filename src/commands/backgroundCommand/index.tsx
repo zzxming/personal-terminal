@@ -1,6 +1,6 @@
 import { getBackgroundImageUrl, ImageType } from '@/assets/api';
 import { LOCALSTORAGECONFIG } from '@/assets/js/const';
-import { Command, CommandOutputStatus } from '@/interface/interface';
+import { Command, CommandOutputStatus } from '@/interface';
 import { localStorageGetItem, localStorageSetItem } from '@/utils/localStorage';
 import { clearCommand } from './subcommand/clearCommand';
 

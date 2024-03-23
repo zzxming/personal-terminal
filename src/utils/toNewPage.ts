@@ -1,5 +1,5 @@
 import { LOCALSTORAGECONFIG } from '@/assets/js/const';
-import { ConfigData, openType } from '@/interface/interface';
+import { ConfigData, openType } from '@/interface';
 import { localStorageGetItem, localStorageSetItem } from './localStorage';
 
 /**
@@ -8,7 +8,7 @@ import { localStorageGetItem, localStorageSetItem } from './localStorage';
  * @param type 指定打开方式
  */
 const toNewPage = (url: string, type?: openType) => {
-    const config = localStorageGetItem(LOCALSTORAGECONFIG) as ConfigData;
+    const config = localStorageGetItem<ConfigData>(LOCALSTORAGECONFIG);
     let open = config?.open;
     if (type) {
         open = type;

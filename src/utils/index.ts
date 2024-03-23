@@ -1,5 +1,5 @@
 export * from './types';
-export * from './query';
+export * from './request';
 export * from './tools';
 export * from './format';
 export * from './toNewPage';

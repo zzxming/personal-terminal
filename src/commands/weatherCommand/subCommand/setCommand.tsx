@@ -1,6 +1,6 @@
 import { getAdcode } from '@/assets/api/weather';
 import { LOCALSTORAGWEATHER } from '@/assets/js/const';
-import { Command, CommandOutputStatus } from '@/interface/interface';
+import { Command, CommandOutputStatus } from '@/interface';
 import { localStorageGetItem, localStorageSetItem } from '@/utils/localStorage';
 
 const SetCommand: Command = {

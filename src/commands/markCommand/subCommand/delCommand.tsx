@@ -1,5 +1,5 @@
 import { LOCALSTORAGEMARK } from '@/assets/js/const';
-import { Command, CommandOutputStatus, MarkData } from '@/interface/interface';
+import { Command, CommandOutputStatus, MarkData } from '@/interface';
 import { localStorageGetItem, localStorageSetItem } from '@/utils/localStorage';
 
 const delMark: Command = {
@@ -19,7 +19,7 @@ const delMark: Command = {
 
         const { _ } = args;
         const name = _.join(' ');
-        const preMark = localStorageGetItem(LOCALSTORAGEMARK) as MarkData;
+        const preMark = localStorageGetItem<MarkData>(LOCALSTORAGEMARK);
         if (preMark && preMark.data) {
             const data = [...preMark.data];
             const i = data.findIndex((mark) => mark.key === name);

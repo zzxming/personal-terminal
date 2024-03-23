@@ -1,6 +1,6 @@
 import { Avatar, Card } from 'antd';
 import { GlobalOutlined } from '@ant-design/icons';
-import { Mark, MarkData } from '@/interface/interface';
+import { Mark, MarkData } from '@/interface';
 import { CommandResultListOutput } from '@/components/commandListOutput';
 import css from '../index.module.scss';
 

@@ -8,7 +8,7 @@ import Wind from '@/assets/svg/wind.svg';
 import Droplets from '@/assets/svg/droplets.svg';
 import Thermometer from '@/assets/svg/thermometer.svg';
 import SnowFlake from '@/assets/svg/snowFlake.svg';
-import { ConfigData, WeatherConfig, WeatherLiveInfo } from '@/interface/interface';
+import { ConfigData, WeatherConfig, WeatherLiveInfo } from '@/interface';
 import { getWeather } from '@/assets/api/weather';
 import css from '../index.module.scss';
 import { localStorageGetItem } from '@/utils/localStorage';
@@ -127,11 +127,10 @@ const WeatherDetail = () => {
     const [weatherError, setWeatherError] = useState('');
     const [city, setCity] = useState('');
     const [show, setShow] = useState(false);
-    const [config, setConfig] = useState(localStorageGetItem(LOCALSTORAGWEATHER) as WeatherConfig);
-    const [isLoading, setIsLoading] = useState(true);
+    const [config, setConfig] = useState(localStorageGetItem<WeatherConfig>(LOCALSTORAGWEATHER));
 
     const visible = () => {
-        const config = localStorageGetItem(LOCALSTORAGECONFIG) as ConfigData;
+        const config = localStorageGetItem<ConfigData>(LOCALSTORAGECONFIG);
         setShow(config.weather);
     };
     useEffect(() => {
@@ -147,7 +146,8 @@ const WeatherDetail = () => {
     }, []);
 
     const getWeatherInfo = () => {
-        const weatherConfig = localStorageGetItem(LOCALSTORAGWEATHER) as WeatherConfig;
+        const weatherConfig = localStorageGetItem<WeatherConfig>(LOCALSTORAGWEATHER);
+        setConfig(weatherConfig);
         setCity(weatherConfig.city);
         return getWeather(weatherConfig.adcode, 'base').then(([err, res]) => {
             if (err || res.data.data.status !== '1') {

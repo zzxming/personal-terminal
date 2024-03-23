@@ -9,7 +9,7 @@ import {
     CommandOutputStatus,
     CommandParamArgs,
     HistoryCommand,
-} from '@/interface/interface';
+} from '@/interface';
 import css from '@/app/index.module.scss';
 import { randomID } from '@/utils/tools';
 

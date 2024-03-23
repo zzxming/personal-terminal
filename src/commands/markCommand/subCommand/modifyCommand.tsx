@@ -1,6 +1,6 @@
 import { getURLDomain } from '..';
 import { LOCALSTORAGEMARK } from '@/assets/js/const';
-import { Command, CommandOutputStatus, MarkData } from '@/interface/interface';
+import { Command, CommandOutputStatus, MarkData } from '@/interface';
 import { localStorageGetItem, localStorageSetItem } from '@/utils/localStorage';
 
 const modifyMark: Command = {
@@ -36,7 +36,7 @@ const modifyMark: Command = {
         const url = args.url?.toString();
 
         const namekey = _.join(' ');
-        const { data: marks } = localStorageGetItem(LOCALSTORAGEMARK) as MarkData;
+        const { data: marks } = localStorageGetItem<MarkData>(LOCALSTORAGEMARK);
         // console.log(marks)
         let markIndex = marks.findIndex((mark) => mark.key === namekey);
         if (markIndex === -1) {
