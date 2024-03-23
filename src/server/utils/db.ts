@@ -8,8 +8,8 @@ const db = mysql.createPool({
     database: 'music',
 });
 
-export const dbQuery = (str: string) =>
-    new Promise<{ data: any; fields?: mysql.FieldInfo[] }>((resolve, reject) => {
+export const dbQuery = <T = any>(str: string) =>
+    new Promise<{ data: T[]; fields?: mysql.FieldInfo[] }>((resolve, reject) => {
         db.query(str, (err, data, fields) => {
             if (err) {
                 reject(err);

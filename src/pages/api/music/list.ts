@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { dbQuery } from '@/server/utils';
+import { getQuery } from '@/utils';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method !== 'GET') {
@@ -7,7 +8,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         return;
     }
     try {
-        const { data } = await dbQuery('SELECT * FROM music');
+        const { page = 1, pageSize = 500 } = getQuery(req, res);
+        const { data } = await dbQuery(`SELECT * FROM music limit ${(+page - 1) * +pageSize}, ${pageSize}`);
         res.status(200).send({
             data,
             code: 0,

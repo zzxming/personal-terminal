@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import axios from 'axios';
-import { getQuery } from '@/utils/query';
+import { getQuery } from '@/utils/request';
 
 interface SearchBiliQuery {
     keywords: string;

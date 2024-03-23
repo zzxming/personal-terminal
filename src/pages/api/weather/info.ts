@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import axios from 'axios';
 import { config } from '@/server/config';
-import { getQuery } from '@/utils/query';
+import { getQuery } from '@/utils/request';
 
 const getWeather = async (adcode: string, extensions: string = 'base') => {
     return axios
