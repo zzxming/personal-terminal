@@ -54,5 +54,8 @@
                 @apply text-xs line-clamp-1 text-stone-600;
             }
         }
+        &_load {
+            @apply flex items-center justify-center;
+        }
     }
 }

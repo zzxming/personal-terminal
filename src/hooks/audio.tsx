@@ -1,32 +1,54 @@
 import { message } from 'antd';
 import { useEffect, useState } from 'react';
 
-export const useAudio = () => {
-    const [audio] = useState(document.createElement('audio'));
+interface AudioOptions {
+    onEnd?: () => void;
+}
+export const useAudio = (options: AudioOptions = {}) => {
+    const [audio, setAudio] = useState(document.createElement('audio'));
     const [isPause, setIsPause] = useState(true);
     const [canPlay, setCanPlay] = useState(false);
 
+    const onEnded = () => {
+        options.onEnd && options.onEnd();
+    };
+    const onPlay = () => {
+        setIsPause(audio.paused);
+    };
+    const onPause = () => {
+        setIsPause(audio.paused);
+    };
+    const onEmptied = () => {
+        setCanPlay(false);
+    };
+    const onCanPlay = () => {
+        setCanPlay(true);
+    };
+    const onError = () => {
+        message.error(`音频错误`);
+    };
+    const onAbort = () => {
+        message.error(`音频资源加载中断`);
+    };
+
     useEffect(() => {
-        audio.addEventListener('play', () => {
-            setIsPause(audio.paused);
-        });
-        audio.addEventListener('pause', () => {
-            setIsPause(audio.paused);
-        });
-        audio.addEventListener('emptied', () => {
-            setCanPlay(false);
-        });
-        audio.addEventListener('canplay', () => {
-            setCanPlay(true);
-        });
-        audio.addEventListener('error', (event) => {
-            message.error(`音频错误：${event.message}`);
-        });
-        audio.addEventListener('abort', () => {
-            message.error(`音频资源加载中断`);
-        });
+        audio.addEventListener('ended', onEnded);
+        console.log('bind');
+        return () => {
+            audio.removeEventListener('ended', onEnded);
+            console.log('unbidne');
+        };
+    }, [options.onEnd]);
+    useEffect(() => {
+        audio.addEventListener('play', onPlay);
+        audio.addEventListener('pause', onPause);
+        audio.addEventListener('emptied', onEmptied);
+        audio.addEventListener('canplay', onCanPlay);
+        audio.addEventListener('error', onError);
+        audio.addEventListener('abort', onAbort);
     }, []);
-    const setAudio = (src: string, { autoPlay = true } = {}) => {
+
+    const setAudioSrc = (src: string, { autoPlay = true } = {}) => {
         audio.pause();
         audio.src = src;
         audio.load();
@@ -45,6 +67,6 @@ export const useAudio = () => {
         isPause,
         play,
         pause,
-        setAudio,
+        setAudioSrc,
     };
 };

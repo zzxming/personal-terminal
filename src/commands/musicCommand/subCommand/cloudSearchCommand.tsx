@@ -1,5 +1,5 @@
 import { getNeteaseMusic, getNeteaseMusicList, AxiosResolve, MusicResult, AxiosReject } from '@/assets/api';
-import { Command, CommandOutputStatus } from '@/interface/interface';
+import { Command, CommandOutputStatus } from '@/interface';
 
 export const musicSearchCommand: Command = {
     name: 'search',

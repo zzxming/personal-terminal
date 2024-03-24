@@ -20,43 +20,30 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         }
 
         // 需要page和offset限制一下返回, 如果歌单内的歌曲超出1000的话会导致响应400
-        playlist_track_all({
+        const response = await playlist_track_all({
             id,
             limit: pageSize,
             offset: (Number(page) - 1) * pageSize,
-        })
-            .then((response) => {
-                // console.log(response)
-                const { code, songs, privileges } = response.body;
-                if (code === 200) {
-                    res.send({
-                        code: 1,
-                        data: (songs as any[]).map((song, index) => ({
-                            ...song,
-                            st: (privileges as any[])[index].st,
-                        })),
-                    });
-                    return;
-                }
-                res.send({ code: 0, message: '意外错误' });
-            })
-            .catch((e) => {
-                console.log(e);
-                res.send({
-                    code: 0,
-                    error: {
-                        errno: e.body?.msg?.errno,
-                        code: e.body?.msg?.code,
-                        message: e.body?.message,
-                    },
-                    message: e.message || e.code || e.body.message || e.body.msg.code,
-                });
+        });
+        // console.log(response)
+        const { code, songs, privileges } = response.body;
+        if (code === 200) {
+            res.send({
+                code: 1,
+                data: (songs as any[]).map((song, index) => ({
+                    ...song,
+                    st: (privileges as any[])[index].st,
+                })),
             });
-    } catch (e: any) {
-        res.status(e.status || 500).send({
+            return;
+        }
+        res.send({ code: 0, message: '意外错误' });
+    } catch (error: any) {
+        console.error(error);
+        res.status(error.status || 500).send({
             code: 500,
             data: null,
-            message: e.message,
+            message: error.message,
         });
     }
 };

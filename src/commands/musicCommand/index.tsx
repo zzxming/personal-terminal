@@ -1,11 +1,11 @@
-import { Command, CommandOutputStatus, ConfigData } from '@/interface/interface';
-import { musicSearchCommand } from '@/commands/musicCommand/subCommand/searchCommand';
+import { Command, CommandOutputStatus, ConfigData } from '@/interface';
+import { cloudCommand } from '@/commands/musicCommand/subCommand/cloudCommand';
 import { localStorageGetItem, localStorageSetItem } from '@/utils';
 import { LOCALSTORAGECONFIG } from '@/assets/js/const';
 
 const musicCommand: Command = {
     name: 'music',
-    desc: '网易云音乐',
+    desc: '音乐',
     params: [],
     options: [
         {
@@ -15,12 +15,12 @@ const musicCommand: Command = {
             valueNeeded: false,
         },
     ],
-    subCommands: [musicSearchCommand],
+    subCommands: [cloudCommand],
     async action(args, commandHandle) {
         const { _, p } = args;
 
         if (p) {
-            const config = localStorageGetItem(LOCALSTORAGECONFIG) as ConfigData;
+            const config = localStorageGetItem<ConfigData>(LOCALSTORAGECONFIG);
             localStorageSetItem(LOCALSTORAGECONFIG, {
                 ...config,
                 musicPlaylist: !config.musicPlaylist,
@@ -39,3 +39,9 @@ const musicCommand: Command = {
 };
 
 export { musicCommand };
+
+export const initValLocalStoragePlaylist = () => {
+    return {
+        id: '',
+    };
+};

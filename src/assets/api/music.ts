@@ -1,6 +1,6 @@
 import to from 'await-to-js';
 import { axios, AxiosResolve, AxiosReject } from '.';
-import { MusicInfo, PageQuery } from '@/interface';
+import { CloudMusic, MusicInfo, PageQuery } from '@/interface';
 
 export interface MusicResult {
     name: string;
@@ -23,7 +23,7 @@ export const getMusicList = (page?: PageQuery) =>
     );
 /** 获取网易云歌单内歌曲 */
 export const getCloudMusicList = (id: string, page?: PageQuery) =>
-    to<AxiosResolve<MusicInfo[]>, AxiosReject>(
+    to<AxiosResolve<CloudMusic[]>, AxiosReject>(
         axios.get('/music/cloud/getlist', {
             params: {
                 id,
