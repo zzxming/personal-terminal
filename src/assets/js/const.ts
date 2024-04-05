@@ -16,6 +16,9 @@ export const LOCALSTORAGETIME = 'time';
 /** music 的 playlist 命令在 localstorage 中存储的 key */
 export const LOCALSTORAGEPLAYLIST = 'playlist';
 
+/** music audio 的配置在 localstorage 中存储的 key */
+export const LOCALSTORAGEMUSIC = 'music';
+
 /** 改变在 localstorage 中存储值时触发的事件 */
 export const LOCALSTORAGEEVENTMAP: { [key: string]: string } = {
     [LOCALSTORAGEMARK]: 'markEvent',
@@ -24,4 +27,5 @@ export const LOCALSTORAGEEVENTMAP: { [key: string]: string } = {
     [LOCALSTORAGWEATHER]: 'weatherEvent',
     [LOCALSTORAGETIME]: 'timeEvent',
     [LOCALSTORAGEPLAYLIST]: 'playlistEvent',
+    [LOCALSTORAGEMUSIC]: 'musicEvent',
 };

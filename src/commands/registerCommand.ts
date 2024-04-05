@@ -14,7 +14,7 @@ import { configCommand, initValLocalStorageConfig } from '@/commands/configComma
 import { initValLocalStorageTime, timeCommand } from '@/commands/timeCommand';
 import { calculatorCommand } from '@/commands/calculateCommand';
 import { weatherCommand, initValLocalStorageWeather } from '@/commands/weatherCommand';
-import { musicCommand, initValLocalStoragePlaylist } from '@/commands/musicCommand';
+import { musicCommand, initValLocalStoragePlaylist, initValLocalStorageMusic } from '@/commands/musicCommand';
 
 import { localStorageInitValueMap } from '@/utils/localStorage';
 import {
@@ -24,7 +24,8 @@ import {
     LOCALSTORAGEPLAYLIST,
     LOCALSTORAGETIME,
     LOCALSTORAGWEATHER,
-} from '@/assets/js/const';
+    LOCALSTORAGEMUSIC,
+} from '@/assets/js';
 
 localStorageInitValueMap[LOCALSTORAGEMARK] = initValLocalStorageMark;
 localStorageInitValueMap[LOCALSTORAGECONFIG] = initValLocalStorageConfig;
@@ -33,6 +34,7 @@ localStorageInitValueMap[LOCALSTORAGWEATHER] = initValLocalStorageWeather;
 localStorageInitValueMap[LOCALSTORAGETIME] = initValLocalStorageTime;
 localStorageInitValueMap[LOCALSTORAGETIME] = initValLocalStorageTime;
 localStorageInitValueMap[LOCALSTORAGEPLAYLIST] = initValLocalStoragePlaylist;
+localStorageInitValueMap[LOCALSTORAGEMUSIC] = initValLocalStorageMusic;
 
 const commandMap: Command[] = [
     baiduCommand,

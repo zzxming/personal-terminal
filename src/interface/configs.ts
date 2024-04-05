@@ -32,3 +32,6 @@ export interface Position {
 export interface PlaylistConfig {
     id: string;
 }
+export interface MusicConfig {
+    volume: number;
+}

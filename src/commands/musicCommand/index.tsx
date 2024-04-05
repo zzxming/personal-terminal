@@ -45,3 +45,8 @@ export const initValLocalStoragePlaylist = () => {
         id: '',
     };
 };
+export const initValLocalStorageMusic = () => {
+    return {
+        volume: 0.8,
+    };
+};

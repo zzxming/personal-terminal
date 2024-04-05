@@ -1,12 +1,13 @@
-import Icon from '@ant-design/icons';
+import Icon, { CloseOutlined } from '@ant-design/icons';
 import css from '../index.module.scss';
 import Music from '@/assets/svg/music.svg';
 import Play from '@/assets/svg/play.svg';
 import Pause from '@/assets/svg/pause.svg';
 import ArrowLeft from '@/assets/svg/arrow-left.svg';
 import ArrowRight from '@/assets/svg/arrow-right.svg';
+import Volume from '@/assets/svg/volume.svg';
 import { useCallback, useEffect, useState } from 'react';
-import { Divider, List, Typography } from 'antd';
+import { Divider, List, Popover, Slider, Typography } from 'antd';
 import { useAudio, usePage } from '@/hooks';
 import { getCloudMusicList } from '@/assets/api';
 import { CloudMusic, PageQuery, PlaylistConfig } from '@/interface';
@@ -24,9 +25,8 @@ export const MusicPlaylist = () => {
     const onEnd = useCallback(() => {
         switchMusicByIndex(activeMusicIndex + 1);
     }, [activeMusicIndex]);
-    const { audio, isPause, play, pause, setAudioSrc } = useAudio({
-        onEnd,
-    });
+    const { audio, isPause, volume, play, pause, setAudioSrc, changeVolume } = useAudio({ onEnd });
+    const audioVolume = volume * 100;
 
     const switchMusic = (music: CloudMusic) => {
         setActiveMusic(music);
@@ -90,7 +90,6 @@ export const MusicPlaylist = () => {
                         <div className={css['playlist_music']}>
                             <div className={css['playlist_music_info']}>
                                 <h3 className={css['playlist_music-title']}>{activeMusic.name}</h3>
-                                {/* <p className={css['playlist_music-detail']}>Lorem</p> */}
                             </div>
                         </div>
                         <div className={css['playlist_music_control']}>
@@ -109,6 +108,22 @@ export const MusicPlaylist = () => {
                                 component={ArrowRight}
                                 onClick={() => switchMusicByIndex(activeMusicIndex + 1)}
                             ></Icon>
+                            <Popover
+                                content={
+                                    <div className={css['playlist_music-volume']}>
+                                        <Slider
+                                            vertical
+                                            defaultValue={audioVolume}
+                                            onChange={changeVolume}
+                                        />
+                                    </div>
+                                }
+                            >
+                                <Icon
+                                    className={css['playlist_icon']}
+                                    component={Volume}
+                                ></Icon>
+                            </Popover>
                         </div>
                     </>
                 ) : null}
@@ -133,18 +148,18 @@ export const MusicPlaylist = () => {
                             <List
                                 dataSource={playlist}
                                 renderItem={(item, i) => (
-                                    <div
+                                    <button
                                         className={[
                                             css['playlist_list_item'],
                                             activeMusic?.id === item.id ? css['active'] : '',
                                         ].join(' ')}
-                                        onDoubleClick={() => switchMusic(item)}
+                                        onClick={() => switchMusic(item)}
                                     >
                                         <span className={css['playlist_list_item-count']}>{i + 1}</span>
                                         <div className={css['playlist_list_item_detail']}>
                                             <p className={css['playlist_list_item-title']}>{item.name}</p>
                                         </div>
-                                    </div>
+                                    </button>
                                 )}
                             />
                         ) : null}

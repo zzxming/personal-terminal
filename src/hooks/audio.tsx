@@ -1,3 +1,6 @@
+import { LOCALSTORAGEMUSIC } from '@/assets/js';
+import { MusicConfig } from '@/interface';
+import { localStorageGetItem, localStorageSetItem } from '@/utils';
 import { message } from 'antd';
 import { useEffect, useState } from 'react';
 
@@ -8,6 +11,7 @@ export const useAudio = (options: AudioOptions = {}) => {
     const [audio, setAudio] = useState(document.createElement('audio'));
     const [isPause, setIsPause] = useState(true);
     const [canPlay, setCanPlay] = useState(false);
+    const [volume, setVolume] = useState(localStorageGetItem<MusicConfig>(LOCALSTORAGEMUSIC)?.volume ?? 0.8);
 
     const onEnded = () => {
         options.onEnd && options.onEnd();
@@ -30,22 +34,30 @@ export const useAudio = (options: AudioOptions = {}) => {
     const onAbort = () => {
         message.error(`音频资源加载中断`);
     };
-
-    useEffect(() => {
-        audio.addEventListener('ended', onEnded);
-        console.log('bind');
-        return () => {
-            audio.removeEventListener('ended', onEnded);
-            console.log('unbidne');
-        };
-    }, [options.onEnd]);
-    useEffect(() => {
+    const onVolumeChange = () => {
+        console.log(audio.volume);
+        setVolume(audio.volume);
+    };
+    const audioInit = () => {
+        audio.addEventListener('volumechange', onVolumeChange);
         audio.addEventListener('play', onPlay);
         audio.addEventListener('pause', onPause);
         audio.addEventListener('emptied', onEmptied);
         audio.addEventListener('canplay', onCanPlay);
         audio.addEventListener('error', onError);
         audio.addEventListener('abort', onAbort);
+        audio.volume = volume;
+    };
+
+    useEffect(() => {
+        audio.addEventListener('ended', onEnded);
+        return () => {
+            audio.removeEventListener('ended', onEnded);
+        };
+    }, [options.onEnd]);
+    useEffect(() => {
+        audioInit();
+        document.body.appendChild(audio);
     }, []);
 
     const setAudioSrc = (src: string, { autoPlay = true } = {}) => {
@@ -61,12 +73,23 @@ export const useAudio = (options: AudioOptions = {}) => {
     const pause = () => {
         audio.pause();
     };
+    const changeVolume = (value: number) => {
+        let volumeNum = Math.floor(value) / 100;
+        volumeNum < 0 ? 0 : volumeNum > 1 ? 1 : volumeNum;
+        audio.volume = volumeNum;
+        localStorageSetItem(LOCALSTORAGEMUSIC, {
+            ...localStorageGetItem(LOCALSTORAGEMUSIC),
+            volume: volumeNum,
+        });
+    };
 
     return {
         audio,
         isPause,
+        volume,
         play,
         pause,
         setAudioSrc,
+        changeVolume,
     };
 };

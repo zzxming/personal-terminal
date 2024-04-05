@@ -29,6 +29,9 @@
         &_control {
             @apply flex items-center justify-around py-2 text-xl;
         }
+        &-volume {
+            @apply h-20;
+        }
     }
     &_list {
         @apply max-h-72 overflow-auto;
@@ -36,10 +39,10 @@
             @apply hidden;
         }
         &_item {
-            @apply flex items-center py-3 px-1 text-black/80 border-b border-black/5 first:border-t rounded-lg;
+            @apply flex items-center w-full py-3 px-1 text-black/80 border-b border-black/5 first:border-t rounded-lg hover:opacity-75 transition-opacity  text-left;
             &.active,
             &:hover {
-                @apply bg-white shadow;
+                @apply bg-gray-100 dark:bg-gray-900;
             }
             &-count {
                 @apply flex items-center justify-center w-12;
