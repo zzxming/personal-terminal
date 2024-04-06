@@ -5,6 +5,19 @@ export interface MusicInfo {
     path: string;
     duration: number;
 }
+export interface CloudPlaylist {
+    id: number;
+    name: string;
+    coverImgUrl: string;
+    createTime: number;
+    playCount: number;
+    shareCount: number;
+    commentCount: number;
+    trackCount: number;
+    trackIds: {
+        id: number;
+    }[];
+}
 /** 网易云音乐歌曲信息 */
 export interface CloudMusic {
     id: number;

@@ -21,10 +21,10 @@
             @apply flex-1;
         }
         &-title {
-            @apply text-base font-semibold line-clamp-1;
+            @apply text-xl font-semibold line-clamp-1;
         }
         &-detail {
-            @apply text-xs font-medium leading-none line-clamp-1;
+            @apply text-sm font-medium line-clamp-1;
         }
         &_control {
             @apply flex items-center justify-around py-2 text-xl;
@@ -34,31 +34,44 @@
         }
     }
     &_list {
-        @apply max-h-72 overflow-auto;
-        &::-webkit-scrollbar {
-            @apply hidden;
-        }
         &_item {
-            @apply flex items-center w-full py-3 px-1 text-black/80 border-b border-black/5 first:border-t rounded-lg hover:opacity-75 transition-opacity  text-left;
+            @apply flex items-center w-full h-12 p-1 text-black/80 border-b border-black/5 first:border-t hover:opacity-75 transition-opacity text-left;
             &.active,
             &:hover {
-                @apply bg-gray-100 dark:bg-gray-900;
+                @apply bg-gray-100;
             }
             &-count {
-                @apply flex items-center justify-center w-12;
+                @apply flex items-center justify-center w-12 text-sm;
             }
-            &_detail {
+            &_info {
                 @apply flex-1;
             }
             &-title {
                 @apply text-base line-clamp-1;
             }
+            &_detail {
+                @apply flex items-center text-xs line-clamp-1;
+            }
             &-author {
-                @apply text-xs line-clamp-1 text-stone-600;
+                @apply text-stone-600 line-clamp-1;
+            }
+            &-remove {
+                @apply flex items-center p-1 text-sm text-black/20 hover:text-black/60;
             }
         }
-        &_load {
-            @apply flex items-center justify-center;
+        &-loading {
+            @apply flex items-center justify-center w-full h-72;
+        }
+        &_skeleton {
+            @apply py-2 px-1;
+        }
+    }
+}
+.music {
+    &_tag {
+        @apply inline-flex items-center text-base;
+        &_item {
+            @apply mr-1;
         }
     }
 }

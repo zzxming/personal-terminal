@@ -35,10 +35,13 @@ export const useAudio = (options: AudioOptions = {}) => {
         message.error(`音频资源加载中断`);
     };
     const onVolumeChange = () => {
-        console.log(audio.volume);
         setVolume(audio.volume);
     };
+    const onLoadedMetaData = () => {
+        console.log('onloadedmetadata');
+    };
     const audioInit = () => {
+        audio.addEventListener('onloadedmetadata', onLoadedMetaData);
         audio.addEventListener('volumechange', onVolumeChange);
         audio.addEventListener('play', onPlay);
         audio.addEventListener('pause', onPause);
@@ -63,6 +66,7 @@ export const useAudio = (options: AudioOptions = {}) => {
     const setAudioSrc = (src: string, { autoPlay = true } = {}) => {
         audio.pause();
         audio.src = src;
+        setCanPlay(false);
         audio.load();
         autoPlay && audio.play();
     };
@@ -87,6 +91,7 @@ export const useAudio = (options: AudioOptions = {}) => {
         audio,
         isPause,
         volume,
+        canPlay,
         play,
         pause,
         setAudioSrc,

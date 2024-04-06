@@ -16,12 +16,12 @@ import { MusicPlaylist } from '@/commands/musicCommand/components/musicPlaylist'
 
 const GlobalConfigComponent = ({ config }: { config?: ConfigData }) => {
     return (
-        <>
+        <div onClick={(e) => e.stopPropagation()}>
             {config?.mark ? <MarkNav /> : null}
             {config?.time ? <TimeCount /> : null}
             {config?.weather ? <WeatherDetail /> : null}
             {config?.musicPlaylist ? <MusicPlaylist /> : null}
-        </>
+        </div>
     );
 };
 

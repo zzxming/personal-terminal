@@ -8,7 +8,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         return;
     }
     try {
-        let { id, cookie, page = 1, pageSize = 500 } = getQuery(req, res);
+        let { id, page = 1, pageSize = 500 } = getQuery(req, res);
         pageSize = Number(pageSize);
         if (isNaN(pageSize)) pageSize = 500;
         if (Object.prototype.toString.call(id) === '[object Array]') {
@@ -22,10 +22,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         // 需要page和offset限制一下返回, 如果歌单内的歌曲超出1000的话会导致响应400
         const response = await playlist_track_all({
             id,
+            cookie: headerCookie,
             limit: pageSize,
             offset: (Number(page) - 1) * pageSize,
         });
-        // console.log(response)
         const { code, songs, privileges } = response.body;
         if (code === 200) {
             res.send({
@@ -37,12 +37,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             });
             return;
         }
-        res.send({ code: 0, message: '意外错误' });
+        response.status = 400;
+        throw response;
     } catch (error: any) {
         console.error(error);
         res.status(error.status || 500).send({
             code: 500,
-            data: null,
+            data: error.body || null,
             message: error.message,
         });
     }

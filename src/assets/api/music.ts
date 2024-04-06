@@ -1,6 +1,6 @@
 import to from 'await-to-js';
 import { axios, AxiosResolve, AxiosReject } from '.';
-import { CloudMusic, MusicInfo, PageQuery } from '@/interface';
+import { CloudMusic, MusicInfo, PageQuery, CloudPlaylist } from '@/interface';
 
 export interface MusicResult {
     name: string;
@@ -21,6 +21,16 @@ export const getMusicList = (page?: PageQuery) =>
             },
         })
     );
+/** 获取网易云歌单信息 */
+export const getCloudMusicListInfo = (id: string) =>
+    to<AxiosResolve<CloudPlaylist>, AxiosReject>(
+        axios.get('/music/cloud/getlist/info', {
+            params: {
+                id,
+            },
+        })
+    );
+
 /** 获取网易云歌单内歌曲 */
 export const getCloudMusicList = (id: string, page?: PageQuery) =>
     to<AxiosResolve<CloudMusic[]>, AxiosReject>(
@@ -28,6 +38,16 @@ export const getCloudMusicList = (id: string, page?: PageQuery) =>
             params: {
                 id,
                 ...page,
+            },
+        })
+    );
+
+/** 获取网易云歌曲信息 */
+export const getCloudMusicInfo = (ids: string[]) =>
+    to<AxiosResolve<CloudMusic[]>, AxiosReject>(
+        axios.get('/music/cloud/getsong/info', {
+            params: {
+                ids: ids.join(','),
             },
         })
     );
