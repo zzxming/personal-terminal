@@ -1,4 +1,4 @@
-import { Position } from '@/interface/interface';
+import { Position } from '@/interface';
 import { MutableRefObject, useEffect } from 'react';
 
 interface DraggableOptions {

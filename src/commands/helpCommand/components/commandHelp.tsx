@@ -1,7 +1,7 @@
 import css from '../index.module.scss';
 import { commandUseFunc } from '@/commands';
 import { Table, TableColumnsType } from 'antd';
-import { Command, CommandOption, CommandParam, objectValueType } from '@/interface/interface';
+import { Command, CommandOption, CommandParam, objectValueType } from '@/interface';
 
 interface LegalValueTable {
     key: string;

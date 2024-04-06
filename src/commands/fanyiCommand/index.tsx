@@ -1,5 +1,5 @@
 import { fanyiApi, FanyiRejResult, FanyiResResult } from '@/assets/api';
-import { Command, CommandOutputStatus } from '@/interface/interface';
+import { Command, CommandOutputStatus } from '@/interface';
 import { TranslateError } from './components/translateError';
 import { lang } from '@/assets/js/translateLanguage';
 import { TranslateSuccess } from './components/translatSuccess';

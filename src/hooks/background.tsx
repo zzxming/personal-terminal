@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { LOCALSTORAGECONFIG, LOCALSTORAGEEVENTMAP } from '@/assets/js/const';
-import { ConfigData } from '@/interface/interface';
+import { ConfigData } from '@/interface';
 import { localStorageGetItem } from '@/utils/localStorage';
 
 const useBackground = () => {
@@ -10,7 +10,7 @@ const useBackground = () => {
         // 要监听到localstorage的变化
 
         function updateBg() {
-            const { bgurl } = localStorageGetItem(LOCALSTORAGECONFIG) as ConfigData;
+            const { bgurl } = localStorageGetItem<ConfigData>(LOCALSTORAGECONFIG);
             setImgurl(bgurl);
         }
         window.addEventListener(LOCALSTORAGEEVENTMAP[LOCALSTORAGECONFIG], updateBg);

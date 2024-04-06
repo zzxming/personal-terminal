@@ -1,4 +1,4 @@
-import { Command, CommandOutputStatus, ConfigData } from '@/interface/interface';
+import { Command, CommandOutputStatus } from '@/interface';
 import { LOCALSTORAGECONFIG } from '@/assets/js/const';
 import { localStorageGetItem, localStorageSetItem } from '@/utils/localStorage';
 
@@ -22,8 +22,7 @@ const openCommand: Command = {
         // console.log(args)
         const { _ } = args;
 
-        let config = localStorageGetItem(LOCALSTORAGECONFIG) as ConfigData;
-        localStorageSetItem(LOCALSTORAGECONFIG, { ...config, open: _[0] });
+        localStorageSetItem(LOCALSTORAGECONFIG, { ...localStorageGetItem(LOCALSTORAGECONFIG), open: _[0] });
 
         return {
             constructor: '配置成功',

@@ -1,9 +1,9 @@
 import { getAdcode, getWeather } from '@/assets/api/weather';
 import { LOCALSTORAGECONFIG, LOCALSTORAGWEATHER } from '@/assets/js/const';
-import { Command, CommandOutputStatus, ConfigData, WeatherConfig } from '@/interface/interface';
+import { Command, CommandOutputStatus, ConfigData, WeatherConfig } from '@/interface';
 import { SetCommand } from './subCommand/setCommand';
 import { localStorageGetItem, localStorageSetItem } from '@/utils/localStorage';
-import { WeatherForecastList } from './component/WeatherForecastList';
+import { WeatherForecastList } from './components/weatherForecastList';
 
 // weather param // 搜索某地的实时天气
 // weather -fc parms  // 搜索某地的预报天气
@@ -36,14 +36,14 @@ const weatherCommand: Command = {
         const { _, show: isShow, forecast } = args;
 
         if (isShow) {
-            const weatherConfig = localStorageGetItem(LOCALSTORAGWEATHER) as WeatherConfig;
+            const weatherConfig = localStorageGetItem<WeatherConfig>(LOCALSTORAGWEATHER);
             if (!weatherConfig.city) {
                 return {
                     status: CommandOutputStatus.error,
                     constructor: '请先设置城市',
                 };
             }
-            const globalConfig = localStorageGetItem(LOCALSTORAGECONFIG) as ConfigData;
+            const globalConfig = localStorageGetItem<ConfigData>(LOCALSTORAGECONFIG);
             localStorageSetItem(LOCALSTORAGECONFIG, {
                 ...globalConfig,
                 weather: !globalConfig.weather,
@@ -57,7 +57,7 @@ const weatherCommand: Command = {
         if (forecast) {
             let queryCity = forecast;
             if (forecast instanceof Boolean) {
-                queryCity = (localStorageGetItem(LOCALSTORAGWEATHER) as WeatherConfig).city;
+                queryCity = localStorageGetItem<WeatherConfig>(LOCALSTORAGWEATHER).city;
             }
             commandHandle.pushCommands(
                 {

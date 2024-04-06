@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Avatar } from 'antd';
 import { GlobalOutlined } from '@ant-design/icons';
-import { ConfigData, Mark, MarkData } from '@/interface/interface';
+import { ConfigData, Mark, MarkData } from '@/interface';
 import { localStorageGetItem, localStorageSetItem } from '@/utils/localStorage';
 import { LOCALSTORAGECONFIG, LOCALSTORAGEEVENTMAP, LOCALSTORAGEMARK } from '@/assets/js/const';
 import css from '../index.module.scss';
@@ -22,8 +22,8 @@ export const MarkNav = () => {
     }, []);
     /** 获取最新mark */
     const getMark = () => {
-        let { data } = localStorageGetItem(LOCALSTORAGEMARK) as MarkData;
-        let { mark } = localStorageGetItem(LOCALSTORAGECONFIG) as ConfigData;
+        let { data } = localStorageGetItem<MarkData>(LOCALSTORAGEMARK);
+        let { mark } = localStorageGetItem<ConfigData>(LOCALSTORAGECONFIG);
         // console.log(data)
         if (!data) {
             // 初始化localstorage的mark

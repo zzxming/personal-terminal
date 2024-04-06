@@ -1,0 +1,77 @@
+.playlist {
+    @apply fixed bottom-3 right-3 z-10 p-4 text-xl rounded-lg shadow bg-neutral-50;
+    & &_icon {
+        @apply flex items-center cursor-pointer text-stone-500 hover:text-stone-700;
+    }
+    &_popover {
+        transition-property: opacity, transform;
+        transition-duration: 300ms;
+        transform-origin: 95% 100%;
+        @apply absolute -top-2 right-0 -translate-y-full w-80 p-4 rounded-lg bg-neutral-50 shadow text-stone-600 scale-0 opacity-0;
+        &.active {
+            @apply opacity-100 scale-100;
+        }
+    }
+    &_music {
+        @apply flex items-center gap-4;
+        &-cover {
+            @apply w-10 h-10 rounded-lg object-cover;
+        }
+        &_info {
+            @apply flex-1;
+        }
+        &-title {
+            @apply text-xl font-semibold line-clamp-1;
+        }
+        &-detail {
+            @apply text-sm font-medium line-clamp-1;
+        }
+        &_control {
+            @apply flex items-center justify-around py-2 text-xl;
+        }
+        &-volume {
+            @apply h-20;
+        }
+    }
+    &_list {
+        &_item {
+            @apply flex items-center w-full h-12 p-1 text-black/80 border-b border-black/5 first:border-t hover:opacity-75 transition-opacity text-left;
+            &.active,
+            &:hover {
+                @apply bg-gray-100;
+            }
+            &-count {
+                @apply flex items-center justify-center w-12 text-sm;
+            }
+            &_info {
+                @apply flex-1;
+            }
+            &-title {
+                @apply text-base line-clamp-1;
+            }
+            &_detail {
+                @apply flex items-center text-xs line-clamp-1;
+            }
+            &-author {
+                @apply text-stone-600 line-clamp-1;
+            }
+            &-remove {
+                @apply flex items-center p-1 text-sm text-black/20 hover:text-black/60;
+            }
+        }
+        &-loading {
+            @apply flex items-center justify-center w-full h-72;
+        }
+        &_skeleton {
+            @apply py-2 px-1;
+        }
+    }
+}
+.music {
+    &_tag {
+        @apply inline-flex items-center text-base;
+        &_item {
+            @apply mr-1;
+        }
+    }
+}

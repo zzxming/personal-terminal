@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Badge, Button, TimePicker, Form, Input, Popconfirm, Switch, Table, Typography, message } from 'antd';
 import { localStorageGetItem, localStorageSetItem } from '@/utils/localStorage';
-import { LogData } from '@/interface/interface';
+import { LogData } from '@/interface';
 import dayjs, { Dayjs } from 'dayjs';
 import css from '../index.module.scss';
 import { LOCALSTORAGELOG } from '@/assets/js/const';
@@ -69,7 +69,7 @@ interface LogExpandTableProps {
 
 const dayjsFormatStr = 'HH:mm:ss';
 const getLogTableData = (datakey: string) => {
-    const logData = localStorageGetItem(LOCALSTORAGELOG) as LogData;
+    const logData = localStorageGetItem<LogData>(LOCALSTORAGELOG);
     return logData[datakey]
         .sort((a, b) => new Date(`${datakey} ${a.date}`).valueOf() - new Date(`${datakey} ${b.date}`).valueOf())
         .map((detail) => ({
@@ -87,7 +87,7 @@ const LogExpandTable = ({ datakey, index }: LogExpandTableProps) => {
 
     const updateLocalstorage = (item: Item | null, index: number = data.length) => {
         if (!item) {
-            const result = { ...(localStorageGetItem(LOCALSTORAGELOG) as LogData) };
+            const result = { ...localStorageGetItem<LogData>(LOCALSTORAGELOG) };
             const value = result[datakey];
             value.splice(index, 1);
             localStorageSetItem(LOCALSTORAGELOG, result);
@@ -108,7 +108,7 @@ const LogExpandTable = ({ datakey, index }: LogExpandTableProps) => {
         const resultDate = itemDate.format(dayjsFormatStr);
         const newVal = { ...item, date: resultDate, key: resultDate };
         // 更新本地存储
-        const result = { ...(localStorageGetItem(LOCALSTORAGELOG) as LogData) };
+        const result = { ...localStorageGetItem<LogData>(LOCALSTORAGELOG) };
         const value = result[datakey];
         value.splice(index, 1, newVal);
         localStorageSetItem(LOCALSTORAGELOG, result);

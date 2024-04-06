@@ -1,4 +1,4 @@
-import { Command, CommandOutputStatus, LogData } from '@/interface/interface';
+import { Command, CommandOutputStatus, LogData } from '@/interface';
 import { LogTable } from './components/logTable';
 
 // 日期,内容.根据日期分类.

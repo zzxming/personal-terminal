@@ -1,4 +1,4 @@
-import { Command, CommandOutputStatus, ConfigData, openType } from '@/interface/interface';
+import { Command, CommandOutputStatus, ConfigData, openType } from '@/interface';
 import { clearCommand } from './subComand/clearCommand';
 import { openCommand } from './subComand/openCommand';
 import { styleCommand } from './subComand/styleCommand';
@@ -48,6 +48,7 @@ const initValLocalStorageConfig = (): ConfigData => {
         mark: true,
         time: false,
         weather: false,
+        musicPlaylist: false,
     };
 };
 

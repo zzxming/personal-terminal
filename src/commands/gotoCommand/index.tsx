@@ -1,5 +1,5 @@
 import { LOCALSTORAGECONFIG, LOCALSTORAGEMARK } from '@/assets/js/const';
-import { Command, CommandOutputStatus, ConfigData, MarkData, openType } from '@/interface/interface';
+import { Command, CommandOutputStatus, ConfigData, MarkData, openType } from '@/interface';
 import { localStorageGetItem } from '@/utils/localStorage';
 import { toNewPage } from '@/utils/toNewPage';
 
@@ -27,8 +27,8 @@ const gotoCommand: Command = {
         const { _, self } = args;
 
         const keyword = _[0];
-        const { open } = localStorageGetItem(LOCALSTORAGECONFIG) as ConfigData;
-        const { data: marks } = localStorageGetItem(LOCALSTORAGEMARK) as MarkData;
+        const { open } = localStorageGetItem<ConfigData>(LOCALSTORAGECONFIG);
+        const { data: marks } = localStorageGetItem<MarkData>(LOCALSTORAGEMARK);
         const findMark = marks.find((mark) => mark.title === keyword);
         const openUrl = findMark ? findMark.url : `https://${keyword}`;
         toNewPage(openUrl, self ? openType.self : open);

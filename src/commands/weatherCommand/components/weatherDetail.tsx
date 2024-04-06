@@ -8,7 +8,7 @@ import Wind from '@/assets/svg/wind.svg';
 import Droplets from '@/assets/svg/droplets.svg';
 import Thermometer from '@/assets/svg/thermometer.svg';
 import SnowFlake from '@/assets/svg/snowFlake.svg';
-import { ConfigData, WeatherConfig, WeatherLiveInfo } from '@/interface/interface';
+import { ConfigData, WeatherConfig, WeatherLiveInfo } from '@/interface';
 import { getWeather } from '@/assets/api/weather';
 import css from '../index.module.scss';
 import { localStorageGetItem } from '@/utils/localStorage';
@@ -127,24 +127,27 @@ const WeatherDetail = () => {
     const [weatherError, setWeatherError] = useState('');
     const [city, setCity] = useState('');
     const [show, setShow] = useState(false);
-    const [config, setConfig] = useState(localStorageGetItem(LOCALSTORAGWEATHER) as WeatherConfig);
+    const [config, setConfig] = useState(localStorageGetItem<WeatherConfig>(LOCALSTORAGWEATHER));
 
     const visible = () => {
-        const config = localStorageGetItem(LOCALSTORAGECONFIG) as ConfigData;
+        const config = localStorageGetItem<ConfigData>(LOCALSTORAGECONFIG);
         setShow(config.weather);
     };
     useEffect(() => {
         visible();
         window.addEventListener(LOCALSTORAGEEVENTMAP[LOCALSTORAGECONFIG], visible);
         window.addEventListener(LOCALSTORAGEEVENTMAP[LOCALSTORAGWEATHER], getWeatherInfo);
+        const timer = setInterval(getWeatherInfo, 1000 * 3600 * 2);
         return () => {
             window.removeEventListener(LOCALSTORAGEEVENTMAP[LOCALSTORAGECONFIG], visible);
             window.removeEventListener(LOCALSTORAGEEVENTMAP[LOCALSTORAGWEATHER], getWeatherInfo);
+            clearInterval(timer);
         };
     }, []);
 
     const getWeatherInfo = () => {
-        const weatherConfig = localStorageGetItem(LOCALSTORAGWEATHER) as WeatherConfig;
+        const weatherConfig = localStorageGetItem<WeatherConfig>(LOCALSTORAGWEATHER);
+        setConfig(weatherConfig);
         setCity(weatherConfig.city);
         return getWeather(weatherConfig.adcode, 'base').then(([err, res]) => {
             if (err || res.data.data.status !== '1') {
@@ -155,35 +158,26 @@ const WeatherDetail = () => {
             setWeatherDetail(res.data.data.lives[0]);
         });
     };
-    useEffect(() => {
-        const timer = setInterval(getWeatherInfo, 1000 * 3600 * 2);
-        return () => clearInterval(timer);
-    }, []);
-
-    const Detail = useMemo(() => withInitLoading(WeatherDetailInner, getWeatherInfo), [city]);
+    const Detail = useMemo(() => withInitLoading(WeatherDetailInner, getWeatherInfo), []);
 
     const weatherRef = useRef<HTMLDivElement | null>(null);
     useDraggable(weatherRef, {
         callback({ x, y }) {},
     });
 
-    return (
-        <>
-            {show ? (
-                <div
-                    ref={weatherRef}
-                    className={css.weather}
-                    style={{ left: config.x, top: config.y }}
-                >
-                    <Detail
-                        address={city}
-                        detail={weatherDetail}
-                        error={weatherError}
-                    />
-                </div>
-            ) : null}
-        </>
-    );
+    return show ? (
+        <div
+            ref={weatherRef}
+            className={css.weather}
+            style={{ left: config.x, top: config.y }}
+        >
+            <Detail
+                address={city}
+                detail={weatherDetail}
+                error={weatherError}
+            />
+        </div>
+    ) : null;
 };
 
 export { WeatherDetail };

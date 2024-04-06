@@ -1,5 +1,5 @@
 import { getBiliSearchTypeResult } from '@/assets/api';
-import { BiliTypeVideo } from '@/interface/interface';
+import { BiliTypeVideo } from '@/interface';
 import { List } from 'antd';
 import { useEffect, useState } from 'react';
 import css from '../index.module.scss';

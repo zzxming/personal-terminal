@@ -1,6 +1,6 @@
 import { List } from 'antd';
 import { LOCALSTORAGECONFIG } from '@/assets/js/const';
-import { ConfigData } from '@/interface/interface';
+import { ConfigData } from '@/interface';
 import { localStorageGetItem } from '@/utils/localStorage';
 import css from './index.module.scss';
 
@@ -11,7 +11,7 @@ interface IResultList<T> {
 
 const CommandResultListOutput = <T,>(props: IResultList<T>) => {
     const { data, render } = props;
-    const { style } = localStorageGetItem(LOCALSTORAGECONFIG) as ConfigData;
+    const { style } = localStorageGetItem<ConfigData>(LOCALSTORAGECONFIG);
 
     return (
         <>

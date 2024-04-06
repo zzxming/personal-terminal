@@ -1,6 +1,6 @@
 import { commandMap, helpIgnoreCommand } from '../registerCommand';
 import { searchCommand } from '..';
-import { Command, CommandOutputStatus } from '@/interface/interface';
+import { Command, CommandOutputStatus } from '@/interface';
 import { CommandHelp } from './components/commandHelp';
 import { CommandList } from './components/commandList';
 import { randomID } from '@/utils/tools';

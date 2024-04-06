@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, DatePicker, Form, Popconfirm, Table, Typography } from 'antd';
 import { localStorageGetItem, localStorageSetItem } from '@/utils/localStorage';
-import { LogData } from '@/interface/interface';
+import { LogData } from '@/interface';
 import dayjs, { Dayjs } from 'dayjs';
 import css from '../index.module.scss';
 import { LogExpandTable } from './logExpandTable';
@@ -54,7 +54,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
 };
 const dayjsFormatStr = 'YYYY-MM-DD';
 const getLogTableData = () => {
-    const logData = localStorageGetItem(LOCALSTORAGELOG) as LogData;
+    const logData = localStorageGetItem<LogData>(LOCALSTORAGELOG);
     return Object.keys(logData)
         .sort((a, b) => new Date(a).valueOf() - new Date(b).valueOf())
         .map((date) => ({
@@ -71,7 +71,7 @@ const LogTable = () => {
 
     const updateLocalstorage = (key: string | null, newKey: string | null) => {
         // 更新本地存储
-        const oldLogData = localStorageGetItem(LOCALSTORAGELOG) as LogData;
+        const oldLogData = localStorageGetItem<LogData>(LOCALSTORAGELOG);
         const result = { ...oldLogData };
         key && delete result[key];
         if (newKey) {

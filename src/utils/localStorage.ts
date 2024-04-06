@@ -16,17 +16,17 @@ const localStorageSetItem = (key: string, value: any) => {
     localStorage.setItem(key, value);
 };
 
-const localStorageGetItem = (key: string) => {
+const localStorageGetItem = <T>(key: string): T => {
     let result = localStorage.getItem(key);
     // 非json格式字符串会报错
+    // 获取值 null 时判断是否需要初始值
+    if (result === null) {
+        return localStorageInitValue<T>(key);
+    }
     try {
-        // 获取值 null 时判断是否需要初始值
-        if (result === null) {
-            result = localStorageInitValue(key);
-        }
-        return result ? JSON.parse(result) : null;
-    } catch (e) {
-        return result;
+        return JSON.parse(result) as T;
+    } catch {
+        return result as T;
     }
 };
 /** localstorage 中需要初始值的 key 和对应初始值生成函数 */
@@ -38,13 +38,13 @@ const localStorageInitValueMap: {
  * @param key 在 localstorage 的 key
  * @returns 对应 localstorage 初始值, 或null
  */
-const localStorageInitValue = (key: string) => {
+const localStorageInitValue = <T = any>(key: string) => {
     if (localStorageInitValueMap[key]) {
-        let initValue = localStorageInitValueMap[key]();
+        const initValue = localStorageInitValueMap[key]() as T;
         localStorageSetItem(key, initValue);
         return initValue;
     }
-    return null;
+    throw new Error(`localStorage 初始值函数不存在`);
 };
 
 export { localStorageSetItem, localStorageGetItem, localStorageInitValue, localStorageInitValueMap };

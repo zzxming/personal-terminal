@@ -1,6 +1,6 @@
 import { getURLDomain } from '..';
 import { LOCALSTORAGEMARK } from '@/assets/js/const';
-import { Command, CommandOutputStatus, MarkData } from '@/interface/interface';
+import { Command, CommandOutputStatus, MarkData } from '@/interface';
 import { localStorageGetItem, localStorageSetItem } from '@/utils/localStorage';
 
 const addMark: Command = {
@@ -30,7 +30,7 @@ const addMark: Command = {
         paramVal['name'] = _.slice(0, _.length - 1).join(' ');
         // console.log(paramVal)
 
-        const preMark = localStorageGetItem(LOCALSTORAGEMARK) as MarkData;
+        const preMark = localStorageGetItem<MarkData>(LOCALSTORAGEMARK);
         if (preMark.data.find((mark) => mark.key === paramVal.name)) {
             return {
                 constructor: `书签 ${paramVal.name} 已存在`,

@@ -1,6 +1,6 @@
 import { initValLocalStorageConfig } from '..';
 import { LOCALSTORAGECONFIG } from '@/assets/js/const';
-import { Command, CommandOutputStatus } from '@/interface/interface';
+import { Command, CommandOutputStatus } from '@/interface';
 import { localStorageSetItem } from '@/utils/localStorage';
 
 const clearCommand: Command = {

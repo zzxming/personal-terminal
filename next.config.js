@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    reactStrictMode: true,
+    reactStrictMode: false,
     webpack: (config, options) => {
         config.module.rules.push({
             test: /\.svg$/,
@@ -8,6 +8,9 @@ const nextConfig = {
         });
 
         return config;
+    },
+    serverRuntimeConfig: {
+        PROJECT_ROOT: __dirname,
     },
 };
 module.exports = nextConfig;

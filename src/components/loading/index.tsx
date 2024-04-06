@@ -8,6 +8,7 @@ export const withInitLoading = <P extends Object>(
 ) => {
     return function (props: P) {
         const [isLoading, setIsLoading] = useState(true);
+        console.log('load');
 
         useEffect(() => {
             loadFunc().finally(() => {
@@ -15,21 +16,17 @@ export const withInitLoading = <P extends Object>(
             });
         }, []);
 
-        return (
-            <>
-                {isLoading ? (
-                    <Spin
-                        indicator={
-                            <LoadingOutlined
-                                style={{ fontSize: 24 }}
-                                spin
-                            />
-                        }
+        return isLoading ? (
+            <Spin
+                indicator={
+                    <LoadingOutlined
+                        style={{ fontSize: 24 }}
+                        spin
                     />
-                ) : (
-                    <WrapComponent {...props} />
-                )}
-            </>
+                }
+            />
+        ) : (
+            <WrapComponent {...props} />
         );
     };
 };

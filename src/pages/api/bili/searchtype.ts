@@ -1,4 +1,4 @@
-import { getQuery } from '@/utils/query';
+import { getQuery } from '@/utils/request';
 import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next/dist/shared/lib/utils';
 

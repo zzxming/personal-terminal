@@ -1,4 +1,4 @@
-import { Command, CommandOutputStatus } from '@/interface/interface';
+import { Command, CommandOutputStatus } from '@/interface';
 import { BiliVideoIframe } from './components/biliVideoIframe';
 import { searchCommand } from './subCommand/searchCommand';
 

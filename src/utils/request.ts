@@ -4,8 +4,7 @@ export const getQuery = (req: NextApiRequest, res: NextApiResponse) => {
     const query = req.query;
     const result: { [key: string]: string } = {};
     for (const key in query) {
-        let val = query[key];
-        if (!val) continue;
+        let val = query[key]!;
         if (val instanceof Array) {
             val = val[0];
         }

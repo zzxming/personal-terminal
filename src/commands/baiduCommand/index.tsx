@@ -1,4 +1,4 @@
-import { Command, CommandOutputStatus, openType } from '@/interface/interface';
+import { Command, CommandOutputStatus, openType } from '@/interface';
 import { toNewPage } from '@/utils/toNewPage';
 
 const baiduCommand: Command = {

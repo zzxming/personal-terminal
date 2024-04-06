@@ -1,5 +1,5 @@
 import { CommandResultListOutput } from '@/components/commandListOutput';
-import { HistoryCommand } from '@/interface/interface';
+import { HistoryCommand } from '@/interface';
 
 interface HistoryListProps {
     data: HistoryCommand[];
