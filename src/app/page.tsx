@@ -12,7 +12,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { MarkNav } from '@/commands/markCommand/components/markNav';
 import { TimeCount } from '@/commands/timeCommand/components/timeCount';
 import { WeatherDetail } from '@/commands/weatherCommand/components/weatherDetail';
-import { MusicPlaylist } from '@/commands/musicCommand/components/musicPlaylist';
+import { PlaylistPopover } from '@/commands/musicCommand/components/playlistPopover';
 
 const GlobalConfigComponent = ({ config }: { config?: ConfigData }) => {
     return (
@@ -20,7 +20,7 @@ const GlobalConfigComponent = ({ config }: { config?: ConfigData }) => {
             {config?.mark ? <MarkNav /> : null}
             {config?.time ? <TimeCount /> : null}
             {config?.weather ? <WeatherDetail /> : null}
-            {config?.musicPlaylist ? <MusicPlaylist /> : null}
+            {config?.musicPlaylist ? <PlaylistPopover /> : null}
         </div>
     );
 };

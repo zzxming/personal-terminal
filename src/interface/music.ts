@@ -14,6 +14,7 @@ export interface CloudPlaylist {
     shareCount: number;
     commentCount: number;
     trackCount: number;
+    creator: { userId: number; nickname: string };
     trackIds: {
         id: number;
     }[];

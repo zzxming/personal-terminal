@@ -34,33 +34,36 @@
         }
     }
     &_list {
-        &_item {
-            @apply flex items-center w-full h-12 p-1 text-black/80 border-b border-black/5 first:border-t hover:opacity-75 transition-opacity text-left;
-            &.active,
-            &:hover {
-                @apply bg-gray-100;
-            }
-            &-count {
-                @apply flex items-center justify-center w-12 text-sm;
-            }
-            &_info {
-                @apply flex-1;
-            }
-            &-title {
-                @apply text-base line-clamp-1;
-            }
-            &_detail {
-                @apply flex items-center text-xs line-clamp-1;
-            }
-            &-author {
-                @apply text-stone-600 line-clamp-1;
-            }
-            &-remove {
-                @apply flex items-center p-1 text-sm text-black/20 hover:text-black/60;
-            }
+        .music_item {
+            @apply border-b border-black/5 first:border-t cursor-pointer hover:bg-gray-100 hover:opacity-75 transition-opacity;
         }
         &-loading {
             @apply flex items-center justify-center w-full h-72;
+        }
+    }
+    &_item {
+        @apply flex items-center w-full h-12 p-1 text-black/80 text-left;
+        &-count {
+            @apply flex items-center justify-center w-12 text-sm;
+        }
+        &_info {
+            @apply flex-1;
+        }
+        &-title {
+            @apply text-base line-clamp-1;
+        }
+        &_detail {
+            @apply flex items-center text-xs line-clamp-1;
+        }
+        &-author {
+            @apply before:content-['by_'] before:text-gray-500 mr-4;
+        }
+        &-author,
+        &-trackcount {
+            @apply text-stone-600 line-clamp-1;
+        }
+        &_control {
+            @apply flex items-center justify-around;
         }
         &_skeleton {
             @apply py-2 px-1;
@@ -68,10 +71,47 @@
     }
 }
 .music {
+    &_item {
+        @apply flex items-center w-full h-12 p-1 text-black/80 text-left;
+        &.active {
+            @apply bg-gray-100;
+        }
+        &-count {
+            @apply flex items-center justify-center w-12 text-sm;
+        }
+        &_info {
+            @apply flex-1;
+        }
+        &-title {
+            @apply text-base line-clamp-1;
+        }
+        &_detail {
+            @apply flex items-center text-xs line-clamp-1;
+        }
+        &-author {
+            @apply text-stone-600 line-clamp-1;
+        }
+        &-remove {
+            @apply flex items-center p-1 text-sm text-black/20 hover:text-black/60;
+        }
+        &_control {
+            @apply flex items-center justify-around;
+        }
+    }
+    &_skeleton {
+        @apply py-2 px-1;
+    }
     &_tag {
         @apply inline-flex items-center text-base;
         &_item {
             @apply mr-1;
+        }
+    }
+}
+.search {
+    &_result {
+        &_list {
+            @apply bg-white;
         }
     }
 }

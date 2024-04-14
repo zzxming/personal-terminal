@@ -20,7 +20,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         }
 
         // 需要page和offset限制一下返回, 如果歌单内的歌曲超出1000的话会导致响应400
-        const response = await playlist_track_all({
+        const response = await (playlist_track_all as any)({
             id,
             cookie: headerCookie,
             limit: pageSize,
@@ -32,7 +32,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 code: 1,
                 data: (songs as any[]).map((song, index) => ({
                     ...song,
-                    st: (privileges as any[])[index].st,
+                    st: privileges[index].st,
                 })),
             });
             return;

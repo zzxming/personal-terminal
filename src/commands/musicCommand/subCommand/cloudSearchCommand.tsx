@@ -1,5 +1,7 @@
-import { getNeteaseMusic, getNeteaseMusicList, AxiosResolve, MusicResult, AxiosReject } from '@/assets/api';
+import { getNeteaseMusic, getNeteaseMusicList } from '@/assets/api';
 import { Command, CommandOutputStatus } from '@/interface';
+import { MusicRequestType } from '../types';
+import { MusicSearchListItem } from '@/commands/musicCommand/components/musicSearchListItem';
 
 export const musicSearchCommand: Command = {
     name: 'search',
@@ -23,79 +25,74 @@ export const musicSearchCommand: Command = {
                 2: '歌曲',
             },
         },
-        {
-            key: 'id',
-            alias: 'i',
-            desc: '是否使用id获取',
-            defaultValue: 'off',
-            valueNeeded: false,
-        },
+        // {
+        //     key: 'id',
+        //     alias: 'i',
+        //     desc: '是否使用id获取',
+        //     defaultValue: 'off',
+        //     valueNeeded: false,
+        // },
     ],
     subCommands: [],
     async action(args, commandHandle) {
-        // console.log(args)
-        const { _, type, id } = args;
+        // console.log(args);
+        let { _ } = args;
+        const type = Number(args.type) as MusicRequestType;
         const keywords = _.join(' ');
-
         // 0请求歌单,2请求歌曲
-        const musicRequestOption: {
-            [key: string]: {
-                type: number;
-                func: (keywords: any) => Promise<[AxiosReject | null, AxiosResolve<MusicResult[]> | undefined]>;
-                height: number;
-            };
-        } = {
-            0: { type: 0, func: getNeteaseMusicList, height: 450 },
-            2: { type: 2, func: getNeteaseMusic, height: 110 },
+        const musicRequestOption = {
+            [MusicRequestType.Playlist]: { func: getNeteaseMusicList },
+            [MusicRequestType.Song]: { func: getNeteaseMusic },
         };
-        const getTypeOption = musicRequestOption[type as number];
-        let urlid: string | number = keywords;
-        // 没有id搜索,正常关键字搜索
-        if (id === 'off') {
-            const [err, result] = await getTypeOption.func(keywords);
-            if (err) {
-                // console.log(err)
-                return {
-                    constructor: err.response?.data?.message || err.response?.statusText || err.message,
-                    status: CommandOutputStatus.error,
-                };
-            }
-            if (result) {
-                if (result.data.code !== 0) {
-                    // console.log(result)
-                    return {
-                        constructor: '网络错误',
-                        status: CommandOutputStatus.error,
-                    };
-                }
-                // console.log(result)
-                const songs = result.data.data;
-                if (songs.length < 1) {
-                    return {
-                        constructor: 'Not Found',
-                        status: CommandOutputStatus.error,
-                    };
-                }
-                urlid = songs[0].id;
-            }
+        const getTypeOption = musicRequestOption[type];
+        const [err, result] = await getTypeOption.func(keywords);
+        if (err) {
+            return {
+                constructor: err.response?.data?.message || err.response?.statusText || err.message,
+                status: CommandOutputStatus.error,
+            };
+        }
+        if (result.data.code !== 0) {
+            return {
+                constructor: '网络错误',
+                status: CommandOutputStatus.error,
+            };
+        }
+        const data = result.data.data;
+        if (data.length < 1) {
+            return {
+                constructor: 'Not Found',
+                status: CommandOutputStatus.error,
+            };
         }
 
-        const url = `https://music.163.com/outchain/player?type=${type}&id=${urlid}&auto=1&height=${
-            getTypeOption.height - 20
-        }`;
+        const construct = (
+            <MusicSearchListItem
+                type={type}
+                data={data}
+            />
+        );
         return {
-            constructor: (
-                <iframe
-                    frameBorder="no"
-                    marginWidth={0}
-                    marginHeight={0}
-                    width="330"
-                    height={getTypeOption.height}
-                    src={url}
-                    title={`${keywords}`}
-                ></iframe>
-            ),
-            status: CommandOutputStatus.success,
+            constructor: construct || '类型错误',
+            status: construct ? CommandOutputStatus.success : CommandOutputStatus.error,
         };
+
+        // const url = `https://music.163.com/outchain/player?type=${type}&id=${urlid}&auto=1&height=${
+        //     getTypeOption.height - 20
+        // }`;
+        // return {
+        //     constructor: (
+        //         <iframe
+        //             frameBorder="no"
+        //             marginWidth={0}
+        //             marginHeight={0}
+        //             width="330"
+        //             height={getTypeOption.height}
+        //             src={url}
+        //             title={`${keywords}`}
+        //         ></iframe>
+        //     ),
+        //     status: CommandOutputStatus.success,
+        // };
     },
 };
