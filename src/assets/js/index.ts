@@ -1,2 +1,2 @@
-export * from '@/assets/js/const';
-export * from '@/assets/js/translateLanguage';
+export * from './const';
+export * from './translateLanguage';

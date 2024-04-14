@@ -51,7 +51,6 @@ const commandMap: Command[] = [
     logCommand,
     biliCommand,
     calculatorCommand,
-
     weatherCommand,
 ];
 const helpIgnoreCommand: Command[] = [helpCommand];

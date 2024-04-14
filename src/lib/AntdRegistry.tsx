@@ -1,5 +1,4 @@
 'use client';
-
 import React from 'react';
 import {
     createCache,
@@ -15,7 +14,7 @@ const px2rem = px2remTransformer({
     rootValue: 16,
 });
 
-const StyledComponentsRegistry = ({ children }: React.PropsWithChildren) => {
+export const StyledComponentsRegistry = ({ children }: React.PropsWithChildren) => {
     const cache = React.useMemo<Entity>(() => createCache(), []);
     const isServerInserted = React.useRef<boolean>(false);
     useServerInsertedHTML(() => {
@@ -41,5 +40,3 @@ const StyledComponentsRegistry = ({ children }: React.PropsWithChildren) => {
         </StyleProvider>
     );
 };
-
-export default StyledComponentsRegistry;

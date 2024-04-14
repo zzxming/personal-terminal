@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.scss';
-import StyledComponentsRegistry from '@/lib/AntdRegistry';
+import { StyledComponentsRegistry, AudioStoreRegistry, PlaylisttoreRegistry } from '@/lib';
 
 import { ConfigProvider } from 'antd';
 import zhCN from 'antd/locale/zh_CN';
@@ -14,7 +14,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <html id="app">
             <body>
                 <StyledComponentsRegistry>
-                    <ConfigProvider locale={zhCN}>{children} </ConfigProvider>
+                    <ConfigProvider locale={zhCN}>
+                        <PlaylisttoreRegistry>
+                            <AudioStoreRegistry>{children}</AudioStoreRegistry>
+                        </PlaylisttoreRegistry>
+                    </ConfigProvider>
                 </StyledComponentsRegistry>
             </body>
         </html>
