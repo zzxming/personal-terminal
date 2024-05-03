@@ -1,15 +1,8 @@
 import React, { useRef, useState } from 'react';
+import minimist from 'minimist';
 import { commandUseFunc, searchCommand } from '@/commands/index';
 import { commandMap } from '@/commands/registerCommand';
-import {
-    Command,
-    CommandActionOutput,
-    CommandOption,
-    CommandOutput,
-    CommandOutputStatus,
-    CommandParamArgs,
-    HistoryCommand,
-} from '@/interface';
+import { CommandActionOutput, CommandOutput, CommandOutputStatus, CommandParamArgs, HistoryCommand } from '@/interface';
 import css from '@/app/index.module.scss';
 import { randomID } from '@/utils/tools';
 
@@ -79,64 +72,8 @@ const useCommand = (): UseCommandHook => {
      * @param option 命令的 options 选项, 若有则按 option 中的key返回
      * @returns 解析完成后对象, _为输入参数
      */
-    const paramParse = (command: Command, commands: string[], option?: CommandOption[]) => {
-        const params: CommandParamArgs = {
-            _: [],
-        };
-        // console.log(commands)
-        for (let i = 0; i < commands.length; i++) {
-            if (commands[i] === '') continue;
-
-            const nowParams = commands[i];
-            if (!nowParams.startsWith('-')) {
-                params._.push(nowParams);
-                continue;
-            }
-
-            const commandHasOptions = command.options.reduce((pre, cur) => {
-                pre[cur.key] = cur;
-                pre[cur.alias] = cur;
-                return pre;
-            }, {} as { [key: string]: CommandOption });
-
-            const alias = nowParams.slice(1);
-            // 传递了option, 根据option判断此参数是否有效
-            let commandOption: CommandOption | undefined;
-            if (option) {
-                commandOption = option.find((item) => item.alias === alias);
-                // option参数不存在
-                if (!commandOption) {
-                    continue;
-                }
-            }
-            // 若没有传递option传递, 或参数不需要值, 直接根据输入参数记录param
-            if (
-                (commandHasOptions[alias] && !commandHasOptions[alias].valueNeeded) ||
-                !commands[i + 1] ||
-                commands[i + 1].startsWith('-')
-            ) {
-                params[alias] = true;
-                commandOption && (params[commandOption.key] = true);
-            } else {
-                // 匹配带空格的参数值
-                // 如: mark modify 原来的名字 原来名字第二段 -n 第一段 第二段
-                // 保证 -n 获取的参数值是 '第一段 第二段' , _ 匹配的值是 ['原来的名字', '原来名字第二段']
-                let count = 1;
-                let paramVal: string[] = [];
-                do {
-                    paramVal.push(commands[i + count]);
-                    count += 1;
-                } while (commands[i + count] && !commands[i + count].startsWith('-'));
-                params[alias] = paramVal.join(' ');
-                commandOption && (params[commandOption.key] = paramVal.join(' '));
-                // i + count 会越界或得到参数名(-n), 减1, for 结束会加1
-                i += count - 1;
-            }
-        }
-
-        // console.log(commands);
-        // console.log(params);
-        return params;
+    const paramParse = (commands: string[]) => {
+        return minimist(commands);
     };
     /**
      * 执行字符串命令
@@ -158,7 +95,7 @@ const useCommand = (): UseCommandHook => {
         if (resultCommand) {
             // 子命令检测
             let actionCommand = resultCommand; // 最终执行命令
-            const commandParams: CommandParamArgs = paramParse(actionCommand, commandFragment.slice(1)); // 命令参数
+            const commandParams: CommandParamArgs = paramParse(commandFragment.slice(1)); // 命令参数
             while (actionCommand.subCommands.length > 0) {
                 // 若子命令输入正确, 则改变最终执行命令, 并删除参数第一位子命令 name
                 // 若输入错误则执行原本命令
