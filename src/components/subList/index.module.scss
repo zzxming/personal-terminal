@@ -1,0 +1,7 @@
+.sub {
+    &_list {
+        --columns: 4;
+        grid-template-columns: repeat(var(--columns), minmax(0, 1fr));
+        @apply grid;
+    }
+}

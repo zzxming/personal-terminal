@@ -1,5 +1,5 @@
 'use client';
-import { useRef, useLayoutEffect, useState, useEffect, ChangeEvent } from 'react';
+import { useRef, useLayoutEffect, useState, useEffect } from 'react';
 import { throttle } from 'lodash-es';
 import useBackground from '@/hooks/background';
 import useCommand from '@/hooks/command';
@@ -28,8 +28,10 @@ const GlobalConfigComponent = ({ config }: { config?: ConfigData }) => {
 const Terminal: React.FC = () => {
     const { imgurl } = useBackground();
     const commandHandle = useCommand();
-    const { commands, historyCommands, historyCommandsIndex, setCommandHint, excuteCommand } = commandHandle;
+    const { commands, historyCommands, historyCommandsIndex, setCommandHint, excuteCommand, setSubCommandsList } =
+        commandHandle;
     const [hintTxt, setHintTxt] = useState('');
+    const [isPatchSub, setIsPatchSub] = useState(false);
     const view = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLTextAreaElement>(null);
     const [globalConfig, setGlobalConfig] = useState<ConfigData>();
@@ -127,12 +129,13 @@ const Terminal: React.FC = () => {
             case 'Tab': {
                 e.preventDefault();
                 completeCommandInput();
-                break;
+                return;
             }
             default: {
                 break;
             }
         }
+        setIsPatchSub(false);
     }
     /** 根据输入字显示提示文字 */
     function keyPressEvent() {
@@ -141,17 +144,24 @@ const Terminal: React.FC = () => {
             setHintTxt(setCommandHint(inputRef.current.value));
         }
     }
-    const inputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const inputChange = () => {
         if (!inputRef.current) return;
-        inputRef.current && Object.assign(inputRef.current.style, calcTextareaHeight(inputRef.current));
+        Object.assign(inputRef.current.style, calcTextareaHeight(inputRef.current));
         throttleKeyPressEvnet();
     };
     const throttleKeyPressEvnet = throttle(keyPressEvent, 1000);
     /** 命令输入补全 */
     function completeCommandInput() {
         if (inputRef.current) {
-            const inpStr = inputRef.current.value;
+            const inpStr = inputRef.current.value.trim();
+            if (isPatchSub) {
+                setSubCommandsList(inpStr);
+                return;
+            }
             const completeCommandName = setCommandHint(inpStr, true);
+            if (completeCommandName === inpStr) {
+                setIsPatchSub(true);
+            }
             // 如果返回补全命令比输入命令短, 代表输入有参数, 不需要补全
             if (completeCommandName.length > inpStr.length) {
                 inputRef.current.value = completeCommandName;

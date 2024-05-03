@@ -2,9 +2,17 @@ import React, { useRef, useState } from 'react';
 import minimist from 'minimist';
 import { commandUseFunc, searchCommand } from '@/commands/index';
 import { commandMap } from '@/commands/registerCommand';
-import { CommandActionOutput, CommandOutput, CommandOutputStatus, CommandParamArgs, HistoryCommand } from '@/interface';
+import {
+    Command,
+    CommandActionOutput,
+    CommandOutput,
+    CommandOutputStatus,
+    CommandParamArgs,
+    HistoryCommand,
+} from '@/interface';
 import css from '@/app/index.module.scss';
 import { randomID } from '@/utils/tools';
+import { SubList } from '@/components/subList';
 
 // setCommandHint 函数中的 commands 类型使用 Command[] 有问题, 导致 commandMap 没法传入, 使用 typeof 获取类型
 export interface UseCommandHook {
@@ -15,6 +23,7 @@ export interface UseCommandHook {
     excuteCommand: (command: string, commandHandle: UseCommandHook) => void;
     setCommandHint: (str: string, isCompletion?: boolean, commands?: typeof commandMap) => string;
     pushCommands: (command: CommandActionOutput, isResult: boolean) => void;
+    setSubCommandsList: (commandStr: string) => void;
 }
 
 const useCommand = (): UseCommandHook => {
@@ -232,6 +241,40 @@ const useCommand = (): UseCommandHook => {
         return isCompletion ? mainCommand.name : commandUseFunc(mainCommand);
     };
 
+    const getSubCommandList = (name: string, commands = commandMap): Command[] | null => {
+        for (let i = 0; i < commands.length; i++) {
+            const command = commands[i];
+            if (command.name === name) return command.subCommands;
+            if (command.subCommands.length) {
+                const getCommand = getSubCommandList(name, command.subCommands);
+                if (getCommand) return getCommand;
+            }
+        }
+        return null;
+    };
+
+    const setSubCommandsList = (commandStr: string) => {
+        const commandName = commandStr.split(' ').slice(-1)[0];
+        if (commandName) {
+            const subCommands = getSubCommandList(commandName);
+            if (subCommands) {
+                pushCommands(
+                    {
+                        constructor: (
+                            <SubList
+                                column={6}
+                                ItemNums={subCommands.length}
+                                renderItem={(i) => subCommands[i].name}
+                            ></SubList>
+                        ),
+                        status: CommandOutputStatus.success,
+                    },
+                    true
+                );
+            }
+        }
+    };
+
     return {
         commands,
         historyCommands,
@@ -240,6 +283,7 @@ const useCommand = (): UseCommandHook => {
         excuteCommand,
         setCommandHint,
         pushCommands,
+        setSubCommandsList,
     };
 };
 

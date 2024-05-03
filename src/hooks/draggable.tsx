@@ -16,7 +16,6 @@ const useDraggable = <T extends HTMLElement>(target: MutableRefObject<T | null>,
         let offsetPosition: [number, number] = [0, 0];
         const handleDown = (e: MouseEvent) => {
             const { x, y } = target.current!.getBoundingClientRect();
-            console.log(target.current, e.clientX, x, e.clientY, y);
             offsetPosition = [e.clientX - x, e.clientY - y];
             document.addEventListener('mousemove', handleMove);
             document.addEventListener('mouseup', handleUp);
