@@ -5,19 +5,25 @@ import Pause from '@/assets/svg/pause.svg';
 import ArrowLeft from '@/assets/svg/arrow-left.svg';
 import ArrowRight from '@/assets/svg/arrow-right.svg';
 import Volume from '@/assets/svg/volume.svg';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Popover, Slider } from 'antd';
-import { CloudMusic } from '@/interface';
+import { CloudMusic, MusicConfig } from '@/interface';
 import { MusicPlaylist } from '@/commands/musicCommand/components/musicPlaylist';
 import css from '../index.module.scss';
 import { observer } from 'mobx-react-lite';
 import { AudioStoreContext, PlaylistStoreContext } from '@/lib';
+import { localStorageGetItem } from '@/utils';
+import { LOCALSTORAGEMUSIC } from '@/assets/js';
 
 export const PlaylistPopover = observer(() => {
     const audioStore = useContext(AudioStoreContext);
     const playlistStore = useContext(PlaylistStoreContext);
     const [isActive, setIsActive] = useState(false);
     const audioVolume = audioStore.volume * 100;
+
+    useEffect(() => {
+        audioStore.changeVolume(localStorageGetItem<MusicConfig>(LOCALSTORAGEMUSIC)?.volume);
+    }, []);
 
     const switchDisplay = () => {
         setIsActive((val) => !val);

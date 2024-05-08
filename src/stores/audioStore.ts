@@ -18,7 +18,7 @@ export class AudioStore {
         this.isPause = true;
         if (typeof window !== 'undefined') {
             this.audio = new Audio();
-            this.volume = localStorageGetItem<MusicConfig>(LOCALSTORAGEMUSIC)?.volume;
+            this.volume = 0.75;
             this.audioInit();
         }
         makeObservable(this, {

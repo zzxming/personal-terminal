@@ -32,7 +32,6 @@ localStorageInitValueMap[LOCALSTORAGECONFIG] = initValLocalStorageConfig;
 localStorageInitValueMap[LOCALSTORAGELOG] = initValLocalStorageLog;
 localStorageInitValueMap[LOCALSTORAGWEATHER] = initValLocalStorageWeather;
 localStorageInitValueMap[LOCALSTORAGETIME] = initValLocalStorageTime;
-localStorageInitValueMap[LOCALSTORAGETIME] = initValLocalStorageTime;
 localStorageInitValueMap[LOCALSTORAGEPLAYLIST] = initValLocalStoragePlaylist;
 localStorageInitValueMap[LOCALSTORAGEMUSIC] = initValLocalStorageMusic;
 
